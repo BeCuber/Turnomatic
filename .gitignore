@@ -1,0 +1,30 @@
+# 🚀 Evita subir archivos innecesarios
+
+# Entorno virtual de Python
+virt/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos temporales y logs
+*.log
+*.tmp
+
+# PyInstaller (si generas un .exe)
+dist/
+build/
+*.spec
+
+# Archivos específicos de macOS
+.DS_Store
+
+# Base de datos local 
+*.sqlite3
