@@ -10,6 +10,7 @@ class DatabaseConnector:
         self.c = self.conn.cursor()
         self.create_tables()
 
+
     def create_tables(self):
         """Create tables if not exist."""
         self.c.execute('''CREATE TABLE IF NOT EXISTS volunteer (
@@ -32,37 +33,23 @@ class DatabaseConnector:
         self.conn.commit()  # Guarda cambios en la base de datos
 
 
-    def check_volunteers_in_date(self, date):
-        """Check how many volunteers are available in one day"""
-        self.c.execute('''SELECT v.name, v.lastname_1, v.lastname_2, a.date_init, a.date_end, a.comments
-                            FROM volunteer v
-                            JOIN availability a ON v.id_volunteer = a.id_volunteer
-                            WHERE ? BETWEEN a.date_init AND a.date_end''', (date,))
-        return self.c.fetchall() # Devuelve una lista con los resultados
-    
-    def insert_sample_data(self):
-        """Insert sample data to test."""
-        sample_volunteers = [
-            ("Alice", "Smith", "Brown", 1),
-            ("Bob", "Johnson", "Davis", 0),
-            ("Charlie", "Miller", "Wilson", 1),
-        ]
-        self.c.executemany("INSERT INTO volunteer (name, lastname_1, lastname_2, driver) VALUES (?, ?, ?, ?)", sample_volunteers)
-
-        sample_availability = [
-            (1, "2025-03-10", "2025-03-12", "Available for transport"),
-            (1, "2025-03-20", "2025-03-22", ""),
-            (2, "2025-03-15", "2025-03-17", "Only afternoons"),
-            (3, "2025-03-05", "2025-03-25", ""),
-        ]
-        self.c.executemany("INSERT INTO availability (id_volunteer, date_init, date_end, comments) VALUES (?, ?, ?, ?)", sample_availability)
-
+    def execute_query(self, query, params=()):
+        """Método reutilizable para ejecutar consultas SQL""" #TODO traducir
+        self.c.execute(query, params)
         self.conn.commit()
+
+    
+    def fetch_query(self, query, params=()):
+        """Método reutilizable para obtener datos""" #TODO traducir
+        self.c.execute(query, params)
+        return self.c.fetchall()
+
 
     def close_connection(self):
         """Close database connection"""
         self.conn.close()
 
-# Si quieres probarlo, descomenta estas líneas:
-# db = DatabaseManager()
-# db.close_connection()
+
+if __name__ == "__main__":
+    db = DatabaseConnector()
+    db.close_connection()

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QCalendarWidget, QTableWidget, QTableWi
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 import os
-from src.data.db_connector import DatabaseConnector
+from src.logic.volunteer_manager import VolunteerManager
 
 class MainWindow(QMainWindow):
 
@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         # Establecer titulo de la ventana
         self.setWindowTitle("Turnomatic")
         # Establecer el icono de la ventana
-        ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "window_icon.ico")
+        ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "narval.ico")
         self.setWindowIcon(QIcon(ICON_PATH))
 
 
@@ -25,6 +25,8 @@ class MainWindow(QMainWindow):
         self.volunteer_table = self.findChild(QTableWidget, "volunteerTableWidget")
 
         
+        # Default view on volunteer_table after opening the app
+        self.check_day()
 
         # Click day
         self.calendar.selectionChanged.connect(self.check_day)
@@ -32,12 +34,14 @@ class MainWindow(QMainWindow):
         # Show the app
         self.show()
 
+
+
     def check_day(self):
         """Get selected date and update the volunteer list"""
         date_selected = self.calendar.selectedDate().toString("yyyy-MM-dd") # Formate compatible con SQLite
-        db = DatabaseConnector()
-        volunteers = db.check_volunteers_in_date(date_selected)
-        db.close_connection()  
+        vm = VolunteerManager()
+        volunteers = vm.check_volunteers_in_date(date_selected)
+        vm.db.close_connection()  
 
         # Limpiar la tabla antes de actualizar
         self.volunteer_table.setRowCount(0)
@@ -46,5 +50,5 @@ class MainWindow(QMainWindow):
         for row_idx, v in enumerate(volunteers):
             self.volunteer_table.insertRow(row_idx)
             self.volunteer_table.setItem(row_idx, 0, QTableWidgetItem(v[0]))  # Name
-            self.volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v[1]))  # Lastname
-            self.volunteer_table.setItem(row_idx, 2, QTableWidgetItem("Yes" if v[2] else "No"))  # Driver (1 = Yes, 0 = No)
+            self.volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v[1]))  # Lastname_1
+            self.volunteer_table.setItem(row_idx, 2, QTableWidgetItem("🚑" if v[3] else "")) # Driver
