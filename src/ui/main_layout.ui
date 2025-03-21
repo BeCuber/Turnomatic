@@ -24,45 +24,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QTableWidget" name="volunteerTableWidget">
-    <property name="geometry">
-     <rect>
-      <x>1000</x>
-      <y>50</y>
-      <width>311</width>
-      <height>581</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="columnCount">
-     <number>3</number>
-    </property>
-    <column>
-     <property name="text">
-      <string>Nombre</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Apellido</string>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>Carnet B</string>
-     </property>
-    </column>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
