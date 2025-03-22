@@ -6,6 +6,7 @@ class VolunteerManager:
     
 
     # CRUD FOR volunteers #
+
     def create_volunteer(self, name, lastname_1, lastname_2, driver):
         """Validate data and then create a new volunteer in database."""
         
@@ -19,29 +20,35 @@ class VolunteerManager:
     def read_all_volunteers(self):
         """Get all volunteers in a dictionary"""
         raw_data = self.db.fetch_query("SELECT * FROM volunteer")
-        return [{"id": v[0], "name": v[1], "lastname_1": v[2], "lastname_2": v[3], "driver": bool(v[4])} for v in raw_data]
+        return [{
+            "id": v[0], 
+            "name": v[1], 
+            "lastname_1": v[2], 
+            "lastname_2": v[3], 
+            "driver": bool(v[4])
+            } for v in raw_data]
 
 
 
-    def update_volunteer(self, name, lastname_1, lastname_2, driver, volunteer_id):
+    def update_volunteer(self, name, lastname_1, lastname_2, driver, id_volunteer):
         """Verifies volunteer exists before updating."""
-        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (volunteer_id,))
+        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")  # TODO: Mostrar en ventana de error
                 
         query = "UPDATE volunteer SET name=?, lastname_1=?, lastname_2=?, driver=? WHERE id_volunteer=?"
-        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, volunteer_id))
+        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_volunteer))
 
 
-    def delete_volunteer(self, volunteer_id):
+    def delete_volunteer(self, id_volunteer):
         """Delete a volunteer after confirm exists."""
-        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (volunteer_id,))
+        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")  # TODO: Mostrar en ventana de error
         
 
         query = "DELETE FROM volunteer WHERE id_volunteer = ?"
-        self.db.execute_query(query, (volunteer_id,))
+        self.db.execute_query(query, (id_volunteer,))
 
     # END CRUD FOR volunteers #
 
