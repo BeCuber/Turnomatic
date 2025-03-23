@@ -2,8 +2,8 @@ from src.data.db_connector import DatabaseConnector
 
 
 class AvailabilityManager():
-    def __init__(self):
-        self.db = DatabaseConnector()
+    def __init__(self, db: DatabaseConnector):
+        self.db = db
 
     
     # CRUD FOR availability #

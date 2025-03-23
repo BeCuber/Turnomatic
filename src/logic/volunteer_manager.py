@@ -1,8 +1,8 @@
 from src.data.db_connector import DatabaseConnector
 
 class VolunteerManager:
-    def __init__(self):
-        self.db = DatabaseConnector()
+    def __init__(self, db: DatabaseConnector):
+        self.db = db
     
 
     # CRUD FOR volunteers #
@@ -110,4 +110,4 @@ if __name__ == "__main__":
 
     
 
-    vm.db.close_connection()
+    #vm.db.close_connection()

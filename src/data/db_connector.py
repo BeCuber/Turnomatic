@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-#class DatabaseManager:
+
 class DatabaseConnector:
     """If database change to other distinct SQLite3, look for uses for ON DELETE CASCADE"""
     def __init__(self, db_name = "turnomatic.db"):

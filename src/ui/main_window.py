@@ -1,10 +1,12 @@
 import os
 
-from PyQt5.QtWidgets import QMainWindow, QCalendarWidget, QTableWidget, QTableWidgetItem, QStackedWidget, QAction
+from PyQt5.QtWidgets import QMainWindow, QCalendarWidget, QTableWidget, QTableWidgetItem, QStackedWidget, QComboBox
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.menubar import MenuBarManager
+from src.data.db_connector import DatabaseConnector
+from src.ui.widgets.combo_boxes import ComboBoxManager
 
 class MainWindow(QMainWindow):
 
@@ -21,15 +23,19 @@ class MainWindow(QMainWindow):
         ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "narval.ico")
         self.setWindowIcon(QIcon(ICON_PATH))
 
+        # Connect to database
+        self.db = DatabaseConnector()
+
         # Define widgets
         self.stacked_widget = self.findChild(QStackedWidget, "stackedWidget")
         self.calendar = self.findChild(QCalendarWidget, "calendarWidget")
-        self.volunteer_table = self.findChild(QTableWidget, "volunteerTableWidget")
-        
+        self.volunteer_table = self.findChild(QTableWidget, "volunteerTableWidget")        
         # Config menu manager
         self.menu_manager = MenuBarManager(self, self.stacked_widget)
         # Set calendar page as default
         self.menu_manager.show_calendar()
+        # Initialize combobox manager
+        self.combobox_manager = ComboBoxManager(self, self.db)
 
         
         # Default view on volunteer_table
@@ -46,14 +52,17 @@ class MainWindow(QMainWindow):
         # Show the app
         self.show()
 
-
+    def closeEvent(self, event):
+        """Se ejecuta cuando se cierra la ventana"""
+        print("Cerrando conexión con la base de datos...")
+        self.db.close_connection()  # Cierra la conexión
+        event.accept()  # Permite cerrar la ventana
 
     def check_day(self):
         """Get selected date and update the volunteer list"""
         date_selected = self.calendar.selectedDate().toString("yyyy-MM-dd") # Formate compatible con SQLite
-        vm = VolunteerManager()
+        vm = VolunteerManager(self.db)
         volunteers = vm.check_volunteers_in_date(date_selected)
-        vm.db.close_connection()  
 
         # Limpiar la tabla antes de actualizar
         self.volunteer_table.setRowCount(0)
