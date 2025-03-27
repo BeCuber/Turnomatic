@@ -4,6 +4,22 @@ class InitialData:
     def __init__(self):
         self.db = DatabaseConnector()
 
+    def insert_positions(self):
+        """Insert positions if table is empty."""
+        query_check = "SELECT COUNT(*) FROM positions"
+        count = self.db.c.execute(query_check).fetchone()[0]
+
+        if count == 0:
+            query_insert = "INSERT INTO positions (position) VALUES (?)"
+            positions = [
+                ("Socorrista Terrestre",), 
+                ("Técnico en Emergencias Sanitarias",),
+                ("Enfermero",),
+                ("Médico",)
+            ]
+            self.db.c.executemany(query_insert, positions)
+            self.db.conn.commit()
+
     def insert_communities(self):
         """Inserts 17 ccaa if table is empty."""
         query_check = "SELECT COUNT(*) FROM ccaa"
@@ -767,8 +783,11 @@ if __name__ == "__main__":
     
     iniData = InitialData()
 
-    iniData.insert_communities()
-    iniData.insert_provinces()
-    iniData.insert_assemblies()
+    #iniData.insert_communities()
+    #iniData.insert_provinces()
+    #iniData.insert_assemblies()
+    iniData.insert_positions()
+    #iniData.db.execute_query("DELETE FROM positions")
+    #iniData.db.execute_query("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'positions'") # Reinicia ID
 
     iniData.db.close_connection()

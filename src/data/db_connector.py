@@ -53,6 +53,11 @@ class DatabaseConnector:
                             name TEXT NOT NULL,
                             FOREIGN KEY (id_province) REFERENCES provinces(id_province) ON DELETE CASCADE
                         )''')
+        
+        self.c.execute('''CREATE TABLE IF NOT EXISTS positions (
+                        id_position INTEGER PRIMARY KEY AUTOINCREMENT,
+                        position TEXT NOT NULL
+                       )''')
 
         self.conn.commit()  # Guarda cambios en la base de datos
 
