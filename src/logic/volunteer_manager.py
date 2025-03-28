@@ -63,12 +63,20 @@ class VolunteerManager:
                 JOIN availability a ON v.id_volunteer = a.id_volunteer
                 WHERE ? BETWEEN a.date_init AND a.date_end'''
         
-        return self.db.fetch_query(query, (date,))
-    
+        raw_data = self.db.fetch_query(query, (date,))
 
+        # Convertimos la lista de tuplas en una lista de diccionarios
+        return [{
+            "name": v[0], 
+            "lastname_1": v[1], 
+            "lastname_2": v[2], 
+            "driver": bool(v[3]),  
+            "date_init": v[4],  
+            "date_end": v[5],  
+            "comments": v[6]  
+        } for v in raw_data]
     
-    
-    
+   
     
     # FOR TESTING:
     def insert_sample_data(self):
@@ -78,22 +86,25 @@ class VolunteerManager:
             ("Bob", "Johnson", "Davis", 0),
             ("Charlie", "Miller", "Wilson", 1),
         ]
-        self.c.executemany("INSERT INTO volunteer (name, lastname_1, lastname_2, driver) VALUES (?, ?, ?, ?)", sample_volunteers)
+        self.db.c.executemany("INSERT INTO volunteer (name, lastname_1, lastname_2, driver) VALUES (?, ?, ?, ?)", sample_volunteers)
 
         sample_availability = [
             (1, "2025-03-10", "2025-03-12", "Available for transport"),
             (1, "2025-03-20", "2025-03-22", ""),
+            (1, "2025-03-25", "2025-03-30", ""),
             (2, "2025-03-15", "2025-03-17", "Only afternoons"),
+            (2, "2025-03-20", "2025-03-30", "Only afternoons"),
             (3, "2025-03-05", "2025-03-25", ""),
         ]
-        self.c.executemany("INSERT INTO availability (id_volunteer, date_init, date_end, comments) VALUES (?, ?, ?, ?)", sample_availability)
+        self.db.c.executemany("INSERT INTO availability (id_volunteer, date_init, date_end, comments) VALUES (?, ?, ?, ?)", sample_availability)
 
-        self.conn.commit()
+        self.db.conn.commit()
 
 
 # from bash: $ python -m src.logic.volunteer_manager (-m points "src" a module)
 if __name__ == "__main__":
-    vm = VolunteerManager()
+    db = DatabaseConnector()
+    vm = VolunteerManager(db)
 
     #print(vm.read_all_volunteers()) # it works!
     #vm.create_volunteer("Feliniberto", "McFalso", "Salvaje", 1) # it works!
@@ -101,13 +112,14 @@ if __name__ == "__main__":
     #vm.delete_volunteer(4) # it also works!
     #print(vm.read_all_volunteers())
     
-    volunteers = vm.read_all_volunteers()
-    print(volunteers)  # Para ver toda la lista
+    #volunteers = vm.read_all_volunteers()
+    #print(volunteers)  # Para ver toda la lista
 
     # Verificar el tipo de v[2] en cada voluntario
-    for v in volunteers:
-        print(f"Valor de v[2]: {v['driver']} (Tipo: {type(v['driver'])})")
+    #for v in volunteers:
+     #   print(f"Valor de v[2]: {v['driver']} (Tipo: {type(v['driver'])})")
 
+    vm.insert_sample_data()
     
 
-    #vm.db.close_connection()
+    vm.db.close_connection()
