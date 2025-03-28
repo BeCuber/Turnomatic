@@ -1,6 +1,6 @@
 from src.data.db_connector import DatabaseConnector
 
-class LocationManager:
+class ComboBoxesDataManager:
     def __init__(self, db: DatabaseConnector):
         self.db = db
 
@@ -15,3 +15,7 @@ class LocationManager:
     def get_assemblies(self, id_province):
         query = "SELECT id_assembly, name FROM assemblies WHERE id_province = ? ORDER BY name"
         return self.db.fetch_query(query, (id_province,))
+    
+    def get_positions(self):
+        query = "SELECT position FROM positions"
+        return self.db.fetch_query(query)

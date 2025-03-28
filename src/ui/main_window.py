@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
 
         # Load the ui file - dinamic route
         BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-        UI_PATH = os.path.join(BASE_DIR, "main_window_1.ui")
+        UI_PATH = os.path.join(BASE_DIR, "./main_window.ui")
         uic.loadUi(UI_PATH, self)
 
         # Set icon and title window

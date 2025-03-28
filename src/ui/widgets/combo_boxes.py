@@ -1,17 +1,14 @@
-from PyQt5.QtWidgets import QMainWindow, QComboBox
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QComboBox, QWidget
 from src.data.db_connector import DatabaseConnector
-from src.logic.location_manager import LocationManager
-from src.logic.form_manager import FormManager
+from src.logic.combo_boxes_data_manager import ComboBoxesDataManager
 
 
 class ComboBoxManager():
     
-    def __init__(self, main_window: QMainWindow, db: DatabaseConnector):
+    def __init__(self, parent: QWidget, db: DatabaseConnector):
         """Initilize combo boxes manager."""
-        self.main_window = main_window
-        self.lm = LocationManager(db)
-        self.form = FormManager(db)
+        self.parent = parent
+        self.lm = ComboBoxesDataManager(db)
         self.define_combobox_widgets()
         self.populate_combobox_ccaa()
         self.connect_signals()
@@ -20,10 +17,10 @@ class ComboBoxManager():
     def define_combobox_widgets(self):
         """Defines all combobox"""
 
-        self.combobox_ccaa = self.main_window.findChild(QComboBox, "comboBoxCcaa")
-        self.combobox_provinces = self.main_window.findChild(QComboBox, "comboBoxProvince")
-        self.combobox_assemblies = self.main_window.findChild(QComboBox, "comboBoxAssembly")
-        self.combobox_positions = self.main_window.findChild(QComboBox, "comboBoxPosition")
+        self.combobox_ccaa = self.parent.findChild(QComboBox, "comboBoxCcaa")
+        self.combobox_provinces = self.parent.findChild(QComboBox, "comboBoxProvince")
+        self.combobox_assemblies = self.parent.findChild(QComboBox, "comboBoxAssembly")
+        self.combobox_positions = self.parent.findChild(QComboBox, "comboBoxPosition")
 
         # Disable dependant combobox by default
         self.combobox_provinces.setEnabled(False)
@@ -35,7 +32,7 @@ class ComboBoxManager():
         self.combobox_positions.clear()
         self.combobox_positions.addItem("Selecciona un puesto", -1)
 
-        for position in self.form.get_positions():
+        for position in self.lm.get_positions():
             self.combobox_positions.addItem(position[0])
 
     def populate_combobox_ccaa(self):

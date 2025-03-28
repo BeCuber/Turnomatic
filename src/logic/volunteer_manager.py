@@ -19,9 +19,9 @@ class VolunteerManager:
 
     def read_all_volunteers(self):
         """Get all volunteers in a dictionary"""
-        raw_data = self.db.fetch_query("SELECT * FROM volunteer")
+        raw_data = self.db.fetch_query("SELECT * FROM volunteer ORDER BY name")
         return [{
-            "id": v[0], 
+            "id_volunteer": v[0], 
             "name": v[1], 
             "lastname_1": v[2], 
             "lastname_2": v[3], 
