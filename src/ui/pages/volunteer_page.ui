@@ -246,6 +246,9 @@
    <property name="text">
     <string>Sí</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">driver_group</string>
+   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButtonCarnetNo">
    <property name="geometry">
@@ -259,6 +262,9 @@
    <property name="text">
     <string>No</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">driver_group</string>
+   </attribute>
   </widget>
   <widget class="QLabel" name="labelExp4x4">
    <property name="geometry">
@@ -285,6 +291,9 @@
    <property name="text">
     <string>No</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">exp4x4_group</string>
+   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButton4x4Yes">
    <property name="geometry">
@@ -298,6 +307,9 @@
    <property name="text">
     <string>Sí</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">exp4x4_group</string>
+   </attribute>
   </widget>
   <widget class="QComboBox" name="comboBoxPosition">
    <property name="geometry">
@@ -340,7 +352,7 @@
     <string>Asamblea de Procedencia:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="labelMedicacion">
+  <widget class="QLabel" name="labelMedication">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -353,7 +365,7 @@
     <string>Medicación / Patologías:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="labelPersonaContacto">
+  <widget class="QLabel" name="labelContactPerson">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -366,7 +378,7 @@
     <string>Persona de contacto:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="labelAlergias">
+  <widget class="QLabel" name="labelAllergies">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -418,7 +430,7 @@
     <string>Mercedes - Madre - 666 66 66 66</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="radioButtonMedicinaYes">
+  <widget class="QRadioButton" name="radioButtonMedicationYes">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -430,8 +442,11 @@
    <property name="text">
     <string>Sí</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">medication_group</string>
+   </attribute>
   </widget>
-  <widget class="QRadioButton" name="radioButtonMedicinaNo">
+  <widget class="QRadioButton" name="radioButtonMedicationNo">
    <property name="geometry">
     <rect>
      <x>670</x>
@@ -443,8 +458,11 @@
    <property name="text">
     <string>No</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">medication_group</string>
+   </attribute>
   </widget>
-  <widget class="QRadioButton" name="radioButtonAlergiaYes">
+  <widget class="QRadioButton" name="radioButtonAllergyYes">
    <property name="geometry">
     <rect>
      <x>620</x>
@@ -456,8 +474,11 @@
    <property name="text">
     <string>Sí</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">allergy_group</string>
+   </attribute>
   </widget>
-  <widget class="QRadioButton" name="radioButtonAlergiaNo">
+  <widget class="QRadioButton" name="radioButtonAllergyNo">
    <property name="geometry">
     <rect>
      <x>670</x>
@@ -469,6 +490,9 @@
    <property name="text">
     <string>No</string>
    </property>
+   <attribute name="buttonGroup">
+    <string notr="true">allergy_group</string>
+   </attribute>
   </widget>
   <widget class="QTableWidget" name="tableWidgetIndividualAvailability">
    <property name="geometry">
@@ -508,4 +532,10 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="medication_group"/>
+  <buttongroup name="driver_group"/>
+  <buttongroup name="allergy_group"/>
+  <buttongroup name="exp4x4_group"/>
+ </buttongroups>
 </ui>

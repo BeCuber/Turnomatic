@@ -4,6 +4,7 @@ import os
 from src.ui.widgets.combo_boxes import ComboBoxManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.ui.widgets.text_edit import TextEditManager
+from src.ui.widgets.radio_buttons import RadioButtonsManager
 
 class VolunteerPage(QWidget):
     def __init__(self, parent, db):
@@ -28,3 +29,6 @@ class VolunteerPage(QWidget):
 
         self.text_edit_manager = TextEditManager(self, self.db)
         self.text_edit_manager.define_volunteer_form_text_fields()
+
+        self.radio_btn_manager = RadioButtonsManager(self, self.db)
+        self.radio_btn_manager.define_form_radio_buttons()

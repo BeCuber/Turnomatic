@@ -74,14 +74,14 @@ class VolunteerManager:
         }
 
 
-    def update_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person,id_volunteer):
+    def update_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person, id_volunteer):
         """Verifies volunteer exists before updating."""
         existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")  # TODO: Mostrar en ventana de error
                 
         query = "UPDATE volunteer SET name=?, lastname_1=?, lastname_2=?, driver=?, id_card=?, email=?, phone=?, birthdate=?, position=?, exp4x4=?, assembly=?, medication=?, medication_description=?, allergy=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
-        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person,id_volunteer))
+        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person, id_volunteer))
 
 
     def delete_volunteer(self, id_volunteer):
@@ -127,7 +127,7 @@ class VolunteerManager:
         """Insert sample data to test."""
         sample_volunteers = [
             ("Belentxu", "Lentxu", "Lentxu", 1, "123456789A", "belentxu@example.com", "123456987",
-            "1986-12-30", 2, 1, 98, 1, "Antidepresivos", 1, "Plátanos", "Pablín"),
+            "1986-12-30", 2, 1, 536, 1, "Antidepresivos", 1, "Plátanos", "Pablín"),
             
             ("Martica", "Súper", "Maja", 1, "123456789B", "matica@example.com", "623456937",
             "1990-07-22", 3, 1, 98, 0, "", 0, "", "Fernando El Bribón"),
@@ -195,6 +195,10 @@ if __name__ == "__main__":
     #vm.db.execute_query("DELETE FROM volunteer")
     #vm.db.execute_query("DELETE FROM availability")
     #vm.insert_sample_data()
+    vm.update_volunteer("Martica", "Súper", "Maja", 1, "123456789B", "matica@example.com", "623456937",
+            "1990-07-22", 3, 1, 99, 0, "", 0, "", "Fernando El Bribón", 2)
+    vm.update_volunteer("Fernando", "El", "Bribón", 1, "123456789C", "fernando@example.com", "629456987",
+            "1978-02-05", 2, 1, 99, 0, "", 0, "", "Martica Súper Maja", 3)
     
     # Cerrar conexión con la BD
     vm.db.close_connection()
