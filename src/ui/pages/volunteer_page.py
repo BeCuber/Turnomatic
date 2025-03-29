@@ -20,9 +20,11 @@ class VolunteerPage(QWidget):
         # Define widgets
 
         # Inicializar 
+        self.volunteer_table = TableWidgetManager(self, self.db)
+        self.volunteer_table.define_all_volunteers_table()
+
         self.combobox_manager = ComboBoxManager(self, self.db)
-        self.volunteer_table = TableWidgetManager(self, self.db).define_all_volunteers_table()
-        #self.volunteer_table.define_all_volunteers_table()
+        self.combobox_manager.define_form_combobox()
+
         self.text_edit_manager = TextEditManager(self, self.db)
-        self.text_edit_manager.define_volunteer_form_text_fields(self.volunteer_table)
-        #self.text_edit_manager.display_selected_volunteer_data()
+        self.text_edit_manager.define_volunteer_form_text_fields()

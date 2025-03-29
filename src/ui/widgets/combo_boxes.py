@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QComboBox, QWidget
+from PyQt5.QtWidgets import QComboBox, QWidget, QTableWidget
 from src.data.db_connector import DatabaseConnector
 from src.logic.combo_boxes_data_manager import ComboBoxesDataManager
+from src.logic.volunteer_manager import VolunteerManager
 
 
 class ComboBoxManager():
@@ -8,14 +9,12 @@ class ComboBoxManager():
     def __init__(self, parent: QWidget, db: DatabaseConnector):
         """Initilize combo boxes manager."""
         self.parent = parent
-        self.lm = ComboBoxesDataManager(db)
-        self.define_combobox_widgets()
-        self.populate_combobox_ccaa()
-        self.connect_signals()
-        self.populate_combobox_positions()
+        self.vm = VolunteerManager(db)
+        self.cbdm = ComboBoxesDataManager(db)
 
-    def define_combobox_widgets(self):
-        """Defines all combobox"""
+
+    def define_form_combobox(self):
+        """Defines form combobox"""
 
         self.combobox_ccaa = self.parent.findChild(QComboBox, "comboBoxCcaa")
         self.combobox_provinces = self.parent.findChild(QComboBox, "comboBoxProvince")
@@ -26,25 +25,56 @@ class ComboBoxManager():
         self.combobox_provinces.setEnabled(False)
         self.combobox_assemblies.setEnabled(False)
 
-    def display_selected_volunteer_data(self, volunteer_data):
-        """"""
-        if not volunteer_data:
-            return
+        # Populate form comboboxes
+        self.populate_combobox_ccaa()
+        self.connect_signals()
+        self.populate_combobox_positions()
+
+        # Display data
+        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
+        volunteer_table.itemSelectionChanged.connect(self.display_selected_volunteer_combobox_data)
+
+
+    def display_selected_volunteer_combobox_data(self):
+        """Show data from selected volunteer on table."""
+        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
+        selected_items = volunteer_table.selectedItems()
+
+        if not selected_items:
+            return  # No hay selección, salir
         
-        # Buscar el índice del ID en el ComboBox de posiciones
-        position_id = volunteer_data['position']
-        if position_id:
-            index = self.combobox_positions.findData(position_id)
-            if index != -1:
-                self.combobox_positions.setCurrentIndex(index)
+        row = selected_items[0].row()  # Obtener la fila seleccionada
+        volunteer_id = volunteer_table.item(row, 0).text()  # ID está oculto en la columna 0
 
-        # Buscar el índice del ID en el ComboBox de asambleas
-        assembly_id = volunteer_data['assembly']
-        if assembly_id:
-            index = self.combobox_assemblies.findData(assembly_id)
-            if index != -1:
-                self.combobox_assemblies.setCurrentIndex(index)
+        # Obtener los datos del voluntario desde la base de datos
+        volunteer_data = self.vm.get_volunteer_by_id(volunteer_id)
 
+        if volunteer_data:
+            self.combobox_positions.setCurrentIndex(volunteer_data['position'])
+
+            id_assembly = volunteer_data["assembly"]
+
+            self.combobox_ccaa.setCurrentIndex(-1)
+            self.combobox_provinces.setCurrentIndex(-1)
+            self.combobox_assemblies.setCurrentIndex(-1)
+
+            id_province = self.cbdm.get_province_from_assembly(id_assembly)
+            if not id_province:
+                return
+
+            id_ccaa = self.cbdm.get_ccaa_from_province(id_province)
+            if not id_ccaa:
+                return
+
+            index_ccaa = self.combobox_ccaa.findData(id_ccaa)
+            self.combobox_ccaa.setCurrentIndex(index_ccaa)
+
+            index_province = self.combobox_provinces.findData(id_province)
+            self.combobox_provinces.setCurrentIndex(index_province)
+
+            index_assembly = self.combobox_assemblies.findData(id_assembly)           
+            self.combobox_assemblies.setCurrentIndex(index_assembly)
+        
 
     def populate_combobox_positions(self):
         "Load data from positions."
@@ -52,7 +82,7 @@ class ComboBoxManager():
         self.combobox_positions.clear()
         self.combobox_positions.addItem("Selecciona un puesto", -1)
 
-        for position in self.lm.get_positions():
+        for position in self.cbdm.get_positions():
             self.combobox_positions.addItem(position[0])
 
     def populate_combobox_ccaa(self):
@@ -61,7 +91,7 @@ class ComboBoxManager():
         self.combobox_ccaa.clear() 
         self.combobox_ccaa.addItem("Selecciona una CCAA", -1) # Default option
 
-        for id_ccaa, name in self.lm.get_ccaa():
+        for id_ccaa, name in self.cbdm.get_ccaa():
             self.combobox_ccaa.addItem(name, id_ccaa)
         
         self.populate_combobox_provinces(self.combobox_ccaa.currentData())
@@ -81,7 +111,7 @@ class ComboBoxManager():
         self.combobox_provinces.clear()
         self.combobox_provinces.addItem("Selecciona una provincia", -1)
 
-        for id_province, name in self.lm.get_provinces(id_ccaa):
+        for id_province, name in self.cbdm.get_provinces(id_ccaa):
             self.combobox_provinces.addItem(name, id_province)
 
         self.combobox_provinces.setEnabled(True)
@@ -99,7 +129,7 @@ class ComboBoxManager():
         self.combobox_assemblies.clear()
         self.combobox_assemblies.addItem("Selecciona una asamblea", -1)
 
-        for id_assembly, name in self.lm.get_assemblies(id_province):
+        for id_assembly, name in self.cbdm.get_assemblies(id_province):
             self.combobox_assemblies.addItem(name, id_assembly)
 
         self.combobox_assemblies.setEnabled(True)

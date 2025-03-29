@@ -2,20 +2,17 @@ from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPlainTextEdit, QTableWi
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.table_widgets import TableWidgetManager
-from src.ui.widgets.combo_boxes import ComboBoxManager
 
 
 class TextEditManager():
-    #def __init__(self, parent: QWidget, db: DatabaseConnector, combobox_manager: ComboBoxManager):
     def __init__(self, parent: QWidget, db: DatabaseConnector):
         """Initialize text fields manager."""
         self.parent = parent
         self.vm = VolunteerManager(db)
         self.twm = TableWidgetManager(self.parent, self.vm.db)
-        #self.combobox_manager = combobox_manager
 
     
-    def define_volunteer_form_text_fields(self, volunteer_table: QTableWidget):
+    def define_volunteer_form_text_fields(self):
 
         self.label_volunteer = self.parent.findChild(QLabel, "labelNameVolunteer")
         self.input_dni = self.parent.findChild(QLineEdit, "lineEditDNI")
@@ -25,10 +22,11 @@ class TextEditManager():
         self.input_allergies = self.parent.findChild(QPlainTextEdit, "plainTextEditAllergies")
         self.input_contact_person = self.parent.findChild(QPlainTextEdit, "plainTextEditContactPerson")
 
-        volunteer_table.itemSelectionChanged.connect(self.display_selected_volunteer_data)
+        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
+        volunteer_table.itemSelectionChanged.connect(self.display_selected_volunteer_text_data)
         
 
-    def display_selected_volunteer_data(self):
+    def display_selected_volunteer_text_data(self):
         """Show data from selected volunteer on table."""
         volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
         selected_items = volunteer_table.selectedItems()
@@ -44,15 +42,12 @@ class TextEditManager():
 
         if volunteer_data:
             self.label_volunteer.setText(f"{volunteer_data['name']} {volunteer_data['lastname_1']}")
-            #self.label_volunteer.setText(f"{volunteer_data['name']}")
             self.input_dni.setText(volunteer_data['id_card'] or '')
             self.input_email.setText(volunteer_data['email'] or '')
             self.input_phone.setText(volunteer_data['phone'] or '')
             self.input_medication.setPlainText(volunteer_data['medication_description'] or '')
             self.input_allergies.setPlainText(volunteer_data['allergy_description'] or '')
             self.input_contact_person.setPlainText(volunteer_data['contact_person'] or '')
-
-        #self.combobox_manager.display_selected_volunteer_data(volunteer_data)
 
 
 
