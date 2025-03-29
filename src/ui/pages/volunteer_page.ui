@@ -31,22 +31,22 @@
    </column>
    <column>
     <property name="text">
-     <string>Conductor</string>
+     <string>Apellido</string>
     </property>
    </column>
   </widget>
   <widget class="QLabel" name="labelNameVolunteer">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>460</x>
      <y>50</y>
-     <width>401</width>
+     <width>301</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Calibri Light</family>
+     <family>Calibri</family>
      <pointsize>24</pointsize>
      <weight>50</weight>
      <bold>false</bold>
@@ -62,7 +62,7 @@
     <rect>
      <x>580</x>
      <y>180</y>
-     <width>113</width>
+     <width>181</width>
      <height>20</height>
     </rect>
    </property>
@@ -72,7 +72,7 @@
     <rect>
      <x>580</x>
      <y>220</y>
-     <width>111</width>
+     <width>181</width>
      <height>22</height>
     </rect>
    </property>
@@ -121,7 +121,7 @@
     <rect>
      <x>580</x>
      <y>100</y>
-     <width>113</width>
+     <width>181</width>
      <height>20</height>
     </rect>
    </property>
@@ -147,7 +147,7 @@
     <rect>
      <x>580</x>
      <y>140</y>
-     <width>113</width>
+     <width>181</width>
      <height>20</height>
     </rect>
    </property>
@@ -237,7 +237,7 @@
   <widget class="QRadioButton" name="radioButtonCarnetYes">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>620</x>
      <y>300</y>
      <width>41</width>
      <height>17</height>
@@ -250,7 +250,7 @@
   <widget class="QRadioButton" name="radioButtonCarnetNo">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>670</x>
      <y>300</y>
      <width>41</width>
      <height>17</height>
@@ -276,7 +276,7 @@
   <widget class="QRadioButton" name="radioButton4x4No">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>670</x>
      <y>340</y>
      <width>41</width>
      <height>17</height>
@@ -289,7 +289,7 @@
   <widget class="QRadioButton" name="radioButton4x4Yes">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>620</x>
      <y>340</y>
      <width>41</width>
      <height>17</height>
@@ -302,9 +302,9 @@
   <widget class="QComboBox" name="comboBoxPosition">
    <property name="geometry">
     <rect>
-     <x>560</x>
+     <x>580</x>
      <y>260</y>
-     <width>131</width>
+     <width>181</width>
      <height>22</height>
     </rect>
    </property>
@@ -379,7 +379,7 @@
     <string>Alergias:</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEditMedicacion">
+  <widget class="QPlainTextEdit" name="plainTextEditMedication">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -392,7 +392,7 @@
     <string>Describe la información que se deba tener en cuenta</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEditAlergias">
+  <widget class="QPlainTextEdit" name="plainTextEditAllergies">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -405,7 +405,7 @@
     <string>Describe la información que se deba tener en cuenta</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEditPersonaContacto">
+  <widget class="QPlainTextEdit" name="plainTextEditContactPerson">
    <property name="geometry">
     <rect>
      <x>460</x>
@@ -421,7 +421,7 @@
   <widget class="QRadioButton" name="radioButtonMedicinaYes">
    <property name="geometry">
     <rect>
-     <x>600</x>
+     <x>620</x>
      <y>540</y>
      <width>41</width>
      <height>17</height>
@@ -434,7 +434,7 @@
   <widget class="QRadioButton" name="radioButtonMedicinaNo">
    <property name="geometry">
     <rect>
-     <x>650</x>
+     <x>670</x>
      <y>540</y>
      <width>41</width>
      <height>17</height>
@@ -447,7 +447,7 @@
   <widget class="QRadioButton" name="radioButtonAlergiaYes">
    <property name="geometry">
     <rect>
-     <x>600</x>
+     <x>620</x>
      <y>620</y>
      <width>41</width>
      <height>17</height>
@@ -460,7 +460,7 @@
   <widget class="QRadioButton" name="radioButtonAlergiaNo">
    <property name="geometry">
     <rect>
-     <x>650</x>
+     <x>670</x>
      <y>620</y>
      <width>41</width>
      <height>17</height>
@@ -479,6 +479,21 @@
      <height>331</height>
     </rect>
    </property>
+   <column>
+    <property name="text">
+     <string>Fecha inicio</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Fecha fin</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Observaciones</string>
+    </property>
+   </column>
   </widget>
   <widget class="QCalendarWidget" name="calendarWidgetIndividual">
    <property name="geometry">

@@ -7,37 +7,81 @@ class VolunteerManager:
 
     # CRUD FOR volunteers #
 
-    def create_volunteer(self, name, lastname_1, lastname_2, driver):
+    def create_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person):
         """Validate data and then create a new volunteer in database."""
         
         if not name or not lastname_1:
             raise ValueError("El nombre y el primer apellido son obligatorios.") #TODO aviso en ventana de error
         
-        query = "INSERT INTO volunteer (name, lastname_1, lastname_2, driver) VALUES (?, ?, ?, ?)"
-        self.db.execute_query(query, (name, lastname_1, lastname_2, driver))
+        query = "INSERT INTO volunteer (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person))
         
 
     def read_all_volunteers(self):
         """Get all volunteers in a dictionary"""
         raw_data = self.db.fetch_query("SELECT * FROM volunteer ORDER BY name")
         return [{
-            "id_volunteer": v[0], 
-            "name": v[1], 
-            "lastname_1": v[2], 
-            "lastname_2": v[3], 
-            "driver": bool(v[4])
+            "id_volunteer": v[0],
+            "name": v[1],
+            "lastname_1": v[2],
+            "lastname_2": v[3] or '',
+            "driver": bool(v[4]),
+            "id_card": v[5] or '',
+            "email": v[6] or '',
+            "phone": v[7] or '',
+            "birthdate": v[8],
+            "position": v[9],
+            "exp4x4": bool(v[10]),
+            "assembly": v[11],
+            "medication": bool(v[12]),
+            "medication_description": v[13] or '',
+            "allergy": bool(v[14]),
+            "allergy_description": v[15] or '',
+            "contact_person": v[16] or ''
             } for v in raw_data]
+    
+
+    def get_volunteer_by_id(self, volunteer_id):
+        """Get a volunteer from his id."""
+        query = "SELECT * FROM volunteer WHERE id_volunteer = ?"
+        result = self.db.fetch_query(query, (volunteer_id,))
+
+        if not result:
+            return None  # Si no hay datos, devolver None
+    
+        # Extraer la primera fila
+        v = result[0]
+
+        # Mapear columnas manualmente
+        return {
+            "id_volunteer": v[0],
+            "name": v[1],
+            "lastname_1": v[2],
+            "lastname_2": v[3] or '',
+            "driver": bool(v[4]),
+            "id_card": v[5] or '',
+            "email": v[6] or '',
+            "phone": v[7] or '',
+            "birthdate": v[8],
+            "position": v[9],
+            "exp4x4": bool(v[10]),
+            "assembly": v[11],
+            "medication": bool(v[12]),
+            "medication_description": v[13] or '',
+            "allergy": bool(v[14]),
+            "allergy_description": v[15] or '',
+            "contact_person": v[16] or ''
+        }
 
 
-
-    def update_volunteer(self, name, lastname_1, lastname_2, driver, id_volunteer):
+    def update_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person,id_volunteer):
         """Verifies volunteer exists before updating."""
         existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")  # TODO: Mostrar en ventana de error
                 
-        query = "UPDATE volunteer SET name=?, lastname_1=?, lastname_2=?, driver=? WHERE id_volunteer=?"
-        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_volunteer))
+        query = "UPDATE volunteer SET name=?, lastname_1=?, lastname_2=?, driver=?, id_card=?, email=?, phone=?, birthdate=?, position=?, exp4x4=?, assembly=?, medication=?, medication_description=?, allergy=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
+        self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person,id_volunteer))
 
 
     def delete_volunteer(self, id_volunteer):
@@ -82,11 +126,24 @@ class VolunteerManager:
     def insert_sample_data(self):
         """Insert sample data to test."""
         sample_volunteers = [
-            ("Alice", "Smith", "Brown", 1),
-            ("Bob", "Johnson", "Davis", 0),
-            ("Charlie", "Miller", "Wilson", 1),
+            ("Belentxu", "Lentxu", "Lentxu", 1, "123456789A", "belentxu@example.com", "123456987",
+            "1986-12-30", 2, 1, 98, 1, "Antidepresivos", 1, "Plátanos", "Pablín"),
+            
+            ("Martica", "Súper", "Maja", 1, "123456789B", "matica@example.com", "623456937",
+            "1990-07-22", 3, 1, 98, 0, "", 0, "", "Fernando El Bribón"),
+            
+            ("Fernando", "El", "Bribón", 1, "123456789C", "fernando@example.com", "629456987",
+            "1978-02-05", 2, 1, 98, 0, "", 0, "", "Martica Súper Maja"),
         ]
-        self.db.c.executemany("INSERT INTO volunteer (name, lastname_1, lastname_2, driver) VALUES (?, ?, ?, ?)", sample_volunteers)
+
+        self.db.c.executemany(
+            """INSERT INTO volunteer (
+                name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, 
+                position, exp4x4, assembly, medication, medication_description, 
+                allergy, allergy_description, contact_person
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", 
+            sample_volunteers
+        )
 
         sample_availability = [
             (1, "2025-03-10", "2025-03-12", "Available for transport"),
@@ -94,10 +151,16 @@ class VolunteerManager:
             (1, "2025-03-25", "2025-03-30", ""),
             (2, "2025-03-15", "2025-03-17", "Only afternoons"),
             (2, "2025-03-20", "2025-03-30", "Only afternoons"),
+            (2, "2025-04-02", "2025-04-20", "Only afternoons"),
             (3, "2025-03-05", "2025-03-25", ""),
+            (3, "2025-04-05", "2025-04-15", ""),
+            (3, "2025-04-17", "2025-04-23", ""),
         ]
-        self.db.c.executemany("INSERT INTO availability (id_volunteer, date_init, date_end, comments) VALUES (?, ?, ?, ?)", sample_availability)
 
+        self.db.c.executemany(
+            "INSERT INTO availability (id_volunteer, date_init, date_end, comments) VALUES (?, ?, ?, ?)", 
+            sample_availability
+        )
         self.db.conn.commit()
 
 
@@ -119,7 +182,19 @@ if __name__ == "__main__":
     #for v in volunteers:
      #   print(f"Valor de v[2]: {v['driver']} (Tipo: {type(v['driver'])})")
 
-    vm.insert_sample_data()
     
+    # 🚨 Eliminar completamente la tabla y sus datos previos
+    #vm.db.c.execute("DROP TABLE IF EXISTS volunteer")  # 🔥 Borra la tabla si existe
+    #vm.db.c.execute("DROP TABLE IF EXISTS availability")  # 🔥 Borra la tabla availability también
 
+    # 🛠️ Vuelve a crear la base de datos desde DatabaseConnector
+    #db = DatabaseConnector()  # Esto recreará las tablas automáticamente
+
+    # 📝 Insertar nuevos datos de prueba
+    #vm = VolunteerManager(db)
+    #vm.db.execute_query("DELETE FROM volunteer")
+    #vm.db.execute_query("DELETE FROM availability")
+    #vm.insert_sample_data()
+    
+    # Cerrar conexión con la BD
     vm.db.close_connection()

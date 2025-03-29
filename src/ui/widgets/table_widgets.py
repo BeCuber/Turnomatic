@@ -25,6 +25,8 @@ class TableWidgetManager():
 
         self.volunteer_table.cellChanged.connect(self.update_volunteer_in_db)
 
+        return self.volunteer_table
+
 
 
     def load_all_volunteers(self):

@@ -26,6 +26,26 @@ class ComboBoxManager():
         self.combobox_provinces.setEnabled(False)
         self.combobox_assemblies.setEnabled(False)
 
+    def display_selected_volunteer_data(self, volunteer_data):
+        """"""
+        if not volunteer_data:
+            return
+        
+        # Buscar el índice del ID en el ComboBox de posiciones
+        position_id = volunteer_data['position']
+        if position_id:
+            index = self.combobox_positions.findData(position_id)
+            if index != -1:
+                self.combobox_positions.setCurrentIndex(index)
+
+        # Buscar el índice del ID en el ComboBox de asambleas
+        assembly_id = volunteer_data['assembly']
+        if assembly_id:
+            index = self.combobox_assemblies.findData(assembly_id)
+            if index != -1:
+                self.combobox_assemblies.setCurrentIndex(index)
+
+
     def populate_combobox_positions(self):
         "Load data from positions."
 

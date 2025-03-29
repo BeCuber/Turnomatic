@@ -3,6 +3,7 @@ from PyQt5 import uic
 import os
 from src.ui.widgets.combo_boxes import ComboBoxManager
 from src.ui.widgets.table_widgets import TableWidgetManager
+from src.ui.widgets.text_edit import TextEditManager
 
 class VolunteerPage(QWidget):
     def __init__(self, parent, db):
@@ -18,7 +19,10 @@ class VolunteerPage(QWidget):
 
         # Define widgets
 
-        # Inicializar ComboBoxManager
+        # Inicializar 
         self.combobox_manager = ComboBoxManager(self, self.db)
-        self.volunteer_table = TableWidgetManager(self, self.db)
-        self.volunteer_table.define_all_volunteers_table()
+        self.volunteer_table = TableWidgetManager(self, self.db).define_all_volunteers_table()
+        #self.volunteer_table.define_all_volunteers_table()
+        self.text_edit_manager = TextEditManager(self, self.db)
+        self.text_edit_manager.define_volunteer_form_text_fields(self.volunteer_table)
+        #self.text_edit_manager.display_selected_volunteer_data()

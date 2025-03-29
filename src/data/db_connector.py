@@ -22,8 +22,20 @@ class DatabaseConnector:
                             id_volunteer INTEGER PRIMARY KEY AUTOINCREMENT,
                             name TEXT NOT NULL,
                             lastname_1 TEXT NOT NULL,
-                            lastname_2 TEXT,
-                            driver BOOLEAN NOT NULL DEFAULT 0
+                            lastname_2 TEXT DEFAULT '',
+                            driver BOOLEAN NOT NULL DEFAULT 0, 
+                            id_card TEXT UNIQUE,
+                            email TEXT,
+                            phone TEXT DEFAULT '',
+                            birthdate DATE DEFAULT '1900-01-01',
+                            position INTEGER,
+                            exp4x4 BOOLEAN NOT NULL DEFAULT 0,
+                            assembly INTEGER,
+                            medication BOOLEAN NOT NULL DEFAULT 0,
+                            medication_description TEXT DEFAULT '',
+                            allergy BOOLEAN NOT NULL DEFAULT 0,
+                            allergy_description TEXT DEFAULT '',
+                            contact_person TEXT DEFAULT ''
                         )''')
 
         self.c.execute('''CREATE TABLE IF NOT EXISTS availability (
