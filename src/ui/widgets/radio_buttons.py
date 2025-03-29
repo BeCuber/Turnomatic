@@ -18,24 +18,9 @@ class RadioButtonsManager():
         self.medication_group = self.parent.findChild(QButtonGroup, "medication_group")
         self.allergy_group = self.parent.findChild(QButtonGroup, "allergy_group")
         
-        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
-        volunteer_table.itemSelectionChanged.connect(self.display_form_radio_button)
-        
 
-    def display_form_radio_button(self):
+    def display_form_radio_button_data(self, volunteer_data):
         """Set radio buttons based on the volunteer's data"""
-
-        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
-        selected_items = volunteer_table.selectedItems()
-
-        if not selected_items:
-            return  # No hay selección, salir
-
-        row = selected_items[0].row()  # Obtener la fila seleccionada
-        volunteer_id = volunteer_table.item(row, 0).text()  # ID está oculto en la columna 0
-
-        # Obtener los datos del voluntario desde la base de datos
-        volunteer_data = self.vm.get_volunteer_by_id(volunteer_id)
 
         if volunteer_data:
             # Asignar los valores a los radio buttons

@@ -25,7 +25,7 @@ class TableWidgetManager():
 
         self.volunteer_table.cellChanged.connect(self.update_volunteer_in_db)
 
-        return self.volunteer_table
+        #return self.volunteer_table
 
 
 
@@ -63,3 +63,7 @@ class TableWidgetManager():
 
             query = f"UPDATE volunteer SET {field_name} = ? WHERE id_volunteer = ?"
             self.vm.db.execute_query(query, (new_value, volunteer_id))
+
+
+    def define_availability_table(self):
+        pass

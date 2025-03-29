@@ -30,24 +30,10 @@ class ComboBoxManager():
         self.connect_signals()
         self.populate_combobox_positions()
 
-        # Display data
-        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
-        volunteer_table.itemSelectionChanged.connect(self.display_selected_volunteer_combobox_data)
 
 
-    def display_selected_volunteer_combobox_data(self):
+    def display_selected_volunteer_combobox_data(self, volunteer_data):
         """Show data from selected volunteer on table."""
-        volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
-        selected_items = volunteer_table.selectedItems()
-
-        if not selected_items:
-            return  # No hay selección, salir
-        
-        row = selected_items[0].row()  # Obtener la fila seleccionada
-        volunteer_id = volunteer_table.item(row, 0).text()  # ID está oculto en la columna 0
-
-        # Obtener los datos del voluntario desde la base de datos
-        volunteer_data = self.vm.get_volunteer_by_id(volunteer_id)
 
         if volunteer_data:
             self.combobox_positions.setCurrentIndex(volunteer_data['position'])
