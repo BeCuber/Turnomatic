@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QWidget
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
+from src.logic.availability_manager import AvailabilityManager
 
 
 class TableWidgetManager():
@@ -9,39 +10,36 @@ class TableWidgetManager():
         """Initialize tables manager."""
         self.parent = parent
         self.vm = VolunteerManager(db)
+        self.am = AvailabilityManager(db)
         
 
-    def define_all_volunteers_table(self):
+    def define_all_volunteers_table(self, volunteer_table: QTableWidget):
 
-        self.volunteer_table = self.parent.findChild(QTableWidget, "allVolunteerTableWidget")
         # Add a hidden column at beginning for ID
-        self.volunteer_table.insertColumn(0)
-        self.volunteer_table.setColumnHidden(0, True)
+        volunteer_table.insertColumn(0)
+        volunteer_table.setColumnHidden(0, True)
 
         # Load volunteer list
-        self.volunteer_table.blockSignals(True)  # 🔴 Avoid errors by triggering cellChanged
-        self.load_all_volunteers()
-        self.volunteer_table.blockSignals(False)  # 🟢 Let edit the table
+        volunteer_table.blockSignals(True) # Avoid errors by triggering cellChanged
+        self.load_all_volunteers(volunteer_table)
+        volunteer_table.blockSignals(False) # Let edit the table
 
-        self.volunteer_table.cellChanged.connect(self.update_volunteer_in_db)
-
-        #return self.volunteer_table
+        volunteer_table.cellChanged.connect(self.update_volunteer_in_db)
 
 
-
-    def load_all_volunteers(self):
+    def load_all_volunteers(self, volunteer_table: QTableWidget):
         
-        volunteers = self.vm.read_all_volunteers()  
+        volunteers = self.vm.read_all_volunteers()
 
-        self.volunteer_table.setRowCount(0)
+        volunteer_table.setRowCount(0)
 
         for row_idx, v in enumerate(volunteers):
-            self.volunteer_table.insertRow(row_idx)
-            self.volunteer_table.setItem(row_idx, 0, QTableWidgetItem(str(v["id_volunteer"])))
-            self.volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["name"]))
-            self.volunteer_table.setItem(row_idx, 2, QTableWidgetItem(v["lastname_1"]))  
-            self.volunteer_table.setItem(row_idx, 3, QTableWidgetItem(v["lastname_2"]))  
-              
+            volunteer_table.insertRow(row_idx)
+            volunteer_table.setItem(row_idx, 0, QTableWidgetItem(str(v["id_volunteer"])))
+            volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["name"]))
+            volunteer_table.setItem(row_idx, 2, QTableWidgetItem(v["lastname_1"]))  
+            volunteer_table.setItem(row_idx, 3, QTableWidgetItem(v["lastname_2"]))
+    
     
     def update_volunteer_in_db(self, row, col):
         """Update database when edit a cell."""
@@ -65,5 +63,17 @@ class TableWidgetManager():
             self.vm.db.execute_query(query, (new_value, volunteer_id))
 
 
-    def define_availability_table(self):
-        pass
+    def display_availability_data(self, volunteer_id, availability_table: QTableWidget):
+        """Show availability data for a given volunteer on table."""
+
+        availability_table.clear()
+        availability_table.setRowCount(0) # reset number of rows
+        availability = self.am.get_availability_by_id_volunteer(volunteer_id)
+
+        for row_idx, v in enumerate(availability):
+            availability_table.insertRow(row_idx)
+            availability_table.setItem(row_idx, 0, QTableWidgetItem(v["date_init"]))
+            availability_table.setItem(row_idx, 1, QTableWidgetItem(v["date_end"]))
+            availability_table.setItem(row_idx, 2, QTableWidgetItem(v["comments"]))
+
+

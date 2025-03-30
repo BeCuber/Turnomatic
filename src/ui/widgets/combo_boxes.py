@@ -31,7 +31,6 @@ class ComboBoxManager():
         self.populate_combobox_positions()
 
 
-
     def display_selected_volunteer_combobox_data(self, volunteer_data):
         """Show data from selected volunteer on table."""
 
@@ -71,6 +70,7 @@ class ComboBoxManager():
         for position in self.cbdm.get_positions():
             self.combobox_positions.addItem(position[0])
 
+
     def populate_combobox_ccaa(self):
         """Load data from ccaa table in database"""
 
@@ -81,6 +81,7 @@ class ComboBoxManager():
             self.combobox_ccaa.addItem(name, id_ccaa)
         
         self.populate_combobox_provinces(self.combobox_ccaa.currentData())
+
 
     def populate_combobox_provinces(self, id_ccaa):
         "Load data from provinces depending on ccaa selected in comboBoxCcaa"
@@ -104,6 +105,7 @@ class ComboBoxManager():
 
         self.populate_combobox_assemblies(self.combobox_provinces.currentData())
 
+
     def populate_combobox_assemblies(self, id_province):
         "Load data from assemblies depending on province selected in comboBoxProvince"
 
@@ -119,6 +121,7 @@ class ComboBoxManager():
             self.combobox_assemblies.addItem(name, id_assembly)
 
         self.combobox_assemblies.setEnabled(True)
+
 
     def connect_signals(self):
         """Conects comboboxes"""

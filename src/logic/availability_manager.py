@@ -34,6 +34,19 @@ class AvailabilityManager():
             } for v in raw_data]
     
 
+    def get_availability_by_id_volunteer(self, id_volunteer):
+        """Get individual availabilities for a given volunteer."""
+        query = "SELECT * FROM availability WHERE id_volunteer = ?"
+        raw_data = self.db.fetch_query(query, (id_volunteer,))
+        return [{
+            "id": v[0], 
+            "id_volunteer": v[1], 
+            "date_init": v[2], 
+            "date_end": v[3], 
+            "comments": v[4]
+            } for v in raw_data]
+    
+
     def update_availability(self, id_availability, id_volunteer, date_init, date_end, comments):
         """Update an availibilty."""
 
@@ -46,7 +59,6 @@ class AvailabilityManager():
 
         query = "DELETE FROM availability WHERE id_availability = ?"
         self.db.execute_query(query, (id_availability,))
-
 
 
     # END CRUD FOR availability #

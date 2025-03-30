@@ -24,7 +24,6 @@ class TextEditManager():
         self.input_allergies = self.parent.findChild(QPlainTextEdit, "plainTextEditAllergies")
         self.input_contact_person = self.parent.findChild(QPlainTextEdit, "plainTextEditContactPerson")
         self.date_edit_birth = self.parent.findChild(QDateEdit, "dateEditBirth")
-
         
 
     def display_selected_volunteer_text_data(self, volunteer_data):
