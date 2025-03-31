@@ -66,14 +66,15 @@ class AvailabilityManager():
 
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
 if __name__ == "__main__":
-    am = AvailabilityManager()
+    db = DatabaseConnector()
+    am = AvailabilityManager(db)
 
-    print(am.read_all_availabilities()) # it works!
+    #print(am.read_all_availabilities()) # it works!
     #am.create_availability(2, "2025-03-24", "2025-03-30", "Carnet A") # it works!
     #am.update_availability(5, 2, "2025-03-25", "2025-03-25", "Carnet A") # it works!
     #am.delete_availability(5) # it works!
-    print(am.read_all_availabilities())
+    #print(am.read_all_availabilities())
 
-
+    
 
     am.db.close_connection()

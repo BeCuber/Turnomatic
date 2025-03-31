@@ -61,4 +61,4 @@ class VolunteerPage(QWidget):
         self.text_edit_manager.display_selected_volunteer_text_data(volunteer_data)
         self.combobox_manager.display_selected_volunteer_combobox_data(volunteer_data)
         self.radio_btn_manager.display_form_radio_button_data(volunteer_data)
-        self.table_manager.display_availability_data(volunteer_id, self.availability_table)
+        self.table_manager.display_individual_availability_data_table(volunteer_id, self.availability_table)

@@ -100,12 +100,35 @@ class VolunteerManager:
 
     # SPECIFIC QUERYS
 
-    def check_volunteers_in_date(self, date):
+    def check_confirmed_volunteers_in_date(self, date):
         """Check how many volunteers are available on a given day"""
         query = '''SELECT v.name, v.lastname_1, v.lastname_2, v.driver, a.date_init, a.date_end, a.comments
                 FROM volunteer v
                 JOIN availability a ON v.id_volunteer = a.id_volunteer
-                WHERE ? BETWEEN a.date_init AND a.date_end'''
+                WHERE ? BETWEEN a.date_init AND a.date_end
+                AND a.confirmed = 1'''
+        
+        raw_data = self.db.fetch_query(query, (date,))
+
+        # Convertimos la lista de tuplas en una lista de diccionarios
+        return [{
+            "name": v[0], 
+            "lastname_1": v[1], 
+            "lastname_2": v[2], 
+            "driver": bool(v[3]),  
+            "date_init": v[4],  
+            "date_end": v[5],  
+            "comments": v[6]  
+        } for v in raw_data]
+    
+    
+    def check_not_confirmed_volunteers_in_date(self, date):
+        """Check how many volunteers are available on a given day"""
+        query = '''SELECT v.name, v.lastname_1, v.lastname_2, v.driver, a.date_init, a.date_end, a.comments
+                FROM volunteer v
+                JOIN availability a ON v.id_volunteer = a.id_volunteer
+                WHERE ? BETWEEN a.date_init AND a.date_end
+                AND a.confirmed = 0'''
         
         raw_data = self.db.fetch_query(query, (date,))
 
@@ -146,15 +169,28 @@ class VolunteerManager:
         )
 
         sample_availability = [
-            (1, "2025-03-10", "2025-03-12", "Available for transport"),
-            (1, "2025-03-20", "2025-03-22", ""),
-            (1, "2025-03-25", "2025-03-30", ""),
-            (2, "2025-03-15", "2025-03-17", "Only afternoons"),
-            (2, "2025-03-20", "2025-03-30", "Only afternoons"),
-            (2, "2025-04-02", "2025-04-20", "Only afternoons"),
-            (3, "2025-03-05", "2025-03-25", ""),
-            (3, "2025-04-05", "2025-04-15", ""),
-            (3, "2025-04-17", "2025-04-23", ""),
+            (1, "2025-03-10", "2025-03-12", "Available for transport", 0),
+            (1, "2025-03-14", "2025-03-16", "Morning shifts", 1),
+            (1, "2025-03-20", "2025-03-22", "", 0),
+            (1, "2025-03-25", "2025-03-30", "", 1),
+            (1, "2025-04-02", "2025-04-07", "Evening shifts", 1),
+            (1, "2025-04-10", "2025-04-15", "", 0),
+            (1, "2025-04-18", "2025-04-25", "Weekends only", 1),
+
+            (2, "2025-03-15", "2025-03-17", "Only afternoons", 0),
+            (2, "2025-03-18", "2025-03-19", "Only afternoons", 1),
+            (2, "2025-03-20", "2025-03-30", "Only afternoons", 0),
+            (2, "2025-04-02", "2025-04-10", "Only afternoons", 1),
+            (2, "2025-04-11", "2025-04-20", "Only afternoons", 0),
+            (2, "2025-04-22", "2025-04-30", "Only afternoons", 1),
+
+            (3, "2025-03-05", "2025-03-12", "", 0),
+            (3, "2025-03-14", "2025-03-18", "Transport help", 1),
+            (3, "2025-03-20", "2025-03-25", "", 0),
+            (3, "2025-04-05", "2025-04-10", "", 1),
+            (3, "2025-04-11", "2025-04-15", "", 0),
+            (3, "2025-04-17", "2025-04-20", "", 1),
+            (3, "2025-04-21", "2025-04-23", "", 0),
         ]
 
         self.db.c.executemany(
