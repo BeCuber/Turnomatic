@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QAbstractItemView
 from PyQt5 import uic
 import os
 from src.logic.volunteer_manager import VolunteerManager
@@ -15,52 +15,43 @@ class CalendarPage(QWidget):
 
         self.parent = parent
         self.db = db
-        #self.vm = VolunteerManager(self.db)
 
         # Define widgets
         self.calendar = self.findChild(QCalendarWidget, "calendarWidget")
+
         self.confirmed_volunteer_table = self.findChild(QTableWidget, "volunteerTableWidget")
         self.not_confirmed_volunteer_table = self.findChild(QTableWidget, "notConfirmedVolunteerTable")
-
+        
         #Initialize
         self.table_manager = TableWidgetManager(self, self.db)
 
-        # Default view
-        self.calendar.selectionChanged.connect(lambda: self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table))
-        self.calendar.selectionChanged.connect(lambda: self.table_manager.update_not_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table))
-        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table)
-        self.table_manager.update_not_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table)
-    '''
-    def update_confirmed_volunteer_list(self):
-        """Get selected date and update the volunteer list."""
-        date_selected = self.calendar.selectedDate().toString("yyyy-MM-dd") 
-        #vm = VolunteerManager(self.db)
-        volunteers = self.vm.check_confirmed_volunteers_in_date(date_selected)
+        self.table_manager.define_available_volunteer_list(self.confirmed_volunteer_table)
+        self.table_manager.define_available_volunteer_list(self.not_confirmed_volunteer_table)
 
-        # Clean table before update
-        self.confirmed_volunteer_table.setRowCount(0)
+        # Default view and update in day change
+        self.calendar.selectionChanged.connect(lambda: self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1))
+        self.calendar.selectionChanged.connect(lambda: self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0))
+        
+        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
+        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
 
-        # Load data on table
-        for row_idx, v in enumerate(volunteers):
-            self.confirmed_volunteer_table.insertRow(row_idx)
-            self.confirmed_volunteer_table.setItem(row_idx, 0, QTableWidgetItem(v["name"]))  
-            self.confirmed_volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["lastname_1"]))  
-            self.confirmed_volunteer_table.setItem(row_idx, 2, QTableWidgetItem("🚑" if v["driver"] else ""))
+        # nito: dia calendar, id_volunteer
+        id_volunteer = self.get_selected_volunteer_id()
+
+        
     
-    
-    def update_not_confirmed_volunteer_list(self):
-        """Get selected date and update the volunteer list."""
-        date_selected = self.calendar.selectedDate().toString("yyyy-MM-dd") 
-        #vm = VolunteerManager(self.db)
-        volunteers = self.vm.check_not_confirmed_volunteers_in_date(date_selected)
+    def get_selected_volunteer_id(self):
+        """Returns the id_volunteer of the selected row in either table, or None if no row is selected."""
 
-        # Clean table before update
-        self.not_confirmed_volunteer_table.setRowCount(0)
+        selected_table = None
+        if self.confirmed_volunteer_table.selectedIndexes():
+            selected_table = self.confirmed_volunteer_table
+        elif self.not_confirmed_volunteer_table.selectedIndexes():
+            selected_table = self.not_confirmed_volunteer_table
 
-        # Load data on table
-        for row_idx, v in enumerate(volunteers):
-            self.not_confirmed_volunteer_table.insertRow(row_idx)
-            self.not_confirmed_volunteer_table.setItem(row_idx, 0, QTableWidgetItem(v["name"]))  
-            self.not_confirmed_volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["lastname_1"]))  
-            self.not_confirmed_volunteer_table.setItem(row_idx, 2, QTableWidgetItem("🚑" if v["driver"] else ""))
-    '''
+        if selected_table:
+            selected_row = selected_table.selectedIndexes()[0].row()  # Get the selected row
+            id_volunteer = selected_table.item(selected_row, 0).text()  # Get ID from column 0
+            return int(id_volunteer)  # Convert to integer (if needed)
+
+        return None  # No row selected

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.logic.availability_manager import AvailabilityManager
@@ -81,35 +81,31 @@ class TableWidgetManager():
 
     # TABLES FOR calendar_page #
 
-    def update_confirmed_volunteer_list(self, calendar:QCalendarWidget, confirmed_volunteer_table: QTableWidget):
+    def define_available_volunteer_list(self, volunteer_table: QTableWidget):
+        
+        # Add a hidden column at beginning for ID
+        volunteer_table.insertColumn(0)
+        volunteer_table.setColumnHidden(0, True)
+        # Avoid editing on list
+        volunteer_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        # Select entire row
+        volunteer_table.setSelectionBehavior(QAbstractItemView.SelectRows) 
+
+
+
+    def update_confirmed_volunteer_list(self, calendar:QCalendarWidget, volunteer_table: QTableWidget, confirmed):
         """Get selected date and update the volunteer list."""
         date_selected = calendar.selectedDate().toString("yyyy-MM-dd") 
-        #vm = VolunteerManager(self.db)
-        volunteers = self.vm.check_confirmed_volunteers_in_date(date_selected)
+        volunteers = self.vm.check_volunteers_in_date(date_selected, confirmed)
 
         # Clean table before update
-        confirmed_volunteer_table.setRowCount(0)
+        volunteer_table.setRowCount(0)
 
         # Load data on table
         for row_idx, v in enumerate(volunteers):
-            confirmed_volunteer_table.insertRow(row_idx)
-            confirmed_volunteer_table.setItem(row_idx, 0, QTableWidgetItem(v["name"]))  
-            confirmed_volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["lastname_1"]))  
-            confirmed_volunteer_table.setItem(row_idx, 2, QTableWidgetItem("🚑" if v["driver"] else ""))
+            volunteer_table.insertRow(row_idx)
+            volunteer_table.setItem(row_idx, 0, QTableWidgetItem(str(v["id_volunteer"])))
+            volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["name"]))  
+            volunteer_table.setItem(row_idx, 2, QTableWidgetItem(v["lastname_1"]))  
+            volunteer_table.setItem(row_idx, 3, QTableWidgetItem("🚑" if v["driver"] else ""))
     
-    
-    def update_not_confirmed_volunteer_list(self, calendar:QCalendarWidget, not_confirmed_volunteer_table:QTableWidget):
-        """Get selected date and update the volunteer list."""
-        date_selected = calendar.selectedDate().toString("yyyy-MM-dd") 
-        #vm = VolunteerManager(self.db)
-        volunteers = self.vm.check_not_confirmed_volunteers_in_date(date_selected)
-
-        # Clean table before update
-        not_confirmed_volunteer_table.setRowCount(0)
-
-        # Load data on table
-        for row_idx, v in enumerate(volunteers):
-            not_confirmed_volunteer_table.insertRow(row_idx)
-            not_confirmed_volunteer_table.setItem(row_idx, 0, QTableWidgetItem(v["name"]))  
-            not_confirmed_volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["lastname_1"]))  
-            not_confirmed_volunteer_table.setItem(row_idx, 2, QTableWidgetItem("🚑" if v["driver"] else ""))

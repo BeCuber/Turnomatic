@@ -48,6 +48,8 @@ class DatabaseConnector:
                             FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
                         )''')
         
+        self.c.execute("CREATE INDEX IF NOT EXISTS idx_availability_date ON availability (date_init, date_end);")
+        
         self.c.execute('''CREATE TABLE IF NOT EXISTS ccaa (
                             id_ccaa INTEGER PRIMARY KEY,
                             name TEXT NOT NULL
@@ -107,6 +109,7 @@ if __name__ == "__main__":
             FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
         )
     ''')
+    db.c.execute("CREATE INDEX IF NOT EXISTS idx_availability_date ON availability (date_init, date_end);")
     
     sample_availability = [
         (1, "2025-03-10", "2025-03-12", "Available for transport", 0),

@@ -100,50 +100,29 @@ class VolunteerManager:
 
     # SPECIFIC QUERYS
 
-    def check_confirmed_volunteers_in_date(self, date):
+    def check_volunteers_in_date(self, date, confirmed):
         """Check how many volunteers are available on a given day"""
-        query = '''SELECT v.name, v.lastname_1, v.lastname_2, v.driver, a.date_init, a.date_end, a.comments
+        query = '''SELECT v.id_volunteer ,v.name, v.lastname_1, v.lastname_2, v.driver, a.date_init, a.date_end, a.comments
                 FROM volunteer v
                 JOIN availability a ON v.id_volunteer = a.id_volunteer
                 WHERE ? BETWEEN a.date_init AND a.date_end
-                AND a.confirmed = 1'''
+                AND a.confirmed = ?'''
         
-        raw_data = self.db.fetch_query(query, (date,))
+        raw_data = self.db.fetch_query(query, (date, confirmed))
 
         # Convertimos la lista de tuplas en una lista de diccionarios
         return [{
-            "name": v[0], 
-            "lastname_1": v[1], 
-            "lastname_2": v[2], 
-            "driver": bool(v[3]),  
-            "date_init": v[4],  
-            "date_end": v[5],  
-            "comments": v[6]  
+            "id_volunteer": v[0],
+            "name": v[1], 
+            "lastname_1": v[2], 
+            "lastname_2": v[3], 
+            "driver": bool(v[4]),  
+            "date_init": v[5],  
+            "date_end": v[6],  
+            "comments": v[7]  
         } for v in raw_data]
     
-    
-    def check_not_confirmed_volunteers_in_date(self, date):
-        """Check how many volunteers are available on a given day"""
-        query = '''SELECT v.name, v.lastname_1, v.lastname_2, v.driver, a.date_init, a.date_end, a.comments
-                FROM volunteer v
-                JOIN availability a ON v.id_volunteer = a.id_volunteer
-                WHERE ? BETWEEN a.date_init AND a.date_end
-                AND a.confirmed = 0'''
-        
-        raw_data = self.db.fetch_query(query, (date,))
 
-        # Convertimos la lista de tuplas en una lista de diccionarios
-        return [{
-            "name": v[0], 
-            "lastname_1": v[1], 
-            "lastname_2": v[2], 
-            "driver": bool(v[3]),  
-            "date_init": v[4],  
-            "date_end": v[5],  
-            "comments": v[6]  
-        } for v in raw_data]
-    
-   
     
     # FOR TESTING:
     def insert_sample_data(self):

@@ -63,6 +63,8 @@ class AvailabilityManager():
 
     # END CRUD FOR availability #
 
+    
+
 
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
 if __name__ == "__main__":
