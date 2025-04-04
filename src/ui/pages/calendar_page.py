@@ -1,12 +1,15 @@
-from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QPushButton
 from PyQt5 import uic
 import os
-from src.logic.volunteer_manager import VolunteerManager
+from datetime import datetime, timedelta
+#from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.table_widgets import TableWidgetManager
+from src.logic.availability_manager import AvailabilityManager
 
 class CalendarPage(QWidget):
     def __init__(self, parent, db):
         super().__init__()
+        self.am = AvailabilityManager(db)
 
         # Load UI
         BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
@@ -22,6 +25,10 @@ class CalendarPage(QWidget):
         self.confirmed_volunteer_table = self.findChild(QTableWidget, "volunteerTableWidget")
         self.not_confirmed_volunteer_table = self.findChild(QTableWidget, "notConfirmedVolunteerTable")
         
+        self.btn_add = self.findChild(QPushButton, "btnAddConfirmed")
+        self.btn_substract = self.findChild(QPushButton, "btnSubstractConfirmed")
+        
+
         #Initialize
         self.table_manager = TableWidgetManager(self, self.db)
 
@@ -36,9 +43,66 @@ class CalendarPage(QWidget):
         self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
 
         # nito: dia calendar, id_volunteer
-        id_volunteer = self.get_selected_volunteer_id()
+        #id_volunteer = self.get_selected_volunteer_id()
 
+        self.btn_add.clicked.connect(lambda: self.change_confirmed(self.not_confirmed_volunteer_table))
+        self.btn_substract.clicked.connect(lambda: self.change_confirmed(self.confirmed_volunteer_table))
+
+                
+    def change_confirmed(self, volunteer_table:QTableWidget):
+        """Mark selected date as confirmed and update the availability table accordingly."""
+
+        selected_items = volunteer_table.selectedItems()
+        if not selected_items:
+            return
+
+        id_volunteer = self.get_selected_volunteer_id()
+        selected_date_str = self.calendar.selectedDate().toString("yyyy-MM-dd")
+        selected_date = datetime.strptime(selected_date_str, "%Y-%m-%d").date()
         
+        availability_list = self.am.select_availability_by_date(id_volunteer, selected_date_str)
+        if not availability_list:
+            return
+
+        # Select the availability register where selected_date belongs
+        id_availability, date_init_str, date_end_str, comments, confirmed = self.am.select_availability_by_date(id_volunteer, selected_date)[0]
+        date_init = datetime.strptime(date_init_str, "%Y-%m-%d").date()
+        date_end = datetime.strptime(date_end_str, "%Y-%m-%d").date()
+
+        # If selected_date is one day only, just update 'confirmed' field
+        if date_init == date_end:
+            self.am.switch_confirmed(id_availability)
+        
+        # If selected_date is the first day in the register
+        elif selected_date == date_init:
+            self.am.update_availability(id_availability, id_volunteer, (date_init + timedelta(days=1)).isoformat(), date_end.isoformat(), comments, confirmed)
+            self.am.create_availability(id_volunteer, selected_date.isoformat(), selected_date.isoformat(), comments, not confirmed)
+
+        # If selected_date is the last day in the register
+        elif selected_date == date_end:
+            self.am.update_availability(id_availability, id_volunteer, date_init.isoformat(), (date_end - timedelta(days=1)).isoformat(), comments, confirmed)
+            self.am.create_availability(id_volunteer, selected_date.isoformat(), selected_date.isoformat(), comments, not confirmed)
+        
+        # If selected day is in the middle of a register: divide on three parts
+        else:
+            self.am.update_availability(id_availability, id_volunteer, date_init.isoformat(), (selected_date - timedelta(days=1)).isoformat(), comments, confirmed)
+            self.am.create_availability(id_volunteer, selected_date.isoformat(), selected_date.isoformat(), comments, not confirmed)
+            self.am.create_availability(id_volunteer, (selected_date + timedelta(days=1)).isoformat(), date_end.isoformat(), comments, confirmed)
+
+        # Fusionar períodos adyacentes si procede
+        self.merge_confirmed_periods(id_volunteer, selected_date_str)
+
+        # Update QTableWidgets
+        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
+        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
+        
+
+
+#print(self.am.isConfirmed(id_availability))
+
+
+
+
     
     def get_selected_volunteer_id(self):
         """Returns the id_volunteer of the selected row in either table, or None if no row is selected."""

@@ -89,8 +89,7 @@ class TableWidgetManager():
         # Avoid editing on list
         volunteer_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
         # Select entire row
-        volunteer_table.setSelectionBehavior(QAbstractItemView.SelectRows) 
-
+        volunteer_table.setSelectionBehavior(QAbstractItemView.SelectRows)
 
 
     def update_confirmed_volunteer_list(self, calendar:QCalendarWidget, volunteer_table: QTableWidget, confirmed):

@@ -8,7 +8,7 @@ class AvailabilityManager():
     
     # CRUD FOR availability #
 
-    def create_availability(self, id_volunteer, date_init, date_end, comments):
+    def create_availability(self, id_volunteer, date_init, date_end, comments, confirmed):
         """Validate data and then create a new availability if id_vonteer exists."""
 
         existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
@@ -18,8 +18,8 @@ class AvailabilityManager():
         if not date_init or not date_end:
             raise ValueError("Las fechas de inicio y fin son obligatorias") # TODO: Mostrar en ventana de error
 
-        query = "INSERT INTO availability (id_volunteer, date_init, date_end, comments) VALUES (?, ?, ?, ?)"
-        self.db.execute_query(query, (id_volunteer, date_init, date_end, comments))
+        query = "INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed) VALUES (?, ?, ?, ?, ?)"
+        self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, confirmed))
 
 
     def read_all_availabilities(self):
@@ -30,7 +30,8 @@ class AvailabilityManager():
             "id_volunteer": v[1], 
             "date_init": v[2], 
             "date_end": v[3], 
-            "comments": v[4]
+            "comments": v[4],
+            "confirmed": bool(v[5])
             } for v in raw_data]
     
 
@@ -43,15 +44,16 @@ class AvailabilityManager():
             "id_volunteer": v[1], 
             "date_init": v[2], 
             "date_end": v[3], 
-            "comments": v[4]
+            "comments": v[4],
+            "confirmed": bool(v[5])
             } for v in raw_data]
     
 
-    def update_availability(self, id_availability, id_volunteer, date_init, date_end, comments):
+    def update_availability(self, id_availability, id_volunteer, date_init, date_end, comments, confirmed):
         """Update an availibilty."""
 
-        query = "UPDATE availability SET id_volunteer=?, date_init=?, date_end=?, comments=? WHERE id_availability=?"
-        self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, id_availability))
+        query = "UPDATE availability SET id_volunteer=?, date_init=?, date_end=?, comments=?, confirmed=? WHERE id_availability=?"
+        self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, confirmed, id_availability))
 
 
     def delete_availability(self, id_availability):
@@ -63,7 +65,25 @@ class AvailabilityManager():
 
     # END CRUD FOR availability #
 
+    def select_availability_by_date(self, id_volunteer, date):
+        """"""
+        query = '''SELECT id_availability, date_init, date_end, comments, confirmed FROM availability 
+               WHERE id_volunteer = ? AND ? BETWEEN date_init AND date_end'''
+        
+        return self.db.fetch_query(query, (id_volunteer, date))
     
+
+    def isConfirmed(self, id_availability):
+        query = '''SELECT confirmed FROM availability WHERE id_availability = ?'''
+        result = self.db.fetch_query(query, (id_availability,))
+        return bool(result[0][0]) if result else False
+
+
+    def switch_confirmed(self, id_availability):
+        current = self.isConfirmed(id_availability)
+        new_value = 0 if current else 1
+        query = '''UPDATE availability SET confirmed = ? WHERE id_availability = ?'''
+        self.db.execute_query(query, (new_value, id_availability))
 
 
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
