@@ -505,6 +505,11 @@
    </property>
    <column>
     <property name="text">
+     <string>id availability</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>Fecha inicio</string>
     </property>
    </column>

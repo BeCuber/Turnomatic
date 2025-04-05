@@ -40,7 +40,7 @@ class AvailabilityManager():
         query = "SELECT * FROM availability WHERE id_volunteer = ?"
         raw_data = self.db.fetch_query(query, (id_volunteer,))
         return [{
-            "id": v[0], 
+            "id_availability": v[0], 
             "id_volunteer": v[1], 
             "date_init": v[2], 
             "date_end": v[3], 

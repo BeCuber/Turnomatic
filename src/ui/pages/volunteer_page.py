@@ -29,6 +29,7 @@ class VolunteerPage(QWidget):
         # Inicialize
         self.table_manager = TableWidgetManager(self, self.db)
         self.table_manager.define_all_volunteers_table(self.volunteer_table)
+        self.table_manager.define_availability_table(self.availability_table)
 
         self.combobox_manager = ComboBoxManager(self, self.db)
         self.combobox_manager.define_form_combobox()
