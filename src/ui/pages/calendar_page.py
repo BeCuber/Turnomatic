@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 #from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.logic.availability_manager import AvailabilityManager
+from src.data.db_connector import DatabaseConnector
 
 class CalendarPage(QWidget):
     def __init__(self, parent, db):
@@ -57,15 +58,16 @@ class CalendarPage(QWidget):
             return
 
         id_volunteer = self.get_selected_volunteer_id()
+
         selected_date_str = self.calendar.selectedDate().toString("yyyy-MM-dd")
         selected_date = datetime.strptime(selected_date_str, "%Y-%m-%d").date()
         
-        availability_list = self.am.select_availability_by_date(id_volunteer, selected_date_str)
+        availability_list = self.am.get_availability_by_date(id_volunteer, selected_date_str)
         if not availability_list:
             return
 
         # Select the availability register where selected_date belongs
-        id_availability, date_init_str, date_end_str, comments, confirmed = self.am.select_availability_by_date(id_volunteer, selected_date)[0]
+        id_availability, date_init_str, date_end_str, comments, confirmed = self.am.get_availability_by_date(id_volunteer, selected_date)[0]
         date_init = datetime.strptime(date_init_str, "%Y-%m-%d").date()
         date_end = datetime.strptime(date_end_str, "%Y-%m-%d").date()
 
@@ -90,7 +92,7 @@ class CalendarPage(QWidget):
             self.am.create_availability(id_volunteer, (selected_date + timedelta(days=1)).isoformat(), date_end.isoformat(), comments, confirmed)
 
         # Fusionar períodos adyacentes si procede
-        self.merge_confirmed_periods(id_volunteer, selected_date_str)
+        #self.merge_periods(id_volunteer)
 
         # Update QTableWidgets
         self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
@@ -116,6 +118,63 @@ class CalendarPage(QWidget):
         if selected_table:
             selected_row = selected_table.selectedIndexes()[0].row()  # Get the selected row
             id_volunteer = selected_table.item(selected_row, 0).text()  # Get ID from column 0
-            return int(id_volunteer)  # Convert to integer (if needed)
+            return int(id_volunteer)  
 
-        return None  # No row selected
+        return None
+    
+
+    def merge_periods(self, id_volunteer, confirmed):
+        """"""
+        periods = self.am.get_confirmed_availability_by_id_volunteer(id_volunteer, confirmed)
+        if not periods or len(periods) < 2:
+            return  # Nothing to merge
+        
+        print(periods)
+
+        # Estructura: [(id_availability, date_init, date_end, comments), ...]
+        merged_periods = []
+        ids_to_delete = []
+        
+        current_period = periods[0]
+        current_id_availability = current_period[0]
+        current_start = datetime.strptime(periods[0][1], "%Y-%m-%d").date() # date_init of first register
+        current_end = datetime.strptime(periods[0][2], "%Y-%m-%d").date() # date_end of first register
+        current_comment = periods[3]
+
+        for next_period in periods[1:]: # [1:] slice list
+            
+            next_id_availability = next_period[0]
+            next_start = datetime.strptime(next_period[1], "%Y-%m-%d").date()
+            next_end = datetime.strptime(next_period[2], "%Y-%m-%d").date()
+            next_comment = next_period[3]
+
+            # Are they contiguous?
+            if next_start <= current_end + timedelta(days=1):
+                current_end = max(current_end, next_end)
+                if next_comment and next_comment != current_comment:
+                    current_comment += f" | {next_comment}"
+                
+                merged_periods.append((current_start, current_end, current_comment))
+                ids_to_delete.append(current_id_availability, next_id_availability)
+            
+            else:
+                print("No son adyacentes")
+
+
+
+
+
+# from bash: $ python -m src.ui.pages.calendar_page (-m points "src" a module)
+if __name__ == "__main__":
+    db = DatabaseConnector()
+    am = AvailabilityManager(db)
+    #cp = CalendarPage(QMainWindow, db)
+
+    periods = am.get_confirmed_availability_by_id_volunteer(1, 1)
+    if not periods or len(periods) < 2:
+        print("nothing to merge")  # Nada que fusionar
+        
+    print(periods)
+        
+
+    am.db.close_connection()

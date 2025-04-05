@@ -65,12 +65,20 @@ class AvailabilityManager():
 
     # END CRUD FOR availability #
 
-    def select_availability_by_date(self, id_volunteer, date):
+    def get_availability_by_date(self, id_volunteer, date):
         """"""
         query = '''SELECT id_availability, date_init, date_end, comments, confirmed FROM availability 
                WHERE id_volunteer = ? AND ? BETWEEN date_init AND date_end'''
         
         return self.db.fetch_query(query, (id_volunteer, date))
+    
+    def get_confirmed_availability_by_id_volunteer(self, id_volunteer, confirmed):
+        """"""
+        query = '''SELECT id_availability, date_init, date_end, comments 
+               FROM availability 
+               WHERE id_volunteer = ? AND confirmed = ?
+               ORDER BY date_init'''
+        return self.db.fetch_query(query, (id_volunteer, confirmed))
     
 
     def isConfirmed(self, id_availability):
@@ -97,6 +105,5 @@ if __name__ == "__main__":
     #am.delete_availability(5) # it works!
     #print(am.read_all_availabilities())
 
-    
 
     am.db.close_connection()
