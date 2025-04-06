@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1336</width>
-    <height>813</height>
+    <height>859</height>
    </rect>
   </property>
   <widget class="QTableWidget" name="allVolunteerTableWidget">
@@ -505,11 +505,6 @@
    </property>
    <column>
     <property name="text">
-     <string>id availability</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>Fecha inicio</string>
     </property>
    </column>
@@ -534,13 +529,65 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnAddVolunteer">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>790</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Nuevo Voluntario</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnDeleteVolunteer">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>790</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Borrar Voluntario</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnAddAvailability">
+   <property name="geometry">
+    <rect>
+     <x>1160</x>
+     <y>790</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Nueva Disponibilidad</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnDeleteAvailability">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>790</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Borrar Disponibilidad</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
  <buttongroups>
+  <buttongroup name="exp4x4_group"/>
+  <buttongroup name="allergy_group"/>
   <buttongroup name="medication_group"/>
   <buttongroup name="driver_group"/>
-  <buttongroup name="allergy_group"/>
-  <buttongroup name="exp4x4_group"/>
  </buttongroups>
 </ui>

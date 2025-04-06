@@ -8,10 +8,11 @@ class DatabaseConnector:
         """Initialize db and create tables if not exist."""
         self.db_path = os.path.join(os.path.dirname(__file__), db_name)
         self.conn = sqlite3.connect(self.db_path)
+        # Enable ON DELETE CASCADE
+        self.conn.execute("PRAGMA foreign_keys = ON;")
         self.c = self.conn.cursor()
 
-        # Enable ON DELETE CASCADE
-        self.c.execute("PRAGMA foreign_keys = ON;")
+        
 
         self.create_tables()
 
@@ -96,7 +97,7 @@ class DatabaseConnector:
 
 if __name__ == "__main__":
     db = DatabaseConnector()
-
+    """
     db.execute_query("DROP TABLE IF EXISTS availability")
     db.c.execute('''
         CREATE TABLE IF NOT EXISTS availability (
@@ -141,7 +142,20 @@ if __name__ == "__main__":
         "INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed) VALUES (?, ?, ?, ?, ?)", 
         sample_availability
     )
+    """
 
-    db.conn.commit()
+    query = "SELECT * FROM volunteer"
+    result = db.fetch_query(query)
+    print(result)
+
+    query_1= "DELETE FROM volunteer WHERE id_volunteer=4"
+    db.execute_query(query_1)
+
+    query_1= "DELETE FROM volunteer WHERE id_volunteer=5"
+    db.execute_query(query_1)
+
+    query = "SELECT * FROM volunteer"
+    result = db.fetch_query(query)
+    print(result)
 
     db.close_connection()

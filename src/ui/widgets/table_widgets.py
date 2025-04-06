@@ -81,6 +81,7 @@ class TableWidgetManager():
         self.availability_table = availability_table  # ⬅️ Guardamos la tabla como atributo
 
         # Asegúrate de que la primera columna (ID) está oculta
+        availability_table.insertColumn(0)
         availability_table.setColumnHidden(0, True)
 
         # Conectar para guardar cambios en la base de datos

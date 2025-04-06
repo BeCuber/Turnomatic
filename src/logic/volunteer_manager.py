@@ -10,12 +10,13 @@ class VolunteerManager:
     def create_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person):
         """Validate data and then create a new volunteer in database."""
         
-        if not name or not lastname_1:
-            raise ValueError("El nombre y el primer apellido son obligatorios.") #TODO aviso en ventana de error
+        if not name or not lastname_1 or not id_card:
+            raise ValueError("Nombre, primer apellido e ID son obligatorios.") #TODO aviso en ventana de error
         
         query = "INSERT INTO volunteer (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person))
         
+        return self.db.c.lastrowid  # ← Aquí devolvemos el nuevo ID
 
     def read_all_volunteers(self):
         """Get all volunteers in a dictionary"""
