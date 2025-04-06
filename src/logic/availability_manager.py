@@ -37,7 +37,7 @@ class AvailabilityManager():
 
     def get_availability_by_id_volunteer(self, id_volunteer):
         """Get individual availabilities for a given volunteer."""
-        query = "SELECT * FROM availability WHERE id_volunteer = ?"
+        query = "SELECT * FROM availability WHERE id_volunteer = ? ORDER BY date_init DESC"
         raw_data = self.db.fetch_query(query, (id_volunteer,))
         return [{
             "id_availability": v[0], 
@@ -58,6 +58,9 @@ class AvailabilityManager():
 
     def delete_availability(self, id_availability):
         """Delete an availability."""
+        existing = self.db.fetch_query("SELECT id_availability FROM availability WHERE id_availability = ?", (id_availability,))
+        if not existing:
+            raise ValueError("La disponibilidad no existe.")
 
         query = "DELETE FROM availability WHERE id_availability = ?"
         self.db.execute_query(query, (id_availability,))
@@ -72,6 +75,7 @@ class AvailabilityManager():
         
         return self.db.fetch_query(query, (id_volunteer, date))
     
+
     def get_confirmed_availability_by_id_volunteer(self, id_volunteer, confirmed):
         """"""
         query = '''SELECT id_availability, date_init, date_end, comments 

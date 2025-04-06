@@ -1,13 +1,19 @@
 # src/ui/widgets/dialogs.py
 
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QPushButton, QRadioButton, QButtonGroup, QMessageBox
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QPushButton, QRadioButton, QButtonGroup, QMessageBox, QDateEdit, QTextEdit, QCheckBox, QDialogButtonBox
+from PyQt5.QtCore import QDate
 
 class DialogManager(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Nuevo Voluntario")
+        
         self.setMinimumWidth(300)
 
+
+
+    def new_volunteer_dialog(self):
+        """"""
+        self.setWindowTitle("Nuevo Voluntario")
         layout = QVBoxLayout()
 
         # Campos de entrada
@@ -54,15 +60,17 @@ class DialogManager(QDialog):
 
         # Conexiones
         self.btn_cancel.clicked.connect(self.reject)
-        self.btn_save.clicked.connect(self.validate_and_accept)
+        self.btn_save.clicked.connect(self.validate_volunteer_and_accept)
 
-    def validate_and_accept(self):
+        return self
+
+    def validate_volunteer_and_accept(self):
         if not self.name_input.text() or not self.lastname1_input.text() or not self.id_card_input.text():
             QMessageBox.warning(self, "Error", "Nombre, primer apellido y documento de identidad son obligatorios.")
             return
         self.accept()  # Cierra el diálogo con resultado OK
 
-    def get_data(self):
+    def get_new_volunteer_data(self):
         return {
             "name": self.name_input.text(),
             "lastname_1": self.lastname1_input.text(),
@@ -70,3 +78,46 @@ class DialogManager(QDialog):
             "driver": self.radio_yes.isChecked(),
             "id_card": self.id_card_input.text()
         }
+    
+    def new_availability_dialog(self):
+        self.setWindowTitle("Nueva disponibilidad")
+        layout = QVBoxLayout()
+
+        self.date_init = QDateEdit()
+        self.date_init.setCalendarPopup(True)
+        self.date_init.setDate(QDate.currentDate())
+
+        self.date_end = QDateEdit()
+        self.date_end.setCalendarPopup(True)
+        self.date_end.setDate(QDate.currentDate())
+
+        self.comments_input = QTextEdit()
+        self.confirmed_checkbox = QCheckBox("¿Confirmado?")
+
+        layout.addWidget(QLabel("Fecha inicio:"))
+        layout.addWidget(self.date_init)
+
+        layout.addWidget(QLabel("Fecha fin:"))
+        layout.addWidget(self.date_end)
+
+        layout.addWidget(QLabel("Comentarios:"))
+        layout.addWidget(self.comments_input)
+
+        layout.addWidget(self.confirmed_checkbox)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
+
+        self.setLayout(layout)
+        return self
+    
+    def get_new_availability_data(self):
+        return {
+            "date_init": self.date_init.date().toString("yyyy-MM-dd"),
+            "date_end": self.date_end.date().toString("yyyy-MM-dd"),
+            "comments": self.comments_input.toPlainText(),
+            "confirmed": int(self.confirmed_checkbox.isChecked())
+        }
+

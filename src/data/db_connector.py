@@ -144,17 +144,9 @@ if __name__ == "__main__":
     )
     """
 
-    query = "SELECT * FROM volunteer"
-    result = db.fetch_query(query)
-    print(result)
+    
 
-    query_1= "DELETE FROM volunteer WHERE id_volunteer=4"
-    db.execute_query(query_1)
-
-    query_1= "DELETE FROM volunteer WHERE id_volunteer=5"
-    db.execute_query(query_1)
-
-    query = "SELECT * FROM volunteer"
+    query = "SELECT * FROM availability"
     result = db.fetch_query(query)
     print(result)
 

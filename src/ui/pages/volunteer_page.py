@@ -8,6 +8,7 @@ from src.ui.widgets.radio_buttons import RadioButtonsManager
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.dialog_manager import DialogManager
+from src.logic.availability_manager import AvailabilityManager
 
 class VolunteerPage(QWidget):
     def __init__(self, parent, db:DatabaseConnector):
@@ -21,6 +22,7 @@ class VolunteerPage(QWidget):
         self.parent = parent
         self.db = db
         self.vm = VolunteerManager(db)
+        self.am = AvailabilityManager(db)
 
         # Define widgets
         self.volunteer_table = self.findChild(QTableWidget, "allVolunteerTableWidget")
@@ -82,11 +84,11 @@ class VolunteerPage(QWidget):
 
 
     def create_volunteer(self):
-        dialog = DialogManager(self)
+        dialog = DialogManager(self).new_volunteer_dialog()
         result = dialog.exec_()
 
         if result == QDialog.Accepted:
-            data = dialog.get_data()
+            data = dialog.get_new_volunteer_data()
 
             if not data["name"] or not data["lastname_1"] or not data["id_card"]:
                 QMessageBox.warning(self, "Error", "El nombre, primer apellido y documento identificativo son obligatorios.")
@@ -126,39 +128,91 @@ class VolunteerPage(QWidget):
     def delete_volunteer(self):
         selected_items = self.volunteer_table.selectedItems()
         if not selected_items:
-            QMessageBox.warning(self, "Atención", "Por favor, selecciona un voluntario para eliminar.")
+            QMessageBox.warning(self, "Error", "Selecciona un voluntario para eliminar.")
             return
 
-        selected_row = selected_items[0].row()
-        id_volunteer = self.volunteer_table.item(selected_row, 0).text()
+        row = selected_items[0].row()
+        id_volunteer = self.volunteer_table.item(row, 0).text()
 
-        # Confirmar con el usuario
-        confirm = QMessageBox.question(
-            self,
-            "Confirmar eliminación",
-            "¿Estás seguro de que quieres eliminar este voluntario?",
-            QMessageBox.Yes | QMessageBox.No
-        )
+        # Confirmación personalizada
+        confirm_box = QMessageBox()
+        confirm_box.setIcon(QMessageBox.Warning)
+        confirm_box.setWindowTitle("Eliminar voluntario")
+        confirm_box.setText("¿Estás seguro de que quieres eliminar este voluntario?")
+        btn_yes = confirm_box.addButton("Sí", QMessageBox.YesRole)
+        btn_no = confirm_box.addButton("No", QMessageBox.NoRole)
+        confirm_box.exec_()
 
-        if confirm != QMessageBox.Yes:
-            return
+        if confirm_box.clickedButton() == btn_yes:
+            try:
+                self.vm.delete_volunteer(id_volunteer)
+                self.table_manager.load_all_volunteers(self.volunteer_table)
 
-        try:
-            self.vm.delete_volunteer(id_volunteer)
-            QMessageBox.information(self, "Éxito", "Voluntario eliminado correctamente.")
-            self.table_manager.load_all_volunteers(self.volunteer_table)
-        except ValueError as e:
-            QMessageBox.critical(self, "Error", str(e))
+                # Confirmación de éxito
+                QMessageBox.information(self, "Éxito", "Voluntario eliminado correctamente.")
 
+                # Default view
+                self.volunteer_table.selectRow(0)
+                self.display_volunteer_data()
+            except ValueError as e:
+                QMessageBox.critical(self, "Error", str(e))
         
 
-
     def create_availability(self):
-        pass
+        selected_items = self.volunteer_table.selectedItems()
+        if not selected_items:
+            QMessageBox.warning(self, "Atención", "Selecciona un voluntario primero.")
+            return
+
+        id_volunteer = int(self.volunteer_table.item(selected_items[0].row(), 0).text())
+
+        dialog = DialogManager(self).new_availability_dialog()
+        result = dialog.exec_()
+
+        if result == QDialog.Accepted:
+            data = dialog.get_new_availability_data()
+            self.am.create_availability(
+                id_volunteer=id_volunteer,
+                date_init=data["date_init"],
+                date_end=data["date_end"],
+                comments=data["comments"],
+                confirmed=data["confirmed"]
+            )
+
+            self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
+            QMessageBox.information(self, "Éxito", "Disponibilidad añadida correctamente.")
 
 
     def delete_availability(self):
-        pass
+        selected_indexes = self.availability_table.selectedIndexes()
+        if not selected_indexes:
+            QMessageBox.warning(self, "Advertencia", "Selecciona una disponibilidad para eliminar.")
+            return
+
+        row = selected_indexes[0].row()
+        id_availability = self.availability_table.item(row, 0).text()
+
+        # Confirmación personalizada
+        confirm_box = QMessageBox()
+        confirm_box.setIcon(QMessageBox.Warning)
+        confirm_box.setWindowTitle("Eliminar disponibilidad")
+        confirm_box.setText("¿Estás seguro de que quieres eliminar este periodo?")
+        btn_yes = confirm_box.addButton("Sí", QMessageBox.YesRole)
+        btn_no = confirm_box.addButton("No", QMessageBox.NoRole)
+        confirm_box.exec_()
+
+        if confirm_box.clickedButton() == btn_yes:
+            try:
+                self.am.delete_availability(id_availability)
+                id_volunteer = self.volunteer_table.item(self.volunteer_table.currentRow(), 0).text()
+                self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
+
+                # Confirmación de éxito
+                QMessageBox.information(self, "Éxito", "Periodo eliminado correctamente.")
+
+                
+            except ValueError as e:
+                QMessageBox.critical(self, "Error", str(e))
 
 
     def get_selected_volunteer_table_id(self):
