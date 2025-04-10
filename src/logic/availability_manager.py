@@ -9,18 +9,35 @@ class AvailabilityManager():
     # CRUD FOR availability #
 
     def create_availability(self, id_volunteer, date_init, date_end, comments, confirmed):
-        """Validate data and then create a new availability if id_vonteer exists."""
-
-        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
-        if not existing_volunteer:
-            raise ValueError("El voluntario no existe.") # TODO: Mostrar en ventana de error
+        """Validate data and then create a new availability."""
 
         if not date_init or not date_end:
-            raise ValueError("Las fechas de inicio y fin son obligatorias") # TODO: Mostrar en ventana de error
+            raise ValueError("Las fechas de inicio y fin son obligatorias.")
 
-        query = "INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed) VALUES (?, ?, ?, ?, ?)"
+        if date_end < date_init:
+            raise ValueError("La fecha de finalización no puede ser anterior a la de inicio.")
+
+        existing_volunteer = self.db.fetch_query(
+            "SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", 
+            (id_volunteer,)
+        )
+        if not existing_volunteer:
+            raise ValueError("El voluntario no existe.")
+
+        overlapped = self.db.fetch_query("""
+            SELECT 1 FROM availability 
+            WHERE id_volunteer = ? AND NOT (date_end < ? OR date_init > ?)
+        """, (id_volunteer, date_init, date_end))
+
+        if overlapped:
+            raise ValueError("Ya existe una disponibilidad que solapa con las fechas seleccionadas.")
+
+        # Si todo es válido, se guarda
+        query = """
+            INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed)
+            VALUES (?, ?, ?, ?, ?)
+        """
         self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, confirmed))
-
 
     def read_all_availabilities(self):
         """Get all availabilities in a dictionary"""
@@ -97,6 +114,17 @@ class AvailabilityManager():
         query = '''UPDATE availability SET confirmed = ? WHERE id_availability = ?'''
         self.db.execute_query(query, (new_value, id_availability))
 
+
+    def isOverlapped(self, id_volunteer, date_init, date_end):
+        query = '''
+            SELECT date_init, date_end FROM availability
+            WHERE id_volunteer = ?
+            AND (
+                date_init <= ? AND date_end >= ? -- Solapamiento total o parcial
+            )
+        '''
+        overlapping = self.db.fetch_query(query, (id_volunteer, date_end, date_init))
+        return overlapping
 
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
 if __name__ == "__main__":

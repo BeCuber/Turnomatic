@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QComboBox, QWidget, QTableWidget
+from PyQt5.QtWidgets import QComboBox, QWidget
 from src.data.db_connector import DatabaseConnector
 from src.logic.combo_boxes_data_manager import ComboBoxesDataManager
 from src.logic.volunteer_manager import VolunteerManager
@@ -128,3 +128,20 @@ class ComboBoxManager():
         self.combobox_ccaa.currentIndexChanged.connect(lambda: self.populate_combobox_provinces(self.combobox_ccaa.currentData()))
         self.combobox_provinces.currentIndexChanged.connect(lambda: self.populate_combobox_assemblies(self.combobox_provinces.currentData()))
 
+
+    def set_editable(self, editable: bool):
+        """"""
+        readonly_style = "QComboBox { background-color: #f5f5f5; border: 1px solid #ccc; }"
+        editable_style = ""
+
+        self.combobox_ccaa.setEnabled(editable)
+        self.combobox_provinces.setEnabled(editable)
+        self.combobox_assemblies.setEnabled(editable)
+        self.combobox_positions.setEnabled(editable)
+
+        style = editable_style if editable else readonly_style
+
+        self.combobox_ccaa.setStyleSheet(style)
+        self.combobox_provinces.setStyleSheet(style)
+        self.combobox_assemblies.setStyleSheet(style)
+        self.combobox_positions.setStyleSheet(style)

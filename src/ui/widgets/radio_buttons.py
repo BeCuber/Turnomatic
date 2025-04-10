@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QButtonGroup, QTableWidget
+from PyQt5.QtWidgets import QWidget, QButtonGroup, QRadioButton,QMessageBox, QPlainTextEdit, QPushButton
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 
@@ -10,13 +10,33 @@ class RadioButtonsManager():
         self.parent = parent
         self.vm = VolunteerManager(db)
 
+        # ButtonGroups
+        self.driver_group = QButtonGroup(parent)
+        self.exp4x4_group = QButtonGroup(parent)
+        self.medication_group = QButtonGroup(parent)
+        self.allergy_group = QButtonGroup(parent)
+
+        self.define_form_radio_buttons()
+
     def define_form_radio_buttons(self):
         """Define radio buttons and group them"""
-        
-        self.driver_group = self.parent.findChild(QButtonGroup, "driver_group")
-        self.exp4x4_group = self.parent.findChild(QButtonGroup, "exp4x4_group")
-        self.medication_group = self.parent.findChild(QButtonGroup, "medication_group")
-        self.allergy_group = self.parent.findChild(QButtonGroup, "allergy_group")
+
+        self.driver_group.addButton(self.parent.findChild(QRadioButton, "radioButtonCarnetYes"), 1)
+        self.driver_group.addButton(self.parent.findChild(QRadioButton, "radioButtonCarnetNo"), 0)
+
+        self.exp4x4_group.addButton(self.parent.findChild(QRadioButton, "radioButton4x4Yes"), 1)
+        self.exp4x4_group.addButton(self.parent.findChild(QRadioButton, "radioButton4x4No"), 0)
+
+        self.medication_group.addButton(self.parent.findChild(QRadioButton, "radioButtonMedicationYes"), 1)
+        self.medication_group.addButton(self.parent.findChild(QRadioButton, "radioButtonMedicationNo"), 0)
+
+        self.allergy_group.addButton(self.parent.findChild(QRadioButton, "radioButtonAllergyYes"), 1)
+        self.allergy_group.addButton(self.parent.findChild(QRadioButton, "radioButtonAllergyNo"), 0)
+
+        # self.driver_group = self.parent.findChild(QButtonGroup, "driver_group")
+        # self.exp4x4_group = self.parent.findChild(QButtonGroup, "exp4x4_group")
+        # self.medication_group = self.parent.findChild(QButtonGroup, "medication_group")
+        # self.allergy_group = self.parent.findChild(QButtonGroup, "allergy_group")
         
 
     def display_form_radio_button_data(self, volunteer_data):
@@ -24,21 +44,57 @@ class RadioButtonsManager():
 
         if volunteer_data:
             # Asignar los valores a los radio buttons
-            self.set_radio_button(self.driver_group, volunteer_data["driver"])
-            self.set_radio_button(self.exp4x4_group, volunteer_data["exp4x4"])
-            self.set_radio_button(self.medication_group, volunteer_data["medication"])
-            self.set_radio_button(self.allergy_group, volunteer_data["allergy"])
+            self.set_group_checked(self.driver_group, volunteer_data["driver"])
+            self.set_group_checked(self.exp4x4_group, volunteer_data["exp4x4"])
+            self.set_group_checked(self.medication_group, volunteer_data["medication"])
+            self.set_group_checked(self.allergy_group, volunteer_data["allergy"])
 
 
-    def set_radio_button(self, group, value):
-        """Selecciona el radio button correcto en un grupo según el valor de la BD."""
-        buttons = group.buttons()  # Obtiene la lista de botones en el grupo
+    def set_group_checked(self, group: QButtonGroup, value: bool):
+        """Marca el botón correspondiente en el grupo"""
+        button = group.button(1 if value else 0)
+        if button:
+            button.setChecked(True)
 
-        # El primer botón se asume que es "Sí" y el segundo "No"
-        button_yes = buttons[0]
-        button_no = buttons[1]
 
-        if value:  # Si el valor es True o 1, seleccionamos "Sí"
-            button_yes.setChecked(True)
-        else:  # Si es False o 0, seleccionamos "No"
-            button_no.setChecked(True)
+    def set_editable(self, editable: bool):
+        """Habilita o deshabilita todos los radio buttons"""
+        for group in [self.driver_group, self.exp4x4_group, self.medication_group, self.allergy_group]:
+            for btn in group.buttons():
+                btn.setEnabled(editable)
+                if not editable:
+                    btn.setStyleSheet("color: black;")
+                else:
+                    btn.setStyleSheet("")
+
+
+    def connect_toggle_with_plaintext(self, group: QButtonGroup, field: QPlainTextEdit):
+        """Activa o desactiva el campo según si se selecciona 'No'."""
+        no_button = group.button(0)
+        yes_button = group.button(1)
+
+        no_button.toggled.connect(lambda checked: self.on_radio_changed(checked, yes_button, field))
+
+    def on_radio_changed(self, checked: bool, yes_button: QRadioButton, field: QPlainTextEdit):
+        if checked:  # Se seleccionó "No"
+            text_content = field.toPlainText().strip()
+            if text_content:
+                msg = QMessageBox(self.parent)
+                msg.setWindowTitle("Confirmar acción")
+                msg.setText("Hay información escrita. Si seleccionas 'No', se borrará.\n¿Quieres continuar?")
+
+                btn_yes = QPushButton("Sí")
+                btn_no = QPushButton("No")
+                msg.addButton(btn_yes, QMessageBox.YesRole)
+                msg.addButton(btn_no, QMessageBox.NoRole)
+                msg.setDefaultButton(btn_no)
+
+                result = msg.exec_()
+
+                if msg.clickedButton() == btn_no:
+                    # Revertimos la selección
+                    yes_button.setChecked(True)
+                    return
+                else:
+                    # Borramos el texto si se confirma
+                    field.clear()

@@ -246,9 +246,6 @@
    <property name="text">
     <string>Sí</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">driver_group</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButtonCarnetNo">
    <property name="geometry">
@@ -262,9 +259,6 @@
    <property name="text">
     <string>No</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">driver_group</string>
-   </attribute>
   </widget>
   <widget class="QLabel" name="labelExp4x4">
    <property name="geometry">
@@ -291,9 +285,6 @@
    <property name="text">
     <string>No</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">exp4x4_group</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButton4x4Yes">
    <property name="geometry">
@@ -307,9 +298,6 @@
    <property name="text">
     <string>Sí</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">exp4x4_group</string>
-   </attribute>
   </widget>
   <widget class="QComboBox" name="comboBoxPosition">
    <property name="geometry">
@@ -442,9 +430,6 @@
    <property name="text">
     <string>Sí</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">medication_group</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButtonMedicationNo">
    <property name="geometry">
@@ -458,9 +443,6 @@
    <property name="text">
     <string>No</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">medication_group</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButtonAllergyYes">
    <property name="geometry">
@@ -474,9 +456,6 @@
    <property name="text">
     <string>Sí</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">allergy_group</string>
-   </attribute>
   </widget>
   <widget class="QRadioButton" name="radioButtonAllergyNo">
    <property name="geometry">
@@ -490,9 +469,6 @@
    <property name="text">
     <string>No</string>
    </property>
-   <attribute name="buttonGroup">
-    <string notr="true">allergy_group</string>
-   </attribute>
   </widget>
   <widget class="QTableWidget" name="tableWidgetIndividualAvailability">
    <property name="geometry">
@@ -581,13 +557,20 @@
     <string>Borrar Disponibilidad</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnEditVolunteer">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>790</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Editar Voluntario</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="exp4x4_group"/>
-  <buttongroup name="allergy_group"/>
-  <buttongroup name="medication_group"/>
-  <buttongroup name="driver_group"/>
- </buttongroups>
 </ui>

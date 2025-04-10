@@ -10,6 +10,7 @@ __pycache__/
 
 # Archivos de configuración de IDEs
 .vscode/
+# PyCharm
 .idea/
 *.sublime-project
 *.sublime-workspace
@@ -28,3 +29,4 @@ build/
 
 # Base de datos local 
 *.sqlite3
+

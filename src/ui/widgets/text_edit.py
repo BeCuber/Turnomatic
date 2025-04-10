@@ -24,7 +24,8 @@ class TextEditManager():
         self.input_allergies = self.parent.findChild(QPlainTextEdit, "plainTextEditAllergies")
         self.input_contact_person = self.parent.findChild(QPlainTextEdit, "plainTextEditContactPerson")
         self.date_edit_birth = self.parent.findChild(QDateEdit, "dateEditBirth")
-        
+        self.date_edit_birth.setCalendarPopup(True)
+
 
     def display_selected_volunteer_text_data(self, volunteer_data):
         """Show data from selected volunteer on table."""
@@ -41,7 +42,27 @@ class TextEditManager():
             birthdate = QDate.fromString(volunteer_data["birthdate"], "yyyy-MM-dd")
             self.date_edit_birth.setDate(birthdate)
 
+    
+    def set_editable(self, editable: bool):
+        """"""
+        readonly_style = "QLineEdit, QPlainTextEdit { background-color: #f5f5f5; border: 1px solid #ccc; }"
+        editable_style = ""
 
+        self.input_dni.setReadOnly(not editable)
+        self.input_email.setReadOnly(not editable)
+        self.input_phone.setReadOnly(not editable)
+        self.input_medication.setReadOnly(not editable)
+        self.input_allergies.setReadOnly(not editable)
+        self.input_contact_person.setReadOnly(not editable)
+        self.date_edit_birth.setEnabled(editable) # it doesnt have ReadOnly method
+
+        style = editable_style if editable else readonly_style
+        self.input_dni.setStyleSheet(style)
+        self.input_email.setStyleSheet(style)
+        self.input_phone.setStyleSheet(style)
+        self.input_medication.setStyleSheet(style)
+        self.input_allergies.setStyleSheet(style)
+        self.input_contact_person.setStyleSheet(style)
 
 
 

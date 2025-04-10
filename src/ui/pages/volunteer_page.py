@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget,QTableWidget, QPushButton, QDialog, QMessageBox
 from PyQt5 import uic
 import os
+from PyQt5.QtGui import QIcon
 from src.ui.widgets.combo_boxes import ComboBoxManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.ui.widgets.text_edit import TextEditManager
@@ -31,6 +32,7 @@ class VolunteerPage(QWidget):
         self.btn_delete_volunteer = self.findChild(QPushButton, "btnDeleteVolunteer")
         self.btn_add_availability = self.findChild(QPushButton, "btnAddAvailability")
         self.btn_delete_availability = self.findChild(QPushButton, "btnDeleteAvailability")
+        self.btn_edit_volunteer = self.findChild(QPushButton, "btnEditVolunteer")
 
 
         # Inicialize
@@ -50,16 +52,29 @@ class VolunteerPage(QWidget):
         # Default view
         self.volunteer_table.selectRow(0)
         self.display_volunteer_data()
+        self.set_editable(False)
 
         # Select volunteer
         self.volunteer_table.itemSelectionChanged.connect(lambda: self.display_volunteer_data())
+        
+        # rbtn connect with plaintext
+        self.radio_btn_manager.connect_toggle_with_plaintext(
+           self.radio_btn_manager.medication_group,
+           self.text_edit_manager.input_medication
+        )
 
+        self.radio_btn_manager.connect_toggle_with_plaintext(
+           self.radio_btn_manager.allergy_group,
+           self.text_edit_manager.input_allergies
+        )
 
         # Buttons
         self.btn_add_volunteer.clicked.connect(self.create_volunteer)
         self.btn_delete_volunteer.clicked.connect(self.delete_volunteer)
         self.btn_add_availability.clicked.connect(self.create_availability)
         self.btn_delete_availability.clicked.connect(self.delete_availability)
+        self.btn_edit_volunteer.clicked.connect(self.start_editing)
+        self.define_dynamic_btns()
 
 
 
@@ -159,18 +174,23 @@ class VolunteerPage(QWidget):
         
 
     def create_availability(self):
+        """Create new availability for selected volunteer."""
+
         selected_items = self.volunteer_table.selectedItems()
         if not selected_items:
             QMessageBox.warning(self, "Atención", "Selecciona un voluntario primero.")
             return
 
-        id_volunteer = int(self.volunteer_table.item(selected_items[0].row(), 0).text())
-
         dialog = DialogManager(self).new_availability_dialog()
         result = dialog.exec_()
 
-        if result == QDialog.Accepted:
-            data = dialog.get_new_availability_data()
+        if result != QDialog.Accepted:
+            return
+
+        data = dialog.get_new_availability_data()
+        id_volunteer = int(self.volunteer_table.item(selected_items[0].row(), 0).text())
+
+        try:
             self.am.create_availability(
                 id_volunteer=id_volunteer,
                 date_init=data["date_init"],
@@ -178,9 +198,12 @@ class VolunteerPage(QWidget):
                 comments=data["comments"],
                 confirmed=data["confirmed"]
             )
+        except ValueError as e:
+            QMessageBox.warning(self, "Error de validación", str(e))
+            return
 
-            self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
-            QMessageBox.information(self, "Éxito", "Disponibilidad añadida correctamente.")
+        self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
+        QMessageBox.information(self, "Éxito", "Disponibilidad añadida correctamente.")
 
 
     def delete_availability(self):
@@ -235,3 +258,54 @@ class VolunteerPage(QWidget):
             if item and int(item.text()) == id_volunteer:
                 self.volunteer_table.selectRow(row)
                 break
+
+
+    def define_dynamic_btns(self):
+        """"""
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        SAVE_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "disco.ico")
+        CANCEL_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "circulo-cruzado.ico")
+
+        self.btn_cancel_edit = QPushButton(self)
+        self.btn_cancel_edit.setIcon(QIcon(CANCEL_ICON_PATH))
+        self.btn_cancel_edit.setToolTip("Cancelar edición")
+        self.btn_cancel_edit.setVisible(False)
+
+        self.btn_save_volunteer = QPushButton(self)
+        self.btn_save_volunteer.setIcon(QIcon(SAVE_ICON_PATH))
+        self.btn_save_volunteer.setToolTip("Guardar cambios")
+        self.btn_save_volunteer.setVisible(False)
+
+        # Posición y tamaño para que ocupen el espacio del botón original
+        btn_rect = self.btn_edit_volunteer.geometry()
+        gap = 10
+        half_width = (btn_rect.width() - gap) // 2
+        height = btn_rect.height()
+
+        self.btn_cancel_edit.setGeometry(btn_rect.x(), btn_rect.y(), half_width, height)
+        self.btn_save_volunteer.setGeometry(btn_rect.x() + half_width + gap, btn_rect.y(), half_width, height)
+
+        # Conexiones
+        #self.btn_edit_volunteer.clicked.connect(self.start_editing)
+        #self.btn_save_volunteer.clicked.connect(self.save_volunteer_changes)
+        #self.btn_cancel_edit.clicked.connect(self.cancel_editing)
+
+    def start_editing(self):
+        """Enable fields for editing."""
+        self.btn_edit_volunteer.setVisible(False)
+        self.btn_save_volunteer.setVisible(True)
+        self.btn_cancel_edit.setVisible(True)
+
+        self.set_editable(True)
+        
+
+    def set_editable(self, editable: bool):
+        """"""
+        self.text_edit_manager.set_editable(editable)
+        self.combobox_manager.set_editable(editable)
+        self.radio_btn_manager.set_editable(editable)
+
+        # También aquí podrías llamar a radio_btn_manager.set_editable(True), etc.
+    
+
+    
