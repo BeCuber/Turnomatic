@@ -49,15 +49,18 @@ class VolunteerPage(QWidget):
         self.radio_btn_manager = RadioButtonsManager(self, self.db)
         self.radio_btn_manager.define_form_radio_buttons()
 
+
         # Default view
         self.volunteer_table.selectRow(0)
         self.display_volunteer_data()
         self.set_editable(False)
 
+
         # Select volunteer
         self.volunteer_table.itemSelectionChanged.connect(lambda: self.display_volunteer_data())
-        
-        # rbtn connect with plaintext
+
+
+        # Radiobtn connect with plaintext
         self.radio_btn_manager.connect_toggle_with_plaintext(
            self.radio_btn_manager.medication_group,
            self.text_edit_manager.input_medication
@@ -67,6 +70,7 @@ class VolunteerPage(QWidget):
            self.radio_btn_manager.allergy_group,
            self.text_edit_manager.input_allergies
         )
+
 
         # Buttons
         self.btn_add_volunteer.clicked.connect(self.create_volunteer)
@@ -99,6 +103,7 @@ class VolunteerPage(QWidget):
 
 
     def create_volunteer(self):
+        """"""
         dialog = DialogManager(self).new_volunteer_dialog()
         result = dialog.exec_()
 

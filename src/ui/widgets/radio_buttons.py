@@ -33,11 +33,6 @@ class RadioButtonsManager():
         self.allergy_group.addButton(self.parent.findChild(QRadioButton, "radioButtonAllergyYes"), 1)
         self.allergy_group.addButton(self.parent.findChild(QRadioButton, "radioButtonAllergyNo"), 0)
 
-        # self.driver_group = self.parent.findChild(QButtonGroup, "driver_group")
-        # self.exp4x4_group = self.parent.findChild(QButtonGroup, "exp4x4_group")
-        # self.medication_group = self.parent.findChild(QButtonGroup, "medication_group")
-        # self.allergy_group = self.parent.findChild(QButtonGroup, "allergy_group")
-        
 
     def display_form_radio_button_data(self, volunteer_data):
         """Set radio buttons based on the volunteer's data"""
@@ -75,6 +70,7 @@ class RadioButtonsManager():
 
         no_button.toggled.connect(lambda checked: self.on_radio_changed(checked, yes_button, field))
 
+
     def on_radio_changed(self, checked: bool, yes_button: QRadioButton, field: QPlainTextEdit):
         if checked:  # Se seleccionó "No"
             text_content = field.toPlainText().strip()
@@ -98,3 +94,5 @@ class RadioButtonsManager():
                 else:
                     # Borramos el texto si se confirma
                     field.clear()
+                    field.setPlaceholderText("")
+                    field.setEnabled(False)

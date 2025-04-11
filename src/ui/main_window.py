@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
 
         # Set icon and title window
         self.setWindowTitle("Turnomatic")
-        ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "narval.ico")
+        ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "window_icon.ico")
         self.setWindowIcon(QIcon(ICON_PATH))
 
         # Connect to database
