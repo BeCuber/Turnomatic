@@ -1,7 +1,9 @@
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView, QLabel
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.logic.availability_manager import AvailabilityManager
+from src.ui.widgets.delegates import AvailabilityDelegate
 
 
 class TableWidgetManager:
@@ -85,8 +87,10 @@ class TableWidgetManager:
         availability_table.insertColumn(0)
         availability_table.setColumnHidden(0, True)
 
+        availability_table.setItemDelegate(AvailabilityDelegate()) # delegate
+
         # Conectar para guardar cambios en la base de datos
-        availability_table.cellChanged.connect(self.update_availability_in_db)
+        availability_table.cellChanged.connect(self.update_availability)
 
 
     def display_individual_availability_data_table(self, id_volunteer, availability_table: QTableWidget):
@@ -111,7 +115,7 @@ class TableWidgetManager:
         availability_table.blockSignals(False) # Let edit the table
 
 
-    def update_availability_in_db(self, row: int, col: int):
+    def update_availability(self, row: int, col: int):
         """Update availability in database when cell is edited."""
 
         availability_table = self.availability_table
@@ -122,15 +126,25 @@ class TableWidgetManager:
         column_mapping = {
             1: "date_init",
             2: "date_end",
-            3: "comments"
+            3: "confirmed",
+            4: "comments",
         }
 
-        if col in column_mapping:
-            field_name = column_mapping[col]
+        if col not in column_mapping:
+            return
 
-            query = f"UPDATE availability SET {field_name} = ? WHERE id_availability = ?"
-            self.am.db.execute_query(query, (new_value, id_availability))
+        field_name = column_mapping[col]
 
+        # Validación de fecha
+        qdate = QDate.fromString(new_value, "yyyy-MM-dd")
+        if not qdate.isValid():
+            print("Formato de fecha inválido:", new_value)
+            return
+
+        if field_name == "confirmed":
+            new_value = new_value=="✅"
+
+        self.am.update_availability_data(id_availability, field_name, new_value)
 
 
 

@@ -71,6 +71,13 @@ class AvailabilityManager:
         self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, confirmed, id_availability))
 
 
+    def update_availability_data(self, id_availability, field, value):
+        """"""
+        query = f"UPDATE availability SET {field} = ? WHERE id_availability = ?"
+        self.db.execute_query(query, (value, id_availability))
+
+
+
     def delete_availability(self, id_availability):
         """Delete an availability."""
         existing = self.db.fetch_query_one("SELECT id_availability FROM availability WHERE id_availability = ?", (id_availability,))
