@@ -52,6 +52,30 @@ class RadioButtonsManager():
             button.setChecked(True)
 
 
+    def get_current_radio_values(self):
+        """"""
+        def get_checked_value(group: QButtonGroup):
+            return group.checkedId() == 1
+
+        return {
+            "driver": get_checked_value(self.driver_group),
+            "exp4x4": get_checked_value(self.exp4x4_group),
+            "medication": get_checked_value(self.medication_group),
+            "allergy": get_checked_value(self.allergy_group)
+        }
+
+    def update_volunteer_radiobtn(self, id_volunteer):
+        """"""
+        radio_values = self.get_current_radio_values()
+        self.vm.update_volunteer_radiobtn_data(
+            id_volunteer,
+            driver=radio_values["driver"],
+            exp4x4=radio_values["exp4x4"],
+            medication=radio_values["medication"],
+            allergy=radio_values["allergy"]
+        )
+
+
     def set_editable(self, editable: bool):
         """Habilita o deshabilita todos los radio buttons"""
         for group in [self.driver_group, self.exp4x4_group, self.medication_group, self.allergy_group]:

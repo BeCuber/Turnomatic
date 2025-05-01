@@ -7,8 +7,6 @@ class VolunteerManager:
         self.db = db
     
 
-    # CRUD FOR volunteers #
-
     def create_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person):
         """Validate data and then create a new volunteer in database."""
         
@@ -19,6 +17,7 @@ class VolunteerManager:
         self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person))
         
         return self.db.c.lastrowid  # ← Aquí devolvemos el nuevo ID
+
 
     def read_all_volunteers(self):
         """Get all volunteers in a dictionary"""
@@ -51,9 +50,7 @@ class VolunteerManager:
 
         if not result:
             return None  # Si no hay datos, devolver None
-    
-        # Extraer la primera fila
-        # v = result[0]
+
         v = result
 
         # Mapear columnas manualmente
@@ -101,16 +98,25 @@ class VolunteerManager:
         query = "UPDATE volunteer SET driver=?, id_card=?, email=?, phone=?, birthdate=?, position=?, exp4x4=?, assembly=?, medication=?, medication_description=?, allergy=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
         self.db.execute_query(query, (driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person, id_volunteer))
 
+
     def update_volunteer_text_data(self, id_volunteer, id_card, email, phone, birthdate, medication_description, allergy_description, contact_person):
         """borrar despues de las pruebas TODO"""
 
         query = "UPDATE volunteer SET id_card=?, email=?, phone=?, birthdate=?, medication_description=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
         self.db.execute_query(query, (id_card, email, phone, birthdate, medication_description, allergy_description, contact_person, id_volunteer))
 
+
     def update_volunteer_combobox_data(self, id_volunteer, position, assembly):
         """"""
         query = "UPDATE volunteer SET position=?, assembly=? WHERE id_volunteer=?"
         self.db.execute_query(query, (position, assembly, id_volunteer))
+
+
+    def update_volunteer_radiobtn_data(self, id_volunteer, driver, exp4x4, medication, allergy):
+        """"""
+        query = "UPDATE volunteer SET driver=?, exp4x4=?, medication=?, allergy=? WHERE id_volunteer=?"
+        self.db.execute_query(query, (driver, exp4x4, medication, allergy, id_volunteer))
+
 
     def delete_volunteer(self, id_volunteer):
         """Delete a volunteer after confirm exists."""
@@ -122,11 +128,6 @@ class VolunteerManager:
         query = "DELETE FROM volunteer WHERE id_volunteer = ?"
         self.db.execute_query(query, (id_volunteer,))
 
-    # END CRUD FOR volunteers #
-
-
-
-    # SPECIFIC QUERYS
 
     def check_volunteers_in_date(self, date, confirmed):
         """Check how many volunteers are available on a given day"""

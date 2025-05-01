@@ -145,3 +145,10 @@ class ComboBoxManager():
         self.combobox_provinces.setStyleSheet(style)
         self.combobox_assemblies.setStyleSheet(style)
         self.combobox_positions.setStyleSheet(style)
+
+    def update_volunteer_combobox(self, id_volunteer):
+        self.vm.update_volunteer_combobox_data(
+            id_volunteer,
+            position=self.combobox_positions.currentIndex(),
+            assembly=self.combobox_assemblies.currentData()
+        )

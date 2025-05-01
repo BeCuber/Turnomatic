@@ -157,13 +157,8 @@ class VolunteerPage(QWidget):
 
 
         self.text_edit_manager.update_volunteer_text(id_volunteer)
-
-        self.vm.update_volunteer_combobox_data(
-            id_volunteer,
-            position=self.combobox_manager.combobox_positions.currentIndex(),
-            assembly=self.combobox_manager.combobox_assemblies.currentIndex()
-        )
-
+        self.combobox_manager.update_volunteer_combobox(id_volunteer)
+        self.radio_btn_manager.update_volunteer_radiobtn(id_volunteer)
 
 
     def delete_volunteer(self):
