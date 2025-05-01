@@ -3,95 +3,223 @@ import os
 
 
 class DatabaseConnector:
-    """If database change to other distinct SQLite3, look for uses for ON DELETE CASCADE"""
+    """
+        If database change to other distinct SQLite3, look for uses for ON DELETE CASCADE
+
+        Handles connection and operations for an SQLite3 database.
+
+        Attributes:
+            db_path (str): Full path to the database file.
+            conn (sqlite3.Connection): Active connection to the database.
+
+        Notes:
+            - Enables foreign key constraints (PRAGMA foreign_keys = ON).
+            - Always closes the cursor to prevent memory leaks.
+    """
     def __init__(self, db_name = "turnomatic.db"):
-        """Initialize db and create tables if not exist."""
+        """
+            Initializes the database connection and creates tables if they do not exist.
+
+        Args:
+            db_name (str): Name of the SQLite database file. Default is "turnomatic.db".
+        """
         self.db_path = os.path.join(os.path.dirname(__file__), db_name)
         self.conn = sqlite3.connect(self.db_path)
         # Enable ON DELETE CASCADE
         self.conn.execute("PRAGMA foreign_keys = ON;")
-        self.c = self.conn.cursor()
-
-        
 
         self.create_tables()
 
-
     def create_tables(self):
-        """Create tables if not exist."""
-        self.c.execute('''CREATE TABLE IF NOT EXISTS volunteer (
-                            id_volunteer INTEGER PRIMARY KEY AUTOINCREMENT,
-                            name TEXT NOT NULL,
-                            lastname_1 TEXT NOT NULL,
-                            lastname_2 TEXT DEFAULT '',
-                            driver BOOLEAN NOT NULL DEFAULT 0, 
-                            id_card TEXT UNIQUE,
-                            email TEXT,
-                            phone TEXT DEFAULT '',
-                            birthdate DATE DEFAULT '1900-01-01',
-                            position INTEGER,
-                            exp4x4 BOOLEAN NOT NULL DEFAULT 0,
-                            assembly INTEGER,
-                            medication BOOLEAN NOT NULL DEFAULT 0,
-                            medication_description TEXT DEFAULT '',
-                            allergy BOOLEAN NOT NULL DEFAULT 0,
-                            allergy_description TEXT DEFAULT '',
-                            contact_person TEXT DEFAULT ''
-                        )''')
+        """
+        Calls internal methods to create all required tables.
+        """
+        self._create_table_volunteer()
+        self._create_table_availability()
+        self._create_table_ccaa()
+        self._create_table_provinces()
+        self._create_table_assemblies()
+        self._create_table_positions()
+        self.conn.commit()
 
-        self.c.execute('''CREATE TABLE IF NOT EXISTS availability (
-                            id_availability INTEGER PRIMARY KEY AUTOINCREMENT,
-                            id_volunteer INTEGER NOT NULL,
-                            date_init DATE NOT NULL,
-                            date_end DATE NOT NULL,
-                            comments TEXT,
-                            confirmed BOOLEAN DEFAULT 0,
-                            FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
-                        )''')
-        
-        self.c.execute("CREATE INDEX IF NOT EXISTS idx_availability_date ON availability (date_init, date_end);")
-        
-        self.c.execute('''CREATE TABLE IF NOT EXISTS ccaa (
-                            id_ccaa INTEGER PRIMARY KEY,
-                            name TEXT NOT NULL
-                        )''')
-        
-        self.c.execute('''CREATE TABLE IF NOT EXISTS provinces (
-                            id_province INTEGER PRIMARY KEY,
-                            id_ccaa INTEGER NOT NULL,
-                            name TEXT NOT NULL,
-                            FOREIGN KEY (id_ccaa) REFERENCES ccaa(id_ccaa) ON DELETE CASCADE
-                        )''')
-        
-        self.c.execute('''CREATE TABLE IF NOT EXISTS assemblies (
-                            id_assembly INTEGER PRIMARY KEY AUTOINCREMENT,
-                            id_province INTEGER NOT NULL,
-                            name TEXT NOT NULL,
-                            FOREIGN KEY (id_province) REFERENCES provinces(id_province) ON DELETE CASCADE
-                        )''')
-        
-        self.c.execute('''CREATE TABLE IF NOT EXISTS positions (
-                        id_position INTEGER PRIMARY KEY AUTOINCREMENT,
-                        position TEXT NOT NULL
-                       )''')
 
-        self.conn.commit()  # Guarda cambios en la base de datos
+    def _create_table_volunteer(self):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS volunteer (
+                    id_volunteer INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    lastname_1 TEXT NOT NULL,
+                    lastname_2 TEXT DEFAULT '',
+                    driver BOOLEAN NOT NULL DEFAULT 0, 
+                    id_card TEXT UNIQUE,
+                    email TEXT,
+                    phone TEXT DEFAULT '',
+                    birthdate TEXT DEFAULT '1900-01-01',
+                    position INTEGER,
+                    exp4x4 BOOLEAN NOT NULL DEFAULT 0,
+                    assembly INTEGER,
+                    medication BOOLEAN NOT NULL DEFAULT 0,
+                    medication_description TEXT DEFAULT '',
+                    allergy BOOLEAN NOT NULL DEFAULT 0,
+                    allergy_description TEXT DEFAULT '',
+                    contact_person TEXT DEFAULT ''
+                )
+            ''')
+        finally:
+            cursor.close()
+
+    def _create_table_availability(self):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS availability (
+                    id_availability INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_volunteer INTEGER NOT NULL,
+                    date_init TEXT NOT NULL,
+                    date_end TEXT NOT NULL,
+                    comments TEXT,
+                    confirmed BOOLEAN DEFAULT 0,
+                    FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
+                )
+            ''')
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_availability_date ON availability (date_init, date_end);")
+        finally:
+            cursor.close()
+
+    def _create_table_ccaa(self):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS ccaa (
+                    id_ccaa INTEGER PRIMARY KEY,
+                    name TEXT NOT NULL
+                )
+            ''')
+        finally:
+            cursor.close()
+
+    def _create_table_provinces(self):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS provinces (
+                    id_province INTEGER PRIMARY KEY,
+                    id_ccaa INTEGER NOT NULL,
+                    name TEXT NOT NULL,
+                    FOREIGN KEY (id_ccaa) REFERENCES ccaa(id_ccaa) ON DELETE CASCADE
+                )
+            ''')
+        finally:
+            cursor.close()
+
+    def _create_table_assemblies(self):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS assemblies (
+                    id_assembly INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_province INTEGER NOT NULL,
+                    name TEXT NOT NULL,
+                    FOREIGN KEY (id_province) REFERENCES provinces(id_province) ON DELETE CASCADE
+                )
+            ''')
+        finally:
+            cursor.close()
+
+    def _create_table_positions(self):
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS positions (
+                    id_position INTEGER PRIMARY KEY AUTOINCREMENT,
+                    position TEXT NOT NULL
+                )
+            ''')
+        finally:
+            cursor.close()
 
 
     def execute_query(self, query, params=()):
-        """Método reutilizable para ejecutar consultas SQL""" #TODO traducir
-        self.c.execute(query, params)
-        self.conn.commit()
+        """
+            Executes a write query (INSERT, UPDATE, DELETE).
+
+            Args:
+                query (str): SQL query string.
+                params (tuple): Optional parameters for the query.
+
+            Raises:
+                sqlite3.Error: If an error occurs during execution.
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(query, params)
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print("Error al ejecutar query:", e)
+            self.conn.rollback()
+            raise
+        finally:
+            cursor.close()
 
     
-    def fetch_query(self, query, params=()):
-        """Método reutilizable para obtener datos""" #TODO traducir
-        self.c.execute(query, params)
-        return self.c.fetchall()
+    def fetch_query_all(self, query, params=()):
+        """
+            Executes a SELECT query and returns all results.
+
+            Args:
+                query (str): SQL query string.
+                params (tuple): Optional parameters for the query.
+
+            Returns:
+                list of tuple: The result set.
+
+            Raises:
+                sqlite3.Error: If an error occurs during execution.
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(query, params)
+            result = cursor.fetchall()
+            return result
+        except sqlite3.Error as e:
+            print("Error al ejecutar fetch:", e)
+            raise
+        finally:
+            cursor.close()
+
+
+    def fetch_query_one(self, query, params=()):
+        """
+            Executes a SELECT query and returns a single result.
+
+            Args:
+                query (str): SQL query string.
+                params (tuple): Optional parameters for the query.
+
+            Returns:
+                tuple or None: The first row of the result, or None if empty.
+
+            Raises:
+                sqlite3.Error: If an error occurs during execution.
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute(query, params)
+            result = cursor.fetchone()
+            return result
+        except sqlite3.Error as e:
+            print("Error al ejecutar fetch", e)
+            raise
+        finally:
+            cursor.close()
 
 
     def close_connection(self):
-        """Close database connection"""
+        """
+        Closes the database connection.
+        """
         self.conn.close()
 
 
@@ -146,8 +274,8 @@ if __name__ == "__main__":
 
     
 
-    query = "SELECT * FROM availability"
-    result = db.fetch_query(query)
-    print(result)
+    query_1 = "SELECT * FROM availability"
+    results = db.fetch_query_all(query_1)
+    print(results)
 
     db.close_connection()

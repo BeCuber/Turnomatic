@@ -1,3 +1,5 @@
+# from PyQt5.QtCore.QUrl import query
+
 from src.data.db_connector import DatabaseConnector
 
 class VolunteerManager:
@@ -20,7 +22,7 @@ class VolunteerManager:
 
     def read_all_volunteers(self):
         """Get all volunteers in a dictionary"""
-        raw_data = self.db.fetch_query("SELECT * FROM volunteer ORDER BY name")
+        raw_data = self.db.fetch_query_all("SELECT * FROM volunteer ORDER BY name")
         return [{
             "id_volunteer": v[0],
             "name": v[1],
@@ -45,13 +47,14 @@ class VolunteerManager:
     def get_volunteer_by_id(self, volunteer_id):
         """Get a volunteer from his id."""
         query = "SELECT * FROM volunteer WHERE id_volunteer = ?"
-        result = self.db.fetch_query(query, (volunteer_id,))
+        result = self.db.fetch_query_one(query, (volunteer_id,))
 
         if not result:
             return None  # Si no hay datos, devolver None
     
         # Extraer la primera fila
-        v = result[0]
+        # v = result[0]
+        v = result
 
         # Mapear columnas manualmente
         return {
@@ -75,19 +78,43 @@ class VolunteerManager:
         }
 
 
+    def update_volunteer_name(self, id_volunteer, field_name, new_value):
+        """"""
+
+        query = f"UPDATE volunteer SET {field_name} = ? WHERE id_volunteer = ?"
+        self.db.execute_query(query, (new_value, id_volunteer))
+
+
     def update_volunteer(self, name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person, id_volunteer):
         """Verifies volunteer exists before updating."""
-        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
+        existing_volunteer = self.db.fetch_query_one("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")  # TODO: Mostrar en ventana de error
-                
+
         query = "UPDATE volunteer SET name=?, lastname_1=?, lastname_2=?, driver=?, id_card=?, email=?, phone=?, birthdate=?, position=?, exp4x4=?, assembly=?, medication=?, medication_description=?, allergy=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
         self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person, id_volunteer))
 
 
+    def update_volunteer_data(self, id_volunteer, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person):
+        """"""
+
+        query = "UPDATE volunteer SET driver=?, id_card=?, email=?, phone=?, birthdate=?, position=?, exp4x4=?, assembly=?, medication=?, medication_description=?, allergy=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
+        self.db.execute_query(query, (driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person, id_volunteer))
+
+    def update_volunteer_text_data(self, id_volunteer, id_card, email, phone, birthdate, medication_description, allergy_description, contact_person):
+        """borrar despues de las pruebas TODO"""
+
+        query = "UPDATE volunteer SET id_card=?, email=?, phone=?, birthdate=?, medication_description=?, allergy_description=?, contact_person=? WHERE id_volunteer=?"
+        self.db.execute_query(query, (id_card, email, phone, birthdate, medication_description, allergy_description, contact_person, id_volunteer))
+
+    def update_volunteer_combobox_data(self, id_volunteer, position, assembly):
+        """"""
+        query = "UPDATE volunteer SET position=?, assembly=? WHERE id_volunteer=?"
+        self.db.execute_query(query, (position, assembly, id_volunteer))
+
     def delete_volunteer(self, id_volunteer):
         """Delete a volunteer after confirm exists."""
-        existing_volunteer = self.db.fetch_query("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
+        existing_volunteer = self.db.fetch_query_one("SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", (id_volunteer,))
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")  # TODO: Mostrar en ventana de error
         
@@ -109,7 +136,7 @@ class VolunteerManager:
                 WHERE ? BETWEEN a.date_init AND a.date_end
                 AND a.confirmed = ?'''
         
-        raw_data = self.db.fetch_query(query, (date, confirmed))
+        raw_data = self.db.fetch_query_all(query, (date, confirmed))
 
         # Convertimos la lista de tuplas en una lista de diccionarios
         return [{

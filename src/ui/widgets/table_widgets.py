@@ -33,7 +33,7 @@ class TableWidgetManager():
         self.load_all_volunteers(volunteer_table)
         volunteer_table.blockSignals(False) # Let edit the table
 
-        volunteer_table.cellChanged.connect(self.update_volunteer_in_db)
+        volunteer_table.cellChanged.connect(self.update_volunteer_name)
 
         # self.add_empty_row(self.volunteer_table)
 
@@ -50,16 +50,16 @@ class TableWidgetManager():
             volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["name"]))
             volunteer_table.setItem(row_idx, 2, QTableWidgetItem(v["lastname_1"]))  
             volunteer_table.setItem(row_idx, 3, QTableWidgetItem(v["lastname_2"]))
-    
-    
-    def update_volunteer_in_db(self, row, col):
+
+
+    def update_volunteer_name(self, row, col):
         """Update database when edit a cell."""
 
-        volunteer_table = self.volunteer_table # Saved on define_all_volunteers_table()
-        
+        volunteer_table = self.volunteer_table  # Saved on define_all_volunteers_table()
+
         # Get ID volunteer selected
         id_volunteer = volunteer_table.item(row, 0).text()
-        
+
         new_value = volunteer_table.item(row, col).text()
 
         # Map columns with database names
@@ -72,8 +72,7 @@ class TableWidgetManager():
         if col in column_mapping:
             field_name = column_mapping[col]
 
-            query = f"UPDATE volunteer SET {field_name} = ? WHERE id_volunteer = ?"
-            self.vm.db.execute_query(query, (new_value, id_volunteer))
+            self.vm.update_volunteer_name(id_volunteer, field_name, new_value)
 
 
     def define_availability_table(self, availability_table: QTableWidget):

@@ -13,9 +13,6 @@ class TextEditManager():
         self.vm = VolunteerManager(db)
         self.twm = TableWidgetManager(self.parent, self.vm.db)
 
-    
-    def define_volunteer_form_text_fields(self):
-
         self.label_volunteer = self.parent.findChild(QLabel, "labelNameVolunteer")
         self.input_dni = self.parent.findChild(QLineEdit, "lineEditDNI")
         self.input_email = self.parent.findChild(QLineEdit, "lineEditEmail")
@@ -64,5 +61,18 @@ class TextEditManager():
         self.input_allergies.setStyleSheet(style)
         self.input_contact_person.setStyleSheet(style)
 
+
+    def update_volunteer_text(self, id_volunteer):
+        """"""
+        self.vm.update_volunteer_text_data(
+            id_volunteer,
+            id_card=self.input_dni.text(),
+            email=self.input_email.text(),
+            phone=self.input_phone.text(),
+            birthdate=self.date_edit_birth.date().toString("yyyy-MM-dd"),
+            medication_description=self.input_medication.toPlainText(),
+            allergy_description=self.input_allergies.toPlainText(),
+            contact_person=self.input_contact_person.toPlainText()
+        )
 
 

@@ -68,31 +68,51 @@ class RadioButtonsManager():
         no_button = group.button(0)
         yes_button = group.button(1)
 
+        # previous_data = field.toPlainText()
+
+        # no_button.toggled.connect(lambda checked: self.on_radio_changed(checked, yes_button, field, previous_data))
         no_button.toggled.connect(lambda checked: self.on_radio_changed(checked, yes_button, field))
 
 
+
+    # def on_radio_changed(self, checked: bool, yes_button: QRadioButton, field: QPlainTextEdit, previous_data):
     def on_radio_changed(self, checked: bool, yes_button: QRadioButton, field: QPlainTextEdit):
-        if checked:  # Se seleccionó "No"
-            text_content = field.toPlainText().strip()
-            if text_content:
-                msg = QMessageBox(self.parent)
-                msg.setWindowTitle("Confirmar acción")
-                msg.setText("Hay información escrita. Si seleccionas 'No', se borrará.\n¿Quieres continuar?")
+        # Revisar: radiobutton.toggled.connect(self.onClicked) TODO
 
-                btn_yes = QPushButton("Sí")
-                btn_no = QPushButton("No")
-                msg.addButton(btn_yes, QMessageBox.YesRole)
-                msg.addButton(btn_no, QMessageBox.NoRole)
-                msg.setDefaultButton(btn_no)
+        if checked:  # "No" is selected
+            field.clear()
+            field.setPlaceholderText("")
+            field.setEnabled(False)
+        else:
+            yes_button.setChecked(True)
+            field.setEnabled(True)
 
-                result = msg.exec_()
+            # if not previous_data:
+            #     field.setPlaceholderText("Describe la información que se deba tener en cuenta")
+            # else:
+            #     field.setPlainText(previous_data)
 
-                if msg.clickedButton() == btn_no:
-                    # Revertimos la selección
-                    yes_button.setChecked(True)
-                    return
-                else:
-                    # Borramos el texto si se confirma
-                    field.clear()
-                    field.setPlaceholderText("")
-                    field.setEnabled(False)
+
+            # text_content = field.toPlainText().strip()
+            # if text_content:
+            #     msg = QMessageBox(self.parent)
+            #     msg.setWindowTitle("Confirmar acción")
+            #     msg.setText("Hay información escrita. Si seleccionas 'No', se borrará.\n¿Quieres continuar?")
+            #
+            #     btn_yes = QPushButton("Sí")
+            #     btn_no = QPushButton("No")
+            #     msg.addButton(btn_yes, QMessageBox.YesRole)
+            #     msg.addButton(btn_no, QMessageBox.NoRole)
+            #     msg.setDefaultButton(btn_no)
+            #
+            #     result = msg.exec_()
+            #
+            #     if msg.clickedButton() == btn_no:
+            #         # Revertimos la selección
+            #         yes_button.setChecked(True)
+            #         return
+            #     else:
+            #         # Borramos el texto si se confirma
+            #         field.clear()
+            #         field.setPlaceholderText("")
+            #         field.setEnabled(False)

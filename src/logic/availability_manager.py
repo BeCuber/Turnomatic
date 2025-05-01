@@ -17,14 +17,14 @@ class AvailabilityManager():
         if date_end < date_init:
             raise ValueError("La fecha de finalización no puede ser anterior a la de inicio.")
 
-        existing_volunteer = self.db.fetch_query(
+        existing_volunteer = self.db.fetch_query_one(
             "SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", 
             (id_volunteer,)
         )
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")
 
-        overlapped = self.db.fetch_query("""
+        overlapped = self.db.fetch_query_one("""
             SELECT 1 FROM availability 
             WHERE id_volunteer = ? AND NOT (date_end < ? OR date_init > ?)
         """, (id_volunteer, date_init, date_end))
@@ -32,7 +32,6 @@ class AvailabilityManager():
         if overlapped:
             raise ValueError("Ya existe una disponibilidad que solapa con las fechas seleccionadas.")
 
-        # Si todo es válido, se guarda
         query = """
             INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed)
             VALUES (?, ?, ?, ?, ?)
@@ -41,7 +40,7 @@ class AvailabilityManager():
 
     def read_all_availabilities(self):
         """Get all availabilities in a dictionary"""
-        raw_data = self.db.fetch_query("SELECT * FROM availability")
+        raw_data = self.db.fetch_query_all("SELECT * FROM availability")
         return [{
             "id": v[0], 
             "id_volunteer": v[1], 
@@ -55,7 +54,7 @@ class AvailabilityManager():
     def get_availability_by_id_volunteer(self, id_volunteer):
         """Get individual availabilities for a given volunteer."""
         query = "SELECT * FROM availability WHERE id_volunteer = ? ORDER BY date_init DESC"
-        raw_data = self.db.fetch_query(query, (id_volunteer,))
+        raw_data = self.db.fetch_query_all(query, (id_volunteer,))
         return [{
             "id_availability": v[0], 
             "id_volunteer": v[1], 
@@ -75,7 +74,7 @@ class AvailabilityManager():
 
     def delete_availability(self, id_availability):
         """Delete an availability."""
-        existing = self.db.fetch_query("SELECT id_availability FROM availability WHERE id_availability = ?", (id_availability,))
+        existing = self.db.fetch_query_one("SELECT id_availability FROM availability WHERE id_availability = ?", (id_availability,))
         if not existing:
             raise ValueError("La disponibilidad no existe.")
 
@@ -90,7 +89,7 @@ class AvailabilityManager():
         query = '''SELECT id_availability, date_init, date_end, comments, confirmed FROM availability 
                WHERE id_volunteer = ? AND ? BETWEEN date_init AND date_end'''
         
-        return self.db.fetch_query(query, (id_volunteer, date))
+        return self.db.fetch_query_all(query, (id_volunteer, date))
     
 
     def get_confirmed_availability_by_id_volunteer(self, id_volunteer, confirmed):
@@ -99,12 +98,12 @@ class AvailabilityManager():
                FROM availability 
                WHERE id_volunteer = ? AND confirmed = ?
                ORDER BY date_init'''
-        return self.db.fetch_query(query, (id_volunteer, confirmed))
+        return self.db.fetch_query_all(query, (id_volunteer, confirmed))
     
 
     def isConfirmed(self, id_availability):
         query = '''SELECT confirmed FROM availability WHERE id_availability = ?'''
-        result = self.db.fetch_query(query, (id_availability,))
+        result = self.db.fetch_query_one(query, (id_availability,))
         return bool(result[0][0]) if result else False
 
 
@@ -123,7 +122,7 @@ class AvailabilityManager():
                 date_init <= ? AND date_end >= ? -- Solapamiento total o parcial
             )
         '''
-        overlapping = self.db.fetch_query(query, (id_volunteer, date_end, date_init))
+        overlapping = self.db.fetch_query_one(query, (id_volunteer, date_end, date_init))
         return overlapping
 
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
