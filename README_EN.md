@@ -8,7 +8,7 @@
 This repository contains the development of a desktop application designed to visualize and manage the availability dates provided by Volunteers for participation in an activity.
 
 ## Used Technologies
-![Static Badge](https://img.shields.io/badge/Python-black?style=for-the-badge&logo=Python)![Static Badge](https://img.shields.io/badge/SQLite-black?style=for-the-badge&logo=SQLite)![Static Badge](https://img.shields.io/badge/PyQt5-black?style=for-the-badge&logo=qt)
+![Static Badge](https://img.shields.io/badge/Python-black?style=for-the-badge&logo=Python)![Static Badge](https://img.shields.io/badge/SQLite-black?style=for-the-badge&logo=SQLite)![Static Badge](https://img.shields.io/badge/PyQt5-black?style=for-the-badge&logo=qt)![Static Badge](https://img.shields.io/badge/ChatGPT-black?style=for-the-badge&logo=openai)
 
 ## Goals
 The main goal is to provide the Coordinator with tools to visualize the availability of Volunteers, manage shift assignments, and ensure the minimum staffing required to deliver the service associated with the activities.
@@ -50,14 +50,14 @@ The following basic functionalities have already been implemented:
 - Separation of data logic from presentation
 - Modular organization using widget managers (TextEdit, ComboBox, RadioButtons, etc.)
 - Two pages are defined in the application, accessed through the menu bar
-- `calendar_page.py`: Hosts a heatmap and allows editing of confirmed Volunteer groups from those available.
-- `volunteer_page.py`: Displays the list of all Volunteers, a profile for each one, and the dates they are available.
+  - `calendar_page.py`: Hosts a heatmap and allows editing of confirmed Volunteer groups from those available.
+  - `volunteer_page.py`: Displays the list of all Volunteers, a profile for each one, and the dates they are available.
+- Logic for enabling/disabling fields on editing mode for Volunteer's data completed
+- Field validation on forms which needed it to not lose data has been added.
 
 ### Next Steps
 
-- Correctly implement the logic for enabling/disabling fields dependent on radio buttons (`volunteer_page.py`)
 - Logic that handles date edits to keep records for consistent, user-readable periods
-- Add field validation to forms
 - Implement editing from all GUI fields (currently only retrieving data) (`volunteer_page.py`)
 - Add database architecture to manage meal/dinner and bed needs
 - Link date table data to calendars (`volunteer_page.py`)

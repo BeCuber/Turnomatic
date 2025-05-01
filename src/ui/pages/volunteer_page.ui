@@ -491,6 +491,11 @@
    </column>
    <column>
     <property name="text">
+     <string>Confirmado</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>Observaciones</string>
     </property>
    </column>

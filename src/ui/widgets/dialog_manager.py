@@ -63,11 +63,13 @@ class DialogManager(QDialog):
 
         return self
 
+
     def validate_volunteer_and_accept(self):
         if not self.name_input.text() or not self.lastname1_input.text() or not self.id_card_input.text():
             QMessageBox.warning(self, "Error", "Nombre, primer apellido y documento de identidad son obligatorios.")
             return
         self.accept()  # Cierra el diálogo con resultado OK
+
 
     def get_new_volunteer_data(self):
         return {
@@ -77,7 +79,8 @@ class DialogManager(QDialog):
             "driver": self.radio_yes.isChecked(),
             "id_card": self.id_card_input.text()
         }
-    
+
+
     def new_availability_dialog(self):
         self.setWindowTitle("Nueva disponibilidad")
         layout = QVBoxLayout()
@@ -111,7 +114,8 @@ class DialogManager(QDialog):
 
         self.setLayout(layout)
         return self
-    
+
+
     def get_new_availability_data(self):
         return {
             "date_init": self.date_init.date().toString("yyyy-MM-dd"),

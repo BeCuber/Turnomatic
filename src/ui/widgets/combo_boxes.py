@@ -4,7 +4,7 @@ from src.logic.combo_boxes_data_manager import ComboBoxesDataManager
 from src.logic.volunteer_manager import VolunteerManager
 
 
-class ComboBoxManager():
+class ComboBoxManager:
     
     def __init__(self, parent: QWidget, db: DatabaseConnector):
         """Initilize combo boxes manager."""
@@ -79,6 +79,8 @@ class ComboBoxManager():
 
         for id_ccaa, name in self.cbdm.get_ccaa():
             self.combobox_ccaa.addItem(name, id_ccaa)
+
+        self.adjust_combobox_dropdown_width(self.combobox_ccaa)
         
         self.populate_combobox_provinces(self.combobox_ccaa.currentData())
 
@@ -101,6 +103,7 @@ class ComboBoxManager():
         for id_province, name in self.cbdm.get_provinces(id_ccaa):
             self.combobox_provinces.addItem(name, id_province)
 
+        self.adjust_combobox_dropdown_width(self.combobox_provinces)
         self.combobox_provinces.setEnabled(True)
 
         self.populate_combobox_assemblies(self.combobox_provinces.currentData())
@@ -120,6 +123,7 @@ class ComboBoxManager():
         for id_assembly, name in self.cbdm.get_assemblies(id_province):
             self.combobox_assemblies.addItem(name, id_assembly)
 
+        self.adjust_combobox_dropdown_width(self.combobox_assemblies)
         self.combobox_assemblies.setEnabled(True)
 
 
@@ -152,3 +156,9 @@ class ComboBoxManager():
             position=self.combobox_positions.currentIndex(),
             assembly=self.combobox_assemblies.currentData()
         )
+
+    def adjust_combobox_dropdown_width(self, combobox: QComboBox):
+        max_width = max(
+            [combobox.fontMetrics().width(combobox.itemText(i)) for i in range(combobox.count())] or [0]
+        ) + 40  # Añade un pequeño margen
+        combobox.view().setMinimumWidth(max_width)

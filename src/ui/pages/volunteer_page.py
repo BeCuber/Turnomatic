@@ -337,6 +337,7 @@ class VolunteerPage(QWidget):
         self.availability_table.setDisabled(active)
         # TODO deshabilitar calendar widget cuando exista
 
+
     def set_form_fields_editable(self, editable: bool):
         """"""
         self.text_edit_manager.set_editable(editable)

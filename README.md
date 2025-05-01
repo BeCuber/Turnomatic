@@ -8,7 +8,7 @@ En este repositorio se está desarrollando una aplicación de escritorio para vi
 
 
 ## Tecnologías utilizadas
-![Static Badge](https://img.shields.io/badge/Python-black?style=for-the-badge&logo=Python)![Static Badge](https://img.shields.io/badge/SQLite-black?style=for-the-badge&logo=SQLite)![Static Badge](https://img.shields.io/badge/PyQt5-black?style=for-the-badge&logo=qt)
+![Static Badge](https://img.shields.io/badge/Python-black?style=for-the-badge&logo=Python)![Static Badge](https://img.shields.io/badge/SQLite-black?style=for-the-badge&logo=SQLite)![Static Badge](https://img.shields.io/badge/PyQt5-black?style=for-the-badge&logo=qt)![Static Badge](https://img.shields.io/badge/ChatGPT-black?style=for-the-badge&logo=openai)
 
 ## Objetivos
 La propuesta es otorgar al Coordinador de la actividad de voluntariado herramientas para visualizar la disponibilidad de sus Voluntarios y la capacidad de administrar los turnos y completar la plantilla mínima de recursos humanos necesaria para prestar el servicio asociado a las actividades. 
@@ -53,12 +53,13 @@ Ya se han implementado las siguientes funcionalidades básicas:
 - Existen dos páginas definidas en la aplicación a las que se accede a través del menubar
   - `calendar_page.py`: Pretende albergar un heatmap y permitir editar los grupos de Voluntarios confirmados desde los disponibles.
   - `volunteer_page.py`: Muestra la lista de todos los Voluntarios, una ficha de cada uno y las fechas en las que están disponibles.
+- Lógica de activación/desactivación en modo edición de datos del Voluntario completada
+- Se ha añadido validación en los campos que la necesitaban para no perder información. 
+
 
 ### Próximos pasos
 
-- Implementar correctamente la lógica de activación/desactivación de campos dependientes de los radio buttons (`volunteer_page.py`)
 - Lógica que maneje las ediciones de fecha para guardar registros de periodos coherentes y legibles para el usuario
-- Añadir validación de campos en los formularios
 - Implementar la edición desde todos los campos de la GUI (de momento solo recupera datos) (`volunteer_page.py`)
 - Añadir arquitectura en la base de datos para gestionar la necesidad de comidas/cenas y camas
 - Vincular los datos de tabla de fechas con los calendarios (`volunteer_page.py`)

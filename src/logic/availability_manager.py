@@ -1,7 +1,7 @@
 from src.data.db_connector import DatabaseConnector
 
 
-class AvailabilityManager():
+class AvailabilityManager:
     def __init__(self, db: DatabaseConnector):
         self.db = db
 
@@ -35,6 +35,7 @@ class AvailabilityManager():
             VALUES (?, ?, ?, ?, ?)
         """
         self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, confirmed))
+
 
     def read_all_availabilities(self):
         """Get all availabilities in a dictionary"""
@@ -121,16 +122,13 @@ class AvailabilityManager():
         overlapping = self.db.fetch_query_one(query, (id_volunteer, date_end, date_init))
         return overlapping
 
+
+
+
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
 if __name__ == "__main__":
     db = DatabaseConnector()
     am = AvailabilityManager(db)
-
-    #print(am.read_all_availabilities()) # it works!
-    #am.create_availability(2, "2025-03-24", "2025-03-30", "Carnet A") # it works!
-    #am.update_availability(5, 2, "2025-03-25", "2025-03-25", "Carnet A") # it works!
-    #am.delete_availability(5) # it works!
-    #print(am.read_all_availabilities())
 
 
     am.db.close_connection()

@@ -4,7 +4,7 @@ from src.logic.volunteer_manager import VolunteerManager
 from src.logic.availability_manager import AvailabilityManager
 
 
-class TableWidgetManager():
+class TableWidgetManager:
 
     def __init__(self, parent: QWidget, db: DatabaseConnector):
         """Initialize tables manager."""
@@ -105,7 +105,8 @@ class TableWidgetManager():
             availability_table.setItem(row_idx, 0, QTableWidgetItem(str(v["id_availability"])))
             availability_table.setItem(row_idx, 1, QTableWidgetItem(v["date_init"]))
             availability_table.setItem(row_idx, 2, QTableWidgetItem(v["date_end"]))
-            availability_table.setItem(row_idx, 3, QTableWidgetItem(v["comments"]))
+            availability_table.setItem(row_idx, 3, QTableWidgetItem("✅" if v["confirmed"] else ""))
+            availability_table.setItem(row_idx, 4, QTableWidgetItem(v["comments"]))
 
         availability_table.blockSignals(False) # Let edit the table
 
