@@ -5,8 +5,6 @@ class AvailabilityManager():
     def __init__(self, db: DatabaseConnector):
         self.db = db
 
-    
-    # CRUD FOR availability #
 
     def create_availability(self, id_volunteer, date_init, date_end, comments, confirmed):
         """Validate data and then create a new availability."""
@@ -81,8 +79,6 @@ class AvailabilityManager():
         query = "DELETE FROM availability WHERE id_availability = ?"
         self.db.execute_query(query, (id_availability,))
 
-
-    # END CRUD FOR availability #
 
     def get_availability_by_date(self, id_volunteer, date):
         """"""

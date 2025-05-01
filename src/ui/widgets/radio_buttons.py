@@ -6,7 +6,13 @@ from src.logic.volunteer_manager import VolunteerManager
 class RadioButtonsManager():
 
     def __init__(self, parent: QWidget, db: DatabaseConnector):
-        """Initialize tables manager."""
+        """
+        Initializes the radio button manager, groups the buttons and sets up logic.
+
+        Args:
+            parent (QWidget): The parent widget containing the radio buttons.
+            db (DatabaseConnector): The database connector.
+        """
         self.parent = parent
         self.vm = VolunteerManager(db)
 
@@ -19,7 +25,9 @@ class RadioButtonsManager():
         self.define_form_radio_buttons()
 
     def define_form_radio_buttons(self):
-        """Define radio buttons and group them"""
+        """
+            Groups the radio buttons by functionality and assigns IDs to "Yes" (1) and "No" (0).
+        """
 
         self.driver_group.addButton(self.parent.findChild(QRadioButton, "radioButtonCarnetYes"), 1)
         self.driver_group.addButton(self.parent.findChild(QRadioButton, "radioButtonCarnetNo"), 0)
@@ -35,7 +43,12 @@ class RadioButtonsManager():
 
 
     def display_form_radio_button_data(self, volunteer_data):
-        """Set radio buttons based on the volunteer's data"""
+        """
+            Sets radio buttons based on volunteer data.
+
+            Args:
+                volunteer_data (dict): A dictionary containing boolean values for each group.
+        """
 
         if volunteer_data:
             # Asignar los valores a los radio buttons
@@ -44,16 +57,29 @@ class RadioButtonsManager():
             self.set_group_checked(self.medication_group, volunteer_data["medication"])
             self.set_group_checked(self.allergy_group, volunteer_data["allergy"])
 
+            # self.on_radio_changed(medication_group, field)
+
 
     def set_group_checked(self, group: QButtonGroup, value: bool):
-        """Marca el botón correspondiente en el grupo"""
+        """
+            Marks the correct radio button in the group based on value.
+
+            Args:
+                group (QButtonGroup): The button group.
+                value (bool): True for "Yes", False for "No".
+        """
         button = group.button(1 if value else 0)
         if button:
             button.setChecked(True)
 
 
     def get_current_radio_values(self):
-        """"""
+        """
+            Returns the current selected values for each group.
+
+            Returns:
+                dict: Dictionary with keys 'driver', 'exp4x4', 'medication', 'allergy' and boolean values.
+        """
         def get_checked_value(group: QButtonGroup):
             return group.checkedId() == 1
 
@@ -64,8 +90,14 @@ class RadioButtonsManager():
             "allergy": get_checked_value(self.allergy_group)
         }
 
+
     def update_volunteer_radiobtn(self, id_volunteer):
-        """"""
+        """
+            Updates the volunteer's radio button fields in the database.
+
+            Args:
+                id_volunteer (int): The ID of the volunteer to update.
+        """
         radio_values = self.get_current_radio_values()
         self.vm.update_volunteer_radiobtn_data(
             id_volunteer,
@@ -77,7 +109,12 @@ class RadioButtonsManager():
 
 
     def set_editable(self, editable: bool):
-        """Habilita o deshabilita todos los radio buttons"""
+        """
+            Enables or disables all radio buttons.
+
+            Args:
+                editable (bool): Whether the radio buttons should be editable.
+        """
         for group in [self.driver_group, self.exp4x4_group, self.medication_group, self.allergy_group]:
             for btn in group.buttons():
                 btn.setEnabled(editable)
@@ -88,55 +125,51 @@ class RadioButtonsManager():
 
 
     def connect_toggle_with_plaintext(self, group: QButtonGroup, field: QPlainTextEdit):
-        """Activa o desactiva el campo según si se selecciona 'No'."""
-        no_button = group.button(0)
-        yes_button = group.button(1)
+        """
+            Connects the radio buttons to a QPlainTextEdit so it is only enabled when "Yes" is selected.
 
-        # previous_data = field.toPlainText()
+            Args:
+                group (QButtonGroup): The group of radio buttons (Yes/No).
+                field (QPlainTextEdit): The associated text field.
+        """
 
-        # no_button.toggled.connect(lambda checked: self.on_radio_changed(checked, yes_button, field, previous_data))
-        no_button.toggled.connect(lambda checked: self.on_radio_changed(checked, yes_button, field))
+        group.button(0).toggled.connect(
+            lambda checked: self.on_radio_changed(group, field)
+        )
 
 
+    def on_radio_changed(self, group: QButtonGroup, field: QPlainTextEdit):
+        """
+            Updates the enabled state of the field based on radio button selection.
 
-    # def on_radio_changed(self, checked: bool, yes_button: QRadioButton, field: QPlainTextEdit, previous_data):
-    def on_radio_changed(self, checked: bool, yes_button: QRadioButton, field: QPlainTextEdit):
-        # Revisar: radiobutton.toggled.connect(self.onClicked) TODO
+            Args:
+                group (QButtonGroup): The radio group being monitored.
+                field (QPlainTextEdit): The text field to enable or disable.
+        """
 
-        if checked:  # "No" is selected
+        if group.checkedId() == 0: # 'No' selected
+            text_content = field.toPlainText().strip()
+            if text_content:
+                msg = QMessageBox(self.parent)
+                msg.setWindowTitle("Confirmar acción")
+                msg.setText("Hay información escrita. Si seleccionas 'No', se borrará.\n¿Quieres continuar?")
+
+                btn_yes = QPushButton("Sí")
+                btn_no = QPushButton("No")
+                msg.addButton(btn_yes, QMessageBox.YesRole)
+                msg.addButton(btn_no, QMessageBox.NoRole)
+                msg.setDefaultButton(btn_no)
+
+                msg.exec_()
+
+                if msg.clickedButton() == btn_no:
+                    group.button(1).setChecked(True)
+                    return
             field.clear()
             field.setPlaceholderText("")
             field.setEnabled(False)
-        else:
-            yes_button.setChecked(True)
+        else: # 'Sí' selected
+            field.setPlaceholderText("Describe la información que se deba tener en cuenta")
             field.setEnabled(True)
 
-            # if not previous_data:
-            #     field.setPlaceholderText("Describe la información que se deba tener en cuenta")
-            # else:
-            #     field.setPlainText(previous_data)
 
-
-            # text_content = field.toPlainText().strip()
-            # if text_content:
-            #     msg = QMessageBox(self.parent)
-            #     msg.setWindowTitle("Confirmar acción")
-            #     msg.setText("Hay información escrita. Si seleccionas 'No', se borrará.\n¿Quieres continuar?")
-            #
-            #     btn_yes = QPushButton("Sí")
-            #     btn_no = QPushButton("No")
-            #     msg.addButton(btn_yes, QMessageBox.YesRole)
-            #     msg.addButton(btn_no, QMessageBox.NoRole)
-            #     msg.setDefaultButton(btn_no)
-            #
-            #     result = msg.exec_()
-            #
-            #     if msg.clickedButton() == btn_no:
-            #         # Revertimos la selección
-            #         yes_button.setChecked(True)
-            #         return
-            #     else:
-            #         # Borramos el texto si se confirma
-            #         field.clear()
-            #         field.setPlaceholderText("")
-            #         field.setEnabled(False)

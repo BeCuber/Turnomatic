@@ -10,7 +10,6 @@ class DialogManager(QDialog):
         self.setMinimumWidth(300)
 
 
-
     def new_volunteer_dialog(self):
         """"""
         self.setWindowTitle("Nuevo Voluntario")
@@ -120,4 +119,3 @@ class DialogManager(QDialog):
             "comments": self.comments_input.toPlainText(),
             "confirmed": int(self.confirmed_checkbox.isChecked())
         }
-

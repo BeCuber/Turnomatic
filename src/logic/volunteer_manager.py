@@ -15,8 +15,11 @@ class VolunteerManager:
         
         query = "INSERT INTO volunteer (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         self.db.execute_query(query, (name, lastname_1, lastname_2, driver, id_card, email, phone, birthdate, position, exp4x4, assembly, medication, medication_description, allergy, allergy_description, contact_person))
-        
-        return self.db.c.lastrowid  # ← Aquí devolvemos el nuevo ID
+
+        query_1 = "SELECT MAX(id_volunteer) FROM volunteer"
+        last_id_created = self.db.fetch_query_one(query_1)
+
+        return last_id_created[0] # ← Aquí devolvemos el nuevo ID
 
 
     def read_all_volunteers(self):
@@ -213,36 +216,7 @@ if __name__ == "__main__":
     db = DatabaseConnector()
     vm = VolunteerManager(db)
 
-    #print(vm.read_all_volunteers()) # it works!
-    #vm.create_volunteer("Feliniberto", "McFalso", "Salvaje", 1) # it works!
-    #vm.update_volunteer("Feliniberto", "McFalso", "Maullador", 1, 4) # it works!
-    #vm.delete_volunteer(4) # it also works!
-    #print(vm.read_all_volunteers())
-    
-    #volunteers = vm.read_all_volunteers()
-    #print(volunteers)  # Para ver toda la lista
 
-    # Verificar el tipo de v[2] en cada voluntario
-    #for v in volunteers:
-     #   print(f"Valor de v[2]: {v['driver']} (Tipo: {type(v['driver'])})")
 
-    
-    # 🚨 Eliminar completamente la tabla y sus datos previos
-    #vm.db.c.execute("DROP TABLE IF EXISTS volunteer")  # 🔥 Borra la tabla si existe
-    #vm.db.c.execute("DROP TABLE IF EXISTS availability")  # 🔥 Borra la tabla availability también
-
-    # 🛠️ Vuelve a crear la base de datos desde DatabaseConnector
-    #db = DatabaseConnector()  # Esto recreará las tablas automáticamente
-
-    # 📝 Insertar nuevos datos de prueba
-    #vm = VolunteerManager(db)
-    #vm.db.execute_query("DELETE FROM volunteer")
-    #vm.db.execute_query("DELETE FROM availability")
-    #vm.insert_sample_data()
-    vm.update_volunteer("Martica", "Súper", "Maja", 1, "123456789B", "matica@example.com", "623456937",
-            "1990-07-22", 3, 1, 99, 0, "", 0, "", "Fernando El Bribón", 2)
-    vm.update_volunteer("Fernando", "El", "Bribón", 1, "123456789C", "fernando@example.com", "629456987",
-            "1978-02-05", 2, 1, 99, 0, "", 0, "", "Martica Súper Maja", 3)
-    
     # Cerrar conexión con la BD
     vm.db.close_connection()

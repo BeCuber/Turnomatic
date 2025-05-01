@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView, QLabel
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.logic.availability_manager import AvailabilityManager
@@ -34,8 +34,6 @@ class TableWidgetManager():
         volunteer_table.blockSignals(False) # Let edit the table
 
         volunteer_table.cellChanged.connect(self.update_volunteer_name)
-
-        # self.add_empty_row(self.volunteer_table)
 
 
     def load_all_volunteers(self, volunteer_table: QTableWidget):
@@ -73,6 +71,10 @@ class TableWidgetManager():
             field_name = column_mapping[col]
 
             self.vm.update_volunteer_name(id_volunteer, field_name, new_value)
+
+        volunteer_data = self.vm.get_volunteer_by_id(id_volunteer)
+        self.label_volunteer = self.parent.findChild(QLabel, "labelNameVolunteer")
+        self.label_volunteer.setText(f"{volunteer_data['name']} {volunteer_data['lastname_1']}")
 
 
     def define_availability_table(self, availability_table: QTableWidget):
@@ -129,6 +131,8 @@ class TableWidgetManager():
             self.am.db.execute_query(query, (new_value, id_availability))
 
 
+
+
     # TABLES FOR calendar_page #
 
     def define_available_volunteer_list(self, volunteer_table: QTableWidget):
@@ -157,4 +161,3 @@ class TableWidgetManager():
             volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["name"]))  
             volunteer_table.setItem(row_idx, 2, QTableWidgetItem(v["lastname_1"]))  
             volunteer_table.setItem(row_idx, 3, QTableWidgetItem("🚑" if v["driver"] else ""))
-    

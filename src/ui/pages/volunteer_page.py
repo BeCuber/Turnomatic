@@ -52,7 +52,7 @@ class VolunteerPage(QWidget):
         # Default view
         self.volunteer_table.selectRow(0)
         self.display_volunteer_data()
-        #self.set_editable(False)
+        self.set_form_fields_editable(False)
 
 
         # Select volunteer
@@ -60,6 +60,7 @@ class VolunteerPage(QWidget):
 
 
         # Radiobtn connect with plaintext
+
         self.radio_btn_manager.connect_toggle_with_plaintext(
            self.radio_btn_manager.medication_group,
            self.text_edit_manager.input_medication
@@ -76,7 +77,7 @@ class VolunteerPage(QWidget):
         self.btn_delete_volunteer.clicked.connect(self.delete_volunteer)
         self.btn_add_availability.clicked.connect(self.create_availability)
         self.btn_delete_availability.clicked.connect(self.delete_availability)
-        self.btn_edit_volunteer.clicked.connect(self.start_editing)
+        self.btn_edit_volunteer.clicked.connect(lambda: self.set_edit_mode(True))
 
 
         self.define_dynamic_btns()
@@ -100,6 +101,11 @@ class VolunteerPage(QWidget):
         self.combobox_manager.display_selected_volunteer_combobox_data(volunteer_data)
         self.radio_btn_manager.display_form_radio_button_data(volunteer_data)
         self.table_manager.display_individual_availability_data_table(volunteer_id, self.availability_table)
+
+        self.radio_btn_manager.on_radio_changed(self.radio_btn_manager.medication_group, self.text_edit_manager.input_medication)
+        self.radio_btn_manager.on_radio_changed(self.radio_btn_manager.allergy_group, self.text_edit_manager.input_allergies)
+
+        self.set_form_fields_editable(False)
 
 
     def create_volunteer(self):
@@ -142,7 +148,7 @@ class VolunteerPage(QWidget):
             self.select_volunteer_row_by_id(new_id)
 
             # Mostrar confirmación
-            QMessageBox.information(self, "Éxito", "Voluntario creado correctamente.")
+            QMessageBox.information(self, " ", "Voluntario creado correctamente.")
 
 
     def update_volunteer_data(self):
@@ -185,7 +191,7 @@ class VolunteerPage(QWidget):
                 self.table_manager.load_all_volunteers(self.volunteer_table)
 
                 # Confirmación de éxito
-                QMessageBox.information(self, "Éxito", "Voluntario eliminado correctamente.")
+                QMessageBox.information(self, " ", "Voluntario eliminado correctamente.")
 
                 # Default view
                 self.volunteer_table.selectRow(0)
@@ -224,7 +230,7 @@ class VolunteerPage(QWidget):
             return
 
         self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
-        QMessageBox.information(self, "Éxito", "Disponibilidad añadida correctamente.")
+        QMessageBox.information(self, " ", "Disponibilidad añadida correctamente.")
 
 
     def delete_availability(self):
@@ -252,7 +258,7 @@ class VolunteerPage(QWidget):
                 self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
 
                 # Confirmación de éxito
-                QMessageBox.information(self, "Éxito", "Periodo eliminado correctamente.")
+                QMessageBox.information(self, " ", "Periodo eliminado correctamente.")
 
                 
             except ValueError as e:
@@ -309,39 +315,38 @@ class VolunteerPage(QWidget):
         self.btn_cancel_edit.clicked.connect(self.cancel_editing)
         self.btn_save_volunteer.clicked.connect(self.save_volunteer_changes)
 
-        # Conexiones
-        #self.btn_edit_volunteer.clicked.connect(self.start_editing)
-        #self.btn_save_volunteer.clicked.connect(self.save_volunteer_changes)
-        #self.btn_cancel_edit.clicked.connect(self.cancel_editing)
+
+    def set_edit_mode(self, active: bool):
+        """"""
+        # Cambio visualización botones
+        self.btn_edit_volunteer.setVisible(not active)
+        self.btn_save_volunteer.setVisible(active)
+        self.btn_cancel_edit.setVisible(active)
+
+        # Edición campos formulario
+        self.set_form_fields_editable(active)
+
+        # Acceso a calendario, tablas y botones. Ojo no liarse con Disabled que va al revés de setEditable
+        self.btn_add_volunteer.setDisabled(active)
+        self.btn_delete_volunteer.setDisabled(active)
+        self.btn_add_availability.setDisabled(active)
+        self.btn_delete_availability.setDisabled(active)
 
 
-    def start_editing(self):
-        """Enable fields for editing."""
-        self.btn_edit_volunteer.setVisible(False)
-        self.btn_save_volunteer.setVisible(True)
-        self.btn_cancel_edit.setVisible(True)
+        self.volunteer_table.setDisabled(active)
+        self.availability_table.setDisabled(active)
+        # TODO deshabilitar calendar widget cuando exista
 
-
-
-        self.set_editable(True)
-        
-
-    def set_editable(self, editable: bool):
+    def set_form_fields_editable(self, editable: bool):
         """"""
         self.text_edit_manager.set_editable(editable)
         self.combobox_manager.set_editable(editable)
         self.radio_btn_manager.set_editable(editable)
 
-        # También aquí podrías llamar a radio_btn_manager.set_editable(True), etc.
-
 
     def cancel_editing(self):
         """"""
-        self.btn_save_volunteer.setVisible(False)
-        self.btn_cancel_edit.setVisible(False)
-        self.btn_edit_volunteer.setVisible(True)
-
-        #self.set_editable(False)
+        self.set_edit_mode(False)
 
 
     def save_volunteer_changes(self):
@@ -356,4 +361,4 @@ class VolunteerPage(QWidget):
         self.btn_edit_volunteer.setVisible(True)
 
         self.display_volunteer_data()
-        #self.set_editable(False)
+        self.set_edit_mode(False)

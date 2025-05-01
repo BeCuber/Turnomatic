@@ -274,7 +274,8 @@ if __name__ == "__main__":
 
     
 
-    query_1 = "SELECT * FROM availability"
+    # query_1 = "SELECT id_volunteer, name FROM volunteer"
+    query_1 = "SELECT id_volunteer FROM volunteer"
     results = db.fetch_query_all(query_1)
     print(results)
 
