@@ -30,6 +30,7 @@ class DatabaseConnector:
 
         self.create_tables()
 
+
     def create_tables(self):
         """
         Calls internal methods to create all required tables.
@@ -275,7 +276,7 @@ if __name__ == "__main__":
     
 
     # query_1 = "SELECT id_volunteer, name FROM volunteer"
-    query_1 = "SELECT id_volunteer FROM volunteer"
+    query_1 = "SELECT id_volunteer, name FROM volunteer"
     results = db.fetch_query_all(query_1)
     print(results)
 

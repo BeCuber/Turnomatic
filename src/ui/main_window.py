@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.volunteer_page)
  
         # Config menu manager
-        self.menu_manager = MenuBarManager(self, self.stacked_widget)
+        self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page)
         
         # Show the app
         self.show()
@@ -49,4 +49,3 @@ class MainWindow(QMainWindow):
         print("Cerrando conexión con la base de datos...")
         self.db.close_connection()  # Close the connection
         event.accept()  # Let close the window
-

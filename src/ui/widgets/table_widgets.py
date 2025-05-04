@@ -1,5 +1,6 @@
-from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView, QLabel
+from PyQt5.QtCore import QDate, Qt
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView, QLabel, \
+    QMessageBox
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.logic.availability_manager import AvailabilityManager
@@ -81,9 +82,9 @@ class TableWidgetManager:
 
     def define_availability_table(self, availability_table: QTableWidget):
         """Configure availability table for edit and connect signals."""
-        self.availability_table = availability_table  # ⬅️ Guardamos la tabla como atributo
+        self.availability_table = availability_table  # Guardamos la tabla como atributo
 
-        # Asegúrate de que la primera columna (ID) está oculta
+        # Asegura de que la primera columna (ID) está oculta
         availability_table.insertColumn(0)
         availability_table.setColumnHidden(0, True)
 
@@ -94,10 +95,14 @@ class TableWidgetManager:
 
 
     def display_individual_availability_data_table(self, id_volunteer, availability_table: QTableWidget):
-        """Show availability data for a given volunteer on table."""
+        """
+            Populate the availability table with data for a given volunteer.
 
-        # Hide column at beginning for ID
-        #availability_table.setColumnHidden(0, True)
+            Parameters:
+                id_volunteer (int): The volunteer's ID.
+                availability_table (QTableWidget): The table widget to populate.
+        """
+
         availability_table.blockSignals(True) # Avoid errors by triggering cellChanged
         availability_table.clearContents()
         availability_table.setRowCount(0) # reset number of rows
@@ -106,45 +111,73 @@ class TableWidgetManager:
 
         for row_idx, v in enumerate(availability):
             availability_table.insertRow(row_idx)
+
+            # ID column (hidden in UI)
             availability_table.setItem(row_idx, 0, QTableWidgetItem(str(v["id_availability"])))
+
+            # Date columns
             availability_table.setItem(row_idx, 1, QTableWidgetItem(v["date_init"]))
             availability_table.setItem(row_idx, 2, QTableWidgetItem(v["date_end"]))
-            availability_table.setItem(row_idx, 3, QTableWidgetItem("✅" if v["confirmed"] else ""))
-            availability_table.setItem(row_idx, 4, QTableWidgetItem(v["comments"]))
+
+            # Confirmed column as checkbox
+            checkbox_item = QTableWidgetItem()
+            checkbox_item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEditable)
+            checkbox_item.setCheckState(Qt.Checked if v["confirmed"] else Qt.Unchecked)
+            availability_table.setItem(row_idx, 3, checkbox_item)
+
+            # Comments column
+            comment_item = QTableWidgetItem(v["comments"] if v["comments"] else "")
+            comment_item.setFlags(comment_item.flags() | Qt.ItemIsEditable | Qt.ItemIsEnabled)
+            availability_table.setItem(row_idx, 4, comment_item)
 
         availability_table.blockSignals(False) # Let edit the table
 
 
     def update_availability(self, row: int, col: int):
-        """Update availability in database when cell is edited."""
+        """
+            Update the availability database record based on user edits in the table.
 
+            Parameters:
+                row (int): The edited row index.
+                col (int): The edited column index.
+        """
         availability_table = self.availability_table
 
         id_availability = availability_table.item(row, 0).text()
-        new_value = availability_table.item(row, col).text()
 
-        column_mapping = {
-            1: "date_init",
-            2: "date_end",
-            3: "confirmed",
-            4: "comments",
-        }
+        id_volunteer = self.am.get_id_volunteer_from_id_availability(id_availability)
 
-        if col not in column_mapping:
-            return
+        # Obtener todos los datos necesarios de la fila
+        date_init = availability_table.item(row, 1).text()
+        date_end = availability_table.item(row, 2).text()
+        confirmed_item = availability_table.item(row, 3)
+        comments_item = availability_table.item(row, 4)
 
-        field_name = column_mapping[col]
+        confirmed = confirmed_item.checkState() == Qt.Checked if confirmed_item else False
+        comments = comments_item.text() if comments_item else ""
 
-        # Validación de fecha
-        qdate = QDate.fromString(new_value, "yyyy-MM-dd")
-        if not qdate.isValid():
-            print("Formato de fecha inválido:", new_value)
-            return
+        # Validar fechas solo si una de ellas cambió
+        if col in (1, 2):  # date_init o date_end
+            try:
+                self.am.validate_availability(
+                    id_volunteer,
+                    date_init,
+                    date_end,
+                    id_availability
+                )
+            except ValueError as e:
+                QMessageBox.warning(None, "Error de validación", str(e))
+                self.display_individual_availability_data_table(id_volunteer, availability_table)
+                return
 
-        if field_name == "confirmed":
-            new_value = new_value=="✅"
-
-        self.am.update_availability_data(id_availability, field_name, new_value)
+        self.am.update_availability(
+            id_availability=id_availability,
+            id_volunteer=id_volunteer,
+            date_init=date_init,
+            date_end=date_end,
+            comments=comments,
+            confirmed=confirmed
+        )
 
 
 
@@ -176,3 +209,4 @@ class TableWidgetManager:
             volunteer_table.setItem(row_idx, 1, QTableWidgetItem(v["name"]))  
             volunteer_table.setItem(row_idx, 2, QTableWidgetItem(v["lastname_1"]))  
             volunteer_table.setItem(row_idx, 3, QTableWidgetItem("🚑" if v["driver"] else ""))
+

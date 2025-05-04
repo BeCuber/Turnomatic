@@ -1,12 +1,17 @@
 from PyQt5.QtWidgets import QMainWindow, QAction
 
+from src.ui.pages.calendar_page import CalendarPage
+from src.ui.pages.volunteer_page import VolunteerPage
+
 
 class MenuBarManager():
     
-    def __init__(self, main_window: QMainWindow, stacked_widget):
+    def __init__(self, main_window: QMainWindow, stacked_widget, calendar_page: CalendarPage, volunteer_page: VolunteerPage):
         """Inicializa el gestor del menú de la ventana principal."""
         self.main_window = main_window
         self.stacked_widget = stacked_widget
+        self.calendar_page = calendar_page
+        self.volunteer_page = volunteer_page
         self.setup_menu_actions()
 
     def setup_menu_actions(self):
@@ -19,8 +24,10 @@ class MenuBarManager():
 
     def show_calendar(self):
         """Cambia a la página del calendario."""
+        self.calendar_page.display_volunteer_lists()
         self.stacked_widget.setCurrentIndex(0)
 
     def show_volunteer_list(self):
         """Cambia a la página de lista de voluntarios."""
+        self.volunteer_page.display_volunteer_data()
         self.stacked_widget.setCurrentIndex(1)

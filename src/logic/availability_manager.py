@@ -6,14 +6,29 @@ class AvailabilityManager:
         self.db = db
 
 
-    def create_availability(self, id_volunteer, date_init, date_end, comments, confirmed):
-        """Validate data and then create a new availability."""
+    def validate_availability(self, id_volunteer, date_init, date_end, exclude_this_id=None):
+        """Validate dates"""
 
         if not date_init or not date_end:
             raise ValueError("Las fechas de inicio y fin son obligatorias.")
 
         if date_end < date_init:
             raise ValueError("La fecha de finalización no puede ser anterior a la de inicio.")
+
+        overlapped = self.db.fetch_query_all("""
+            SELECT * FROM availability 
+            WHERE id_volunteer = ?
+            AND date_end >= ?
+            AND date_init <= ?
+            AND (id_availability != ? OR ? IS NULL)
+        """, (id_volunteer, date_init, date_end, exclude_this_id, exclude_this_id))
+
+        if overlapped:
+            raise ValueError("Ya existe una disponibilidad que solapa con las fechas seleccionadas.")
+
+
+    def create_availability(self, id_volunteer, date_init, date_end, comments, confirmed):
+        """Validate data and then create a new availability."""
 
         existing_volunteer = self.db.fetch_query_one(
             "SELECT id_volunteer FROM volunteer WHERE id_volunteer = ?", 
@@ -22,13 +37,7 @@ class AvailabilityManager:
         if not existing_volunteer:
             raise ValueError("El voluntario no existe.")
 
-        overlapped = self.db.fetch_query_one("""
-            SELECT 1 FROM availability 
-            WHERE id_volunteer = ? AND NOT (date_end < ? OR date_init > ?)
-        """, (id_volunteer, date_init, date_end))
-
-        if overlapped:
-            raise ValueError("Ya existe una disponibilidad que solapa con las fechas seleccionadas.")
+        self.validate_availability(id_volunteer, date_init, date_end)
 
         query = """
             INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed)
@@ -62,6 +71,12 @@ class AvailabilityManager:
             "comments": v[4],
             "confirmed": bool(v[5])
             } for v in raw_data]
+
+
+    def get_id_volunteer_from_id_availability(self, id_availability):
+        """"""
+        query = "SELECT id_volunteer FROM availability WHERE id_availability = ?"
+        return self.db.fetch_query_one(query, (id_availability,))[0]
     
 
     def update_availability(self, id_availability, id_volunteer, date_init, date_end, comments, confirmed):
@@ -69,13 +84,6 @@ class AvailabilityManager:
 
         query = "UPDATE availability SET id_volunteer=?, date_init=?, date_end=?, comments=?, confirmed=? WHERE id_availability=?"
         self.db.execute_query(query, (id_volunteer, date_init, date_end, comments, confirmed, id_availability))
-
-
-    def update_availability_data(self, id_availability, field, value):
-        """"""
-        query = f"UPDATE availability SET {field} = ? WHERE id_availability = ?"
-        self.db.execute_query(query, (value, id_availability))
-
 
 
     def delete_availability(self, id_availability):
@@ -108,7 +116,7 @@ class AvailabilityManager:
     def isConfirmed(self, id_availability):
         query = '''SELECT confirmed FROM availability WHERE id_availability = ?'''
         result = self.db.fetch_query_one(query, (id_availability,))
-        return bool(result[0][0]) if result else False
+        return bool(result[0]) if result else False
 
 
     def switch_confirmed(self, id_availability):
@@ -137,5 +145,7 @@ if __name__ == "__main__":
     db = DatabaseConnector()
     am = AvailabilityManager(db)
 
+    print(am.get_id_volunteer_from_id_availability(43))
+    print(am.get_availability_by_id_volunteer(16))
 
     am.db.close_connection()

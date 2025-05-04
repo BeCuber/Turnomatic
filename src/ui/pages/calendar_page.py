@@ -40,8 +40,9 @@ class CalendarPage(QWidget):
         self.calendar.selectionChanged.connect(lambda: self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1))
         self.calendar.selectionChanged.connect(lambda: self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0))
         
-        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
-        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
+        # self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
+        # self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
+        self.display_volunteer_lists()
 
         # nito: dia calendar, id_volunteer
         #id_volunteer = self.get_selected_volunteer_id()
@@ -49,7 +50,13 @@ class CalendarPage(QWidget):
         self.btn_add.clicked.connect(lambda: self.change_confirmed(self.not_confirmed_volunteer_table))
         self.btn_substract.clicked.connect(lambda: self.change_confirmed(self.confirmed_volunteer_table))
 
-                
+
+    def display_volunteer_lists(self):
+        """"""
+        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
+        self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
+
+
     def change_confirmed(self, volunteer_table:QTableWidget):
         """Mark selected date as confirmed and update the availability table accordingly."""
 
@@ -97,13 +104,6 @@ class CalendarPage(QWidget):
         # Update QTableWidgets
         self.table_manager.update_confirmed_volunteer_list(self.calendar, self.confirmed_volunteer_table, 1)
         self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0)
-        
-
-
-#print(self.am.isConfirmed(id_availability))
-
-
-
 
     
     def get_selected_volunteer_id(self):
@@ -122,43 +122,43 @@ class CalendarPage(QWidget):
 
         return None
     
-
-    def merge_periods(self, id_volunteer, confirmed):
-        """"""
-        periods = self.am.get_confirmed_availability_by_id_volunteer(id_volunteer, confirmed)
-        if not periods or len(periods) < 2:
-            return  # Nothing to merge
-        
-        print(periods)
-
-        # Estructura: [(id_availability, date_init, date_end, comments), ...]
-        merged_periods = []
-        ids_to_delete = []
-        
-        current_period = periods[0]
-        current_id_availability = current_period[0]
-        current_start = datetime.strptime(periods[0][1], "%Y-%m-%d").date() # date_init of first register
-        current_end = datetime.strptime(periods[0][2], "%Y-%m-%d").date() # date_end of first register
-        current_comment = periods[3]
-
-        for next_period in periods[1:]: # [1:] slice list
-            
-            next_id_availability = next_period[0]
-            next_start = datetime.strptime(next_period[1], "%Y-%m-%d").date()
-            next_end = datetime.strptime(next_period[2], "%Y-%m-%d").date()
-            next_comment = next_period[3]
-
-            # Are they contiguous?
-            if next_start <= current_end + timedelta(days=1):
-                current_end = max(current_end, next_end)
-                if next_comment and next_comment != current_comment:
-                    current_comment += f" | {next_comment}"
-                
-                merged_periods.append((current_start, current_end, current_comment))
-                ids_to_delete.append(current_id_availability, next_id_availability)
-            
-            else:
-                print("No son adyacentes")
+    # TODO No te cargues esto aún:
+    # def merge_periods(self, id_volunteer, confirmed):
+    #     """"""
+    #     periods = self.am.get_confirmed_availability_by_id_volunteer(id_volunteer, confirmed)
+    #     if not periods or len(periods) < 2:
+    #         return  # Nothing to merge
+    #
+    #     print(periods)
+    #
+    #     # Estructura: [(id_availability, date_init, date_end, comments), ...]
+    #     merged_periods = []
+    #     ids_to_delete = []
+    #
+    #     current_period = periods[0]
+    #     current_id_availability = current_period[0]
+    #     current_start = datetime.strptime(periods[0][1], "%Y-%m-%d").date() # date_init of first register
+    #     current_end = datetime.strptime(periods[0][2], "%Y-%m-%d").date() # date_end of first register
+    #     current_comment = periods[3]
+    #
+    #     for next_period in periods[1:]: # [1:] slice list
+    #
+    #         next_id_availability = next_period[0]
+    #         next_start = datetime.strptime(next_period[1], "%Y-%m-%d").date()
+    #         next_end = datetime.strptime(next_period[2], "%Y-%m-%d").date()
+    #         next_comment = next_period[3]
+    #
+    #         # Are they contiguous?
+    #         if next_start <= current_end + timedelta(days=1):
+    #             current_end = max(current_end, next_end)
+    #             if next_comment and next_comment != current_comment:
+    #                 current_comment += f" | {next_comment}"
+    #
+    #             merged_periods.append((current_start, current_end, current_comment))
+    #             ids_to_delete.append(current_id_availability, next_id_availability)
+    #
+    #         else:
+    #             print("No son adyacentes")
 
 
 
