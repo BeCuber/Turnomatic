@@ -83,7 +83,7 @@ class TableWidgetManager:
     def define_availability_table(self, availability_table: QTableWidget):
         """Configure availability table for edit and connect signals."""
         self.availability_table = availability_table  # Guardamos la tabla como atributo
-
+        self._updating_table = False # control Flag
         # Asegura de que la primera columna (ID) está oculta
         availability_table.insertColumn(0)
         availability_table.setColumnHidden(0, True)
@@ -102,8 +102,8 @@ class TableWidgetManager:
                 id_volunteer (int): The volunteer's ID.
                 availability_table (QTableWidget): The table widget to populate.
         """
-
-        availability_table.blockSignals(True) # Avoid errors by triggering cellChanged
+        self._updating_table = True # control flag
+        # availability_table.blockSignals(True) # Avoid errors by triggering cellChanged
         availability_table.clearContents()
         availability_table.setRowCount(0) # reset number of rows
 
@@ -130,7 +130,8 @@ class TableWidgetManager:
             comment_item.setFlags(comment_item.flags() | Qt.ItemIsEditable | Qt.ItemIsEnabled)
             availability_table.setItem(row_idx, 4, comment_item)
 
-        availability_table.blockSignals(False) # Let edit the table
+        # availability_table.blockSignals(False) # Let edit the table
+        self._updating_table = False
 
 
     def update_availability(self, row: int, col: int):
@@ -141,43 +142,100 @@ class TableWidgetManager:
                 row (int): The edited row index.
                 col (int): The edited column index.
         """
+        # availability_table = self.availability_table
+        #
+        # id_availability = availability_table.item(row, 0).text()
+        #
+        # id_volunteer = self.am.get_id_volunteer_from_id_availability(id_availability)
+        #
+        # # Obtener todos los datos necesarios de la fila
+        # date_init = availability_table.item(row, 1).text()
+        # date_end = availability_table.item(row, 2).text()
+        # confirmed_item = availability_table.item(row, 3)
+        # comments_item = availability_table.item(row, 4)
+        #
+        # confirmed = confirmed_item.checkState() == Qt.Checked if confirmed_item else False
+        # comments = comments_item.text() if comments_item else ""
+        #
+        # # Validar fechas solo si una de ellas cambió
+        # if col in (1, 2):  # date_init o date_end
+        #     try:
+        #         self.am.validate_availability(
+        #             id_volunteer,
+        #             date_init,
+        #             date_end,
+        #             id_availability
+        #         )
+        #     except ValueError as e:
+        #         QMessageBox.warning(None, "Error de validación", str(e))
+        #         self.display_individual_availability_data_table(id_volunteer, availability_table)
+        #         return
+        #
+        # self.am.update_availability(
+        #     id_availability=id_availability,
+        #     id_volunteer=id_volunteer,
+        #     date_init=date_init,
+        #     date_end=date_end,
+        #     comments=comments,
+        #     confirmed=confirmed
+        # )
+        #
+        # self.am.merge_periods(id_volunteer, confirmed, id_availability)
+        if self._updating_table:
+            return  # Evita recursión o interferencias
+
         availability_table = self.availability_table
 
-        id_availability = availability_table.item(row, 0).text()
-
-        id_volunteer = self.am.get_id_volunteer_from_id_availability(id_availability)
-
-        # Obtener todos los datos necesarios de la fila
-        date_init = availability_table.item(row, 1).text()
-        date_end = availability_table.item(row, 2).text()
-        confirmed_item = availability_table.item(row, 3)
-        comments_item = availability_table.item(row, 4)
-
-        confirmed = confirmed_item.checkState() == Qt.Checked if confirmed_item else False
-        comments = comments_item.text() if comments_item else ""
-
-        # Validar fechas solo si una de ellas cambió
-        if col in (1, 2):  # date_init o date_end
-            try:
-                self.am.validate_availability(
-                    id_volunteer,
-                    date_init,
-                    date_end,
-                    id_availability
-                )
-            except ValueError as e:
-                QMessageBox.warning(None, "Error de validación", str(e))
-                self.display_individual_availability_data_table(id_volunteer, availability_table)
+        try:
+            id_item = availability_table.item(row, 0)
+            if not id_item:
                 return
 
-        self.am.update_availability(
-            id_availability=id_availability,
-            id_volunteer=id_volunteer,
-            date_init=date_init,
-            date_end=date_end,
-            comments=comments,
-            confirmed=confirmed
-        )
+            id_availability = int(id_item.text())
+            id_volunteer = self.am.get_id_volunteer_from_id_availability(id_availability)
+
+            date_init_item = availability_table.item(row, 1)
+            date_end_item = availability_table.item(row, 2)
+            confirmed_item = availability_table.item(row, 3)
+            comments_item = availability_table.item(row, 4)
+
+            if not date_init_item or not date_end_item:
+                return  # Incompleto
+
+            date_init = date_init_item.text()
+            date_end = date_end_item.text()
+            confirmed = confirmed_item.checkState() == Qt.Checked if confirmed_item else False
+            comments = comments_item.text() if comments_item else ""
+
+            # Validar fechas si cambiaron
+            if col in (1, 2):
+                try:
+                    self.am.validate_availability(id_volunteer, date_init, date_end, id_availability)
+                except ValueError as e:
+                    QMessageBox.warning(None, "Error de validación", str(e))
+                    self._updating_table = True
+                    self.display_individual_availability_data_table(id_volunteer, availability_table)
+                    self._updating_table = False
+                    return
+
+            # Actualizar
+            self.am.update_availability(
+                id_availability=id_availability,
+                id_volunteer=id_volunteer,
+                date_init=date_init,
+                date_end=date_end,
+                comments=comments,
+                confirmed=confirmed
+            )
+
+            # Fusionar si procede y refrescar
+            self._updating_table = True
+            self.am.merge_periods(id_volunteer, confirmed, id_availability)
+            self.display_individual_availability_data_table(id_volunteer, availability_table)
+            self._updating_table = False
+
+        except Exception as e:
+            QMessageBox.critical(None, "Error inesperado", f"Ocurrió un error: {str(e)}")
 
 
 

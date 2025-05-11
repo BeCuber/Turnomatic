@@ -3,6 +3,9 @@ import os
 from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
+
+from src.logic.availability_manager import AvailabilityManager
+from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.menubar import MenuBarManager
 from src.data.db_connector import DatabaseConnector
 from src.ui.pages.calendar_page import CalendarPage
@@ -49,3 +52,23 @@ class MainWindow(QMainWindow):
         print("Cerrando conexión con la base de datos...")
         self.db.close_connection()  # Close the connection
         event.accept()  # Let close the window
+
+
+if __name__ == "__main__":
+    db = DatabaseConnector()
+    am = AvailabilityManager(db)
+    vm = VolunteerManager(db)
+    mw = MainWindow()
+    cp = CalendarPage(mw, db)
+
+    periods = am.get_confirmed_availability_by_id_volunteer(1, True)
+    # periods = am.get_availability_by_id_volunteer(1)
+
+    print(periods)  # debug
+    print(len(periods))
+
+
+    # print(cp._get_availability_index(periods, 55)) # 1
+
+
+    am.db.close_connection()

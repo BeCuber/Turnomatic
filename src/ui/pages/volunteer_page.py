@@ -229,6 +229,10 @@ class VolunteerPage(QWidget):
             QMessageBox.warning(self, "Error de validación", str(e))
             return
 
+        new_id = self.db.get_last_inserted_id()
+        self.am.merge_periods(id_volunteer, data["confirmed"], new_id)
+
+
         self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
         QMessageBox.information(self, " ", "Disponibilidad añadida correctamente.")
 

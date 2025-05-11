@@ -1,4 +1,5 @@
 from src.data.db_connector import DatabaseConnector
+from datetime import datetime, timedelta # para merge
 
 
 class AvailabilityManager:
@@ -79,6 +80,12 @@ class AvailabilityManager:
         return self.db.fetch_query_one(query, (id_availability,))[0]
     
 
+    def get_availability_by_id(self, id_availability):
+        """"""
+        query="SELECT * from availability WHERE id_availability = ?"
+        return self.db.fetch_query_one(query, (id_availability,))
+
+
     def update_availability(self, id_availability, id_volunteer, date_init, date_end, comments, confirmed):
         """Update an availibilty."""
 
@@ -138,6 +145,96 @@ class AvailabilityManager:
         return overlapping
 
 
+    def merge_periods(self, id_volunteer, confirmed, changed_id_availability):
+        """
+        Try to merge the changed period with its contiguous periods
+        """
+        # periods son todos los periodos de un id_volunteer y un mismo confirmed
+        periods = self.get_confirmed_availability_by_id_volunteer(id_volunteer, confirmed)
+        if not periods or len(periods) < 2: # Si no hay dos, no hay nada que juntar
+            return  # Nothing to merge
+
+        # Get current availability and its index
+        index, current_period = self._get_current_availability(periods, changed_id_availability)
+        id_current, start_current, end_current, comment_current = current_period
+        start_current_date = datetime.strptime(start_current, "%Y-%m-%d").date()
+        end_current_date = datetime.strptime(end_current, "%Y-%m-%d").date()
+
+        # intentar fusionar con el anterior
+        if index > 0:  # Si es el primero, no tiene anterior
+            previous = periods[index - 1]
+            id_previous, start_previous, end_previous, comment_previous = previous
+            start_previous_date = datetime.strptime(start_previous, "%Y-%m-%d").date()
+            end_previous_date = datetime.strptime(end_previous, "%Y-%m-%d").date()
+
+            # si fecha fin anterior + 1 dia = fecha inicio current
+            if end_previous_date + timedelta(days=1) == start_current_date:
+                new_start = start_previous  # no hace falta usar date porque se guarda en bd con valor string
+                new_end = end_current
+                new_comment = self._merge_comments(previous, current_period)
+                # delete old id,s. Delete must happen before create to not create an availability with same date
+                self.delete_availability(id_previous)
+                self.delete_availability(id_current)
+                # create new one
+                self.create_availability(id_volunteer, new_start, new_end, new_comment, confirmed) # Create new register
+                changed_id_availability = self.db.get_last_inserted_id()
+
+
+        # periods may have changed so the index, we call them again:
+        periods = self.get_confirmed_availability_by_id_volunteer(id_volunteer, confirmed)
+        if not periods or len(periods) < 2: # Si no hay dos, no hay nada que juntar
+            return  # Nothing to merge
+
+        index, current_period = self._get_current_availability(periods, changed_id_availability)
+        id_current, start_current, end_current, comment_current = current_period
+        start_current_date = datetime.strptime(start_current, "%Y-%m-%d").date()
+        end_current_date = datetime.strptime(end_current, "%Y-%m-%d").date()
+
+        # intenta fusionar con el siguiente
+        if index < len(periods) - 1: # si es el último, no tiene un siguiente
+            nxt_period = periods[index + 1]
+            id_nxt, start_nxt, end_nxt, comment_nxt = nxt_period
+            start_nxt_date = datetime.strptime(start_nxt, "%Y-%m-%d").date()
+            end_nxt_date = datetime.strptime(end_nxt, "%Y-%m-%d").date()
+
+            # si fecha fin current + 1 = start_nxt
+            if end_current_date + timedelta(days=1) == start_nxt_date:
+                new_start = start_current
+                new_end = end_nxt
+                new_comment = self._merge_comments(current_period, nxt_period)
+
+                self.delete_availability(id_current)
+                self.delete_availability(id_nxt)
+
+                self.create_availability(id_volunteer, new_start, new_end, new_comment, confirmed)
+
+                changed_id_availability = self.db.get_last_inserted_id()
+
+
+
+    def _merge_comments(self, period1, period2):  # period1 period2 to compare instead only comments
+        if not period1[3] and not period2[3]:
+            return ""
+        elif period1[3] == period2[3]:
+            return period1[3]
+        elif not period1[3] and period2[3]:
+            return period2[3]
+        elif period1[3] and not period2[3]:
+            return period1[3]
+        else:
+            return f"({period1[1]} - {period1[2]}): {period1[3]} || ({period2[1]} - {period2[2]}): {period2[3]}"
+
+    def _get_current_availability(self, periods, changed_id_availability):
+        """Creates an index and returns where is the changed availability"""
+        for i in range(len(periods)):
+            id_availability = periods[i][0] # The first value of the tuple is id_availability
+            if id_availability == changed_id_availability:
+                return i, periods[i]
+        return None
+
+
+
+
 
 
 # from bash: $ python -m src.logic.availability_manager (-m points "src" a module)
@@ -145,7 +242,11 @@ if __name__ == "__main__":
     db = DatabaseConnector()
     am = AvailabilityManager(db)
 
-    print(am.get_id_volunteer_from_id_availability(43))
-    print(am.get_availability_by_id_volunteer(16))
+    # am.create_availability(1, "2025-05-14", "2025-05-14", "test", 0)
+
+    # print(db.get_last_inserted_id())
+
+    print(am.get_availability_by_id_volunteer(1))
+    print(am.get_availability_by_id(60))
 
     am.db.close_connection()

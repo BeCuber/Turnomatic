@@ -217,6 +217,10 @@ class DatabaseConnector:
             cursor.close()
 
 
+    def get_last_inserted_id(self):
+        return self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+
     def close_connection(self):
         """
         Closes the database connection.
