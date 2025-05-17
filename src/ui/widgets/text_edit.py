@@ -32,7 +32,9 @@ class TextEditManager():
             self.input_dni.setText(volunteer_data['id_card'] or '')
             self.input_email.setText(volunteer_data['email'] or '')
             self.input_phone.setText(volunteer_data['phone'] or '')
+            self.input_medication.setPlaceholderText("Describe la información que se deba tener en cuenta")
             self.input_medication.setPlainText(volunteer_data['medication_description'] or '')
+            self.input_allergies.setPlaceholderText("Describe la información que se deba tener en cuenta")
             self.input_allergies.setPlainText(volunteer_data['allergy_description'] or '')
             self.input_contact_person.setPlainText(volunteer_data['contact_person'] or '')
 

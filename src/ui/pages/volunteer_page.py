@@ -1,7 +1,9 @@
-from PyQt5.QtWidgets import QWidget,QTableWidget, QPushButton, QDialog, QMessageBox
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget
 from PyQt5 import uic
 import os
 from PyQt5.QtGui import QIcon
+
+from src.ui.widgets.calendar import CalendarManager
 from src.ui.widgets.combo_boxes import ComboBoxManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.ui.widgets.text_edit import TextEditManager
@@ -33,12 +35,13 @@ class VolunteerPage(QWidget):
         self.btn_add_availability = self.findChild(QPushButton, "btnAddAvailability")
         self.btn_delete_availability = self.findChild(QPushButton, "btnDeleteAvailability")
         self.btn_edit_volunteer = self.findChild(QPushButton, "btnEditVolunteer")
+        self.calendar = self.findChild(QCalendarWidget, "calendarWidgetIndividual")
 
 
         # Inicialize
         self.table_manager = TableWidgetManager(self, self.db)
         self.table_manager.define_all_volunteers_table(self.volunteer_table)
-        self.table_manager.define_availability_table(self.availability_table)
+        self.table_manager.define_availability_table(self.availability_table, self.calendar)
 
         self.combobox_manager = ComboBoxManager(self, self.db)
         self.combobox_manager.define_form_combobox()
@@ -47,6 +50,8 @@ class VolunteerPage(QWidget):
 
         self.radio_btn_manager = RadioButtonsManager(self, self.db)
         self.radio_btn_manager.define_form_radio_buttons()
+
+        self.calendar_manager = CalendarManager(self, self.db)
 
 
         # Default view
@@ -100,7 +105,7 @@ class VolunteerPage(QWidget):
         self.text_edit_manager.display_selected_volunteer_text_data(volunteer_data)
         self.combobox_manager.display_selected_volunteer_combobox_data(volunteer_data)
         self.radio_btn_manager.display_form_radio_button_data(volunteer_data)
-        self.table_manager.display_individual_availability_data_table(volunteer_id, self.availability_table)
+        self.table_manager.display_individual_availability_data_table(volunteer_id, self.availability_table, self.calendar)
 
         self.radio_btn_manager.on_radio_changed(self.radio_btn_manager.medication_group, self.text_edit_manager.input_medication)
         self.radio_btn_manager.on_radio_changed(self.radio_btn_manager.allergy_group, self.text_edit_manager.input_allergies)
@@ -233,7 +238,7 @@ class VolunteerPage(QWidget):
         self.am.merge_periods(id_volunteer, data["confirmed"], new_id)
 
 
-        self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
+        self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table, self.calendar)
         QMessageBox.information(self, " ", "Disponibilidad añadida correctamente.")
 
 
@@ -259,7 +264,7 @@ class VolunteerPage(QWidget):
             try:
                 self.am.delete_availability(id_availability)
                 id_volunteer = self.volunteer_table.item(self.volunteer_table.currentRow(), 0).text()
-                self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table)
+                self.table_manager.display_individual_availability_data_table(id_volunteer, self.availability_table, self.calendar)
 
                 # Confirmación de éxito
                 QMessageBox.information(self, " ", "Periodo eliminado correctamente.")
@@ -351,6 +356,7 @@ class VolunteerPage(QWidget):
 
     def cancel_editing(self):
         """"""
+        self.display_volunteer_data()
         self.set_edit_mode(False)
 
 

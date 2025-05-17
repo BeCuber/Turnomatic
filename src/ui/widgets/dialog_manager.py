@@ -121,5 +121,6 @@ class DialogManager(QDialog):
             "date_init": self.date_init.date().toString("yyyy-MM-dd"),
             "date_end": self.date_end.date().toString("yyyy-MM-dd"),
             "comments": self.comments_input.toPlainText(),
-            "confirmed": int(self.confirmed_checkbox.isChecked())
+            # "confirmed": int(self.confirmed_checkbox.isChecked())
+            "confirmed": self.confirmed_checkbox.isChecked()
         }
