@@ -6,7 +6,7 @@ from PyQt5.QtCore import QDate
 
 
 
-class TextEditManager():
+class TextEditManager:
     def __init__(self, parent: QWidget, db: DatabaseConnector):
         """Initialize text fields manager."""
         self.parent = parent

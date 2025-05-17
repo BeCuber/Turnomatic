@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget
 from PyQt5 import uic
 import os
@@ -62,6 +63,10 @@ class VolunteerPage(QWidget):
 
         # Select volunteer
         self.volunteer_table.itemSelectionChanged.connect(lambda: self.display_volunteer_data())
+
+        # Select day on calendar
+        # date_selected = self.calendar.selectedDate()
+        self.calendar.clicked[QDate].connect(lambda date: self.calendar_manager.on_calendar_availability_clicked(date, self.availability_table))
 
 
         # Radiobtn connect with plaintext
