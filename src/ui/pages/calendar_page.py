@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timedelta # para merge
 
 from src.logic.volunteer_manager import VolunteerManager
+from src.ui.widgets.calendar import CalendarManager
 #from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.logic.availability_manager import AvailabilityManager
@@ -34,6 +35,7 @@ class CalendarPage(QWidget):
 
         #Initialize
         self.table_manager = TableWidgetManager(self, self.db)
+        self.calendar_manager = CalendarManager(self, self.db)
 
         self.table_manager.define_available_volunteer_list(self.confirmed_volunteer_table)
         self.table_manager.define_available_volunteer_list(self.not_confirmed_volunteer_table)
@@ -43,6 +45,8 @@ class CalendarPage(QWidget):
         self.calendar.selectionChanged.connect(lambda: self.table_manager.update_confirmed_volunteer_list(self.calendar, self.not_confirmed_volunteer_table, 0))
 
         self.display_volunteer_lists()
+
+        self.calendar_manager.set_heatmap(self.calendar)
 
 
         self.btn_add.clicked.connect(lambda: self.change_confirmed(self.not_confirmed_volunteer_table))
@@ -110,6 +114,9 @@ class CalendarPage(QWidget):
         if changed_id_availability:
             self.am.merge_periods(id_volunteer, new_confirmed, changed_id_availability)
 
+
+        self.calendar_manager.set_heatmap(self.calendar)
+
     
     def get_selected_volunteer_id(self):
         """Returns the id_volunteer of the selected row in either table, or None if no row is selected."""
@@ -127,7 +134,9 @@ class CalendarPage(QWidget):
 
         return None
 
-
+    def refresh(self):
+        """Updates the heatmap"""
+        self.calendar_manager.set_heatmap(self.calendar)
 
 
 # from bash: $ python -m src.ui.pages.calendar_page (-m points "src" a module)

@@ -1,4 +1,5 @@
 # from PyQt5.QtCore.QUrl import query
+from PyQt5.QtWidgets import QCalendarWidget, QTableWidget
 
 from src.data.db_connector import DatabaseConnector
 

@@ -1,3 +1,5 @@
+# from PyQt5.QtCore.QUrl import query
+
 from src.data.db_connector import DatabaseConnector
 from datetime import datetime, timedelta # para merge
 
@@ -210,8 +212,6 @@ class AvailabilityManager:
 
                 changed_id_availability = self.db.get_last_inserted_id()
 
-
-
     def _merge_comments(self, period1, period2):  # period1 period2 to compare instead only comments
         if not period1[3] and not period2[3]:
             return ""
@@ -233,6 +233,30 @@ class AvailabilityManager:
         return None
 
 
+    def get_date_min(self):
+        """"""
+        query = "SELECT MIN(date_init) FROM availability"
+        result = self.db.fetch_query_one(query)
+        return result[0] # 2025-04-22 <= format str
+
+
+    def get_date_max(self):
+        """"""
+        query = "SELECT MAX(date_end) FROM availability"
+        result = self.db.fetch_query_one(query)
+        return result[0] # 2025-09-03 <= format str
+
+    def get_all_confirmed_availabilities(self):
+        """"""
+        raw_data = self.db.fetch_query_all("SELECT * FROM availability WHERE confirmed = 1")
+        return [{
+            "id": v[0],
+            "id_volunteer": v[1],
+            "date_init": v[2],
+            "date_end": v[3],
+            "comments": v[4],
+            "confirmed": bool(v[5])
+            } for v in raw_data]
 
 
 
@@ -246,7 +270,12 @@ if __name__ == "__main__":
 
     # print(db.get_last_inserted_id())
 
-    print(am.get_availability_by_id_volunteer(1))
-    print(am.get_availability_by_id(60))
+    # print(am.get_availability_by_id_volunteer(1))
+    # print(am.get_availability_by_id(60))
+
+    print(am.get_date_min())
+    print(am.get_date_max())
+    print(am.read_all_availabilities())
+
 
     am.db.close_connection()

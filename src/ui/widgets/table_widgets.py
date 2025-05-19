@@ -188,7 +188,7 @@ class TableWidgetManager:
                 except ValueError as e:
                     QMessageBox.warning(None, "Error de validación", str(e))
                     self._updating_table = True
-                    self.display_individual_availability_data_table(id_volunteer, availability_table)
+                    self.display_individual_availability_data_table(id_volunteer, availability_table, calendar)
                     self._updating_table = False
                     return
 

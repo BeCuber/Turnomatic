@@ -24,6 +24,7 @@ class MenuBarManager():
 
     def show_calendar(self):
         """Cambia a la página del calendario."""
+        self.calendar_page.refresh()
         self.calendar_page.display_volunteer_lists()
         self.stacked_widget.setCurrentIndex(0)
 

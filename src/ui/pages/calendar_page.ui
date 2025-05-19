@@ -13,9 +13,9 @@
   <widget class="QCalendarWidget" name="calendarWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>120</x>
      <y>10</y>
-     <width>901</width>
+     <width>871</width>
      <height>801</height>
     </rect>
    </property>
@@ -23,9 +23,9 @@
   <widget class="QTableWidget" name="volunteerTableWidget">
    <property name="geometry">
     <rect>
-     <x>980</x>
+     <x>1010</x>
      <y>90</y>
-     <width>341</width>
+     <width>311</width>
      <height>271</height>
     </rect>
    </property>
@@ -56,9 +56,9 @@
   <widget class="QTableWidget" name="notConfirmedVolunteerTable">
    <property name="geometry">
     <rect>
-     <x>980</x>
+     <x>1000</x>
      <y>530</y>
-     <width>341</width>
+     <width>321</width>
      <height>271</height>
     </rect>
    </property>
@@ -89,7 +89,7 @@
   <widget class="QPushButton" name="btnAddConfirmed">
    <property name="geometry">
     <rect>
-     <x>1090</x>
+     <x>1110</x>
      <y>400</y>
      <width>51</width>
      <height>51</height>
@@ -102,7 +102,7 @@
   <widget class="QPushButton" name="btnSubstractConfirmed">
    <property name="geometry">
     <rect>
-     <x>1170</x>
+     <x>1190</x>
      <y>400</y>
      <width>51</width>
      <height>51</height>
@@ -115,8 +115,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>1080</x>
-     <y>40</y>
+     <x>1100</x>
+     <y>50</y>
      <width>151</width>
      <height>41</height>
     </rect>
@@ -136,8 +136,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>1080</x>
-     <y>480</y>
+     <x>1100</x>
+     <y>490</y>
      <width>151</width>
      <height>41</height>
     </rect>
@@ -152,6 +152,83 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="gradientImage">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>100</y>
+     <width>21</width>
+     <height>701</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>C:/Users/Usuario/Downloads/degradado.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>700</y>
+     <width>31</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>0</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>270</y>
+     <width>31</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>10</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>780</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string>Voluntarios</string>
    </property>
   </widget>
  </widget>

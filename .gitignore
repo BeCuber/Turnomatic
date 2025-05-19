@@ -29,4 +29,6 @@ build/
 
 # Base de datos local 
 *.sqlite3
+*.sqlite
+# *.db
 
