@@ -3,7 +3,7 @@ import os
 from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
-
+from src.utils.path_helper import get_resource_path
 from src.logic.availability_manager import AvailabilityManager
 from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.menubar import MenuBarManager
@@ -18,13 +18,15 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Load the ui file - dinamic route
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-        UI_PATH = os.path.join(BASE_DIR, "./main_window.ui")
+        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        # UI_PATH = os.path.join(BASE_DIR, "./main_window.ui")
+        UI_PATH = get_resource_path("src/ui/main_window.ui")
         uic.loadUi(UI_PATH, self)
 
         # Set icon and title window
         self.setWindowTitle("Turnomatic")
-        ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "window_icon.ico")
+        # ICON_PATH = os.path.join(BASE_DIR, "../../assets", "images", "window_icon.ico")
+        ICON_PATH = get_resource_path("assets/images/300_trans.ico")
         self.setWindowIcon(QIcon(ICON_PATH))
 
         # Connect to database

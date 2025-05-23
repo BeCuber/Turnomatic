@@ -1,5 +1,5 @@
 import sqlite3
-import os
+from src.utils.path_helper import get_resource_path
 
 
 class DatabaseConnector:
@@ -16,14 +16,15 @@ class DatabaseConnector:
             - Enables foreign key constraints (PRAGMA foreign_keys = ON).
             - Always closes the cursor to prevent memory leaks.
     """
-    def __init__(self, db_name = "turnomatic.db"):
+    def __init__(self, db_name = "src/data/turnomatic.db"):
         """
             Initializes the database connection and creates tables if they do not exist.
 
         Args:
             db_name (str): Name of the SQLite database file. Default is "turnomatic.db".
         """
-        self.db_path = os.path.join(os.path.dirname(__file__), db_name)
+        # self.db_path = os.path.join(os.path.dirname(__file__), db_name)
+        self.db_path = get_resource_path(db_name)
         self.conn = sqlite3.connect(self.db_path)
         # Enable ON DELETE CASCADE
         self.conn.execute("PRAGMA foreign_keys = ON;")

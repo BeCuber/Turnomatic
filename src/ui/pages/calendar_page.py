@@ -9,6 +9,8 @@ from src.ui.widgets.calendar import CalendarManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.logic.availability_manager import AvailabilityManager
 from src.data.db_connector import DatabaseConnector
+from src.utils.path_helper import get_resource_path
+
 
 class CalendarPage(QWidget):
     def __init__(self, parent, db: DatabaseConnector):
@@ -16,8 +18,9 @@ class CalendarPage(QWidget):
         self.am = AvailabilityManager(db)
 
         # Load UI
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-        UI_PATH = os.path.join(BASE_DIR, "./calendar_page.ui")  # specific UI for this page
+        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        # UI_PATH = os.path.join(BASE_DIR, "./calendar_page.ui")  # specific UI for this page
+        UI_PATH = get_resource_path("src/ui/pages/calendar_page.ui")  # specific UI for this page
         uic.loadUi(UI_PATH, self)
 
         self.parent = parent

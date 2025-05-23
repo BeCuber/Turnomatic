@@ -13,14 +13,17 @@ from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.dialog_manager import DialogManager
 from src.logic.availability_manager import AvailabilityManager
+from src.utils.path_helper import get_resource_path
+
 
 class VolunteerPage(QWidget):
     def __init__(self, parent, db:DatabaseConnector):
         super().__init__()
 
         # Load UI
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-        UI_PATH = os.path.join(BASE_DIR, "./volunteer_page.ui")  # specific UI for this page
+        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        # UI_PATH = os.path.join(BASE_DIR, "./volunteer_page.ui")  # specific UI for this page
+        UI_PATH = get_resource_path("src/ui/pages/volunteer_page.ui")
         uic.loadUi(UI_PATH, self)
 
         self.parent = parent
@@ -303,9 +306,13 @@ class VolunteerPage(QWidget):
 
     def define_dynamic_btns(self):
         """"""
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        SAVE_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "disco.ico")
-        CANCEL_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "circulo-cruzado.ico")
+        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        # SAVE_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "disco.ico")
+        # CANCEL_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "circulo-cruzado.ico")
+
+        SAVE_ICON_PATH = get_resource_path("assets/images/disco.ico")
+        CANCEL_ICON_PATH = get_resource_path("assets/images/circulo-cruzado.ico")
+
 
         self.btn_cancel_edit = QPushButton(self)
         self.btn_cancel_edit.setIcon(QIcon(CANCEL_ICON_PATH))
@@ -349,7 +356,6 @@ class VolunteerPage(QWidget):
 
         self.volunteer_table.setDisabled(active)
         self.availability_table.setDisabled(active)
-        # TODO deshabilitar calendar widget cuando exista
 
 
     def set_form_fields_editable(self, editable: bool):

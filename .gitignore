@@ -3,6 +3,8 @@
 # Entorno virtual de Python
 virt/
 venv/
+_venv/
+env/
 __pycache__/
 *.pyc
 *.pyo
@@ -19,7 +21,7 @@ __pycache__/
 *.log
 *.tmp
 
-# PyInstaller (si generas un .exe)
+# PyInstaller
 dist/
 build/
 *.spec
