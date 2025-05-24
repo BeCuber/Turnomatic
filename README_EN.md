@@ -45,26 +45,31 @@ This structure encourages code reuse and a clear separation of concerns between:
 ### Milestones
 The following basic functionalities have already been implemented:
 
-- Loading volunteer data from a local SQLite database
-- Graphical interface with PyQt5 to visualize the data
-- Separation of data logic from presentation
-- Modular organization using widget managers (TextEdit, ComboBox, RadioButtons, etc.)
-- Two pages are defined in the application, accessed through the menu bar
-  - `calendar_page.py`: Hosts a heatmap and allows editing of confirmed Volunteer groups from those available.
-  - `volunteer_page.py`: Displays the list of all Volunteers, a profile for each one, and the dates they are available.
-- Logic for enabling/disabling fields on editing mode for Volunteer's data completed
-- Field validation on forms which needed it to not lose data has been added.
+- Volunteer data loading from a local SQLite database.
+- Graphical user interface (GUI) developed with PyQt5 for data visualization and editing.
+- Clear separation between data logic and presentation layer.
+- Organization of widget logic through specific managers (TextEdit, ComboBox, RadioButtons...).
+- Two main pages defined in the application, accessible via the menu bar:
+  - `calendar_page.py`: Includes a heatmap and allows editing of confirmed volunteer groups from the list of available ones.
+  - `volunteer_page.py`: Displays a complete list of volunteers, their personal profiles, and their availability dates.
+- Logic for toggling volunteer data editing mode fully implemented.
+- Field validation to prevent data loss during editing.
+- Management of coherent and user-friendly date ranges.
+- GUI-based creation, editing, and deletion of volunteers and their availability (`volunteer_page.py`).
+- Synchronization of calendars with per-volunteer date tables.
+- Heatmap implementation in `calendar_page.py`.
+- Packaged for distribution on Windows.
 
 ### Next Steps
 
-- Logic that handles date edits to keep records for consistent, user-readable periods
-- Implement editing from all GUI fields (currently only retrieving data) (`volunteer_page.py`)
-- Add database architecture to manage meal/dinner and bed needs
-- Link date table data to calendars (`volunteer_page.py`)
-- Design the heatmap (`calendar_page.py`)
-- Internationalization
-- Internal code documentation
-- Packaging for cross-platform distribution (Windows/Linux)
+- Add a security layer for the database (evaluating SQLCipher).
+- Refactor the UI to support adaptability to various window sizes and screen resolutions.
+- Extend the database structure to register meal and bed requirements.
+- Add two new GUI pages to manage meals and beds.
+- Implement internationalization (i18n) support.
+- Add detailed internal documentation of the codebase.
+- Package the application for cross-platform distribution (add Linux support).
+- Create an installer to simplify software distribution and installation.
 
 ## Notes
 - **Personal use:** This code is primarily for learning and experimentation.
