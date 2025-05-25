@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy
 from PyQt5 import uic
 import os
 from PyQt5.QtGui import QIcon
@@ -57,33 +57,26 @@ class VolunteerPage(QWidget):
 
         self.calendar_manager = CalendarManager(self, self.db)
 
-
         # Default view
         self.volunteer_table.selectRow(0)
         self.display_volunteer_data()
         self.set_form_fields_editable(False)
 
-
         # Select volunteer
         self.volunteer_table.itemSelectionChanged.connect(lambda: self.display_volunteer_data())
 
         # Select day on calendar
-        # date_selected = self.calendar.selectedDate()
         self.calendar.clicked[QDate].connect(lambda date: self.calendar_manager.on_calendar_availability_clicked(date, self.availability_table))
 
-
         # Radiobtn connect with plaintext
-
         self.radio_btn_manager.connect_toggle_with_plaintext(
            self.radio_btn_manager.medication_group,
            self.text_edit_manager.input_medication
         )
-
         self.radio_btn_manager.connect_toggle_with_plaintext(
            self.radio_btn_manager.allergy_group,
            self.text_edit_manager.input_allergies
         )
-
 
         # Buttons
         self.btn_add_volunteer.clicked.connect(self.create_volunteer)
@@ -306,35 +299,24 @@ class VolunteerPage(QWidget):
 
     def define_dynamic_btns(self):
         """"""
-        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        # SAVE_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "disco.ico")
-        # CANCEL_ICON_PATH = os.path.join(BASE_DIR, "../../../assets", "images", "circulo-cruzado.ico")
 
-        SAVE_ICON_PATH = get_resource_path("assets/images/disco.ico")
-        CANCEL_ICON_PATH = get_resource_path("assets/images/circulo-cruzado.ico")
-
-
-        self.btn_cancel_edit = QPushButton(self)
-        self.btn_cancel_edit.setIcon(QIcon(CANCEL_ICON_PATH))
-        self.btn_cancel_edit.setToolTip("Cancelar edición")
+        self.btn_cancel_edit = QPushButton("Cancelar edición")
         self.btn_cancel_edit.setVisible(False)
 
-        self.btn_save_volunteer = QPushButton(self)
-        self.btn_save_volunteer.setIcon(QIcon(SAVE_ICON_PATH))
-        self.btn_save_volunteer.setToolTip("Guardar cambios")
+        self.btn_save_volunteer = QPushButton("Guardar")
         self.btn_save_volunteer.setVisible(False)
 
-        # Posición y tamaño para que ocupen el espacio del botón original
-        btn_rect = self.btn_edit_volunteer.geometry()
-        gap = 10
-        half_width = (btn_rect.width() - gap) // 2
-        height = btn_rect.height()
+        btn_layout = self.btn_edit_volunteer.parent().layout()
+        btn_layout.addWidget(self.btn_cancel_edit)
+        btn_layout.addWidget(self.btn_save_volunteer)
 
-        self.btn_cancel_edit.setGeometry(btn_rect.x(), btn_rect.y(), half_width, height)
-        self.btn_save_volunteer.setGeometry(btn_rect.x() + half_width + gap, btn_rect.y(), half_width, height)
+        self.btn_cancel_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.btn_save_volunteer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
 
         self.btn_cancel_edit.clicked.connect(self.cancel_editing)
         self.btn_save_volunteer.clicked.connect(self.save_volunteer_changes)
+
 
 
     def set_edit_mode(self, active: bool):

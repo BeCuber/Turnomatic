@@ -7,574 +7,624 @@
     <x>0</x>
     <y>0</y>
     <width>1336</width>
-    <height>859</height>
+    <height>891</height>
    </rect>
   </property>
-  <widget class="QTableWidget" name="allVolunteerTableWidget">
-   <property name="geometry">
-    <rect>
-     <x>25</x>
-     <y>41</y>
-     <width>391</width>
-     <height>731</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string>Nombre</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Apellido</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Apellido</string>
-    </property>
-   </column>
-  </widget>
-  <widget class="QLabel" name="labelNameVolunteer">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>50</y>
-     <width>301</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Calibri</family>
-     <pointsize>24</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-     <underline>false</underline>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEditPhone">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>180</y>
-     <width>181</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QDateEdit" name="dateEditBirth">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>220</y>
-     <width>181</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelTlf">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>180</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Teléfono</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelBirthdate">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>220</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Fecha de nacimiento</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelID">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>100</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>NIF/NIE/Pasaporte</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEditDNI">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>100</y>
-     <width>181</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="placeholderText">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelEmail">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>140</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>email</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEditEmail">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>140</y>
-     <width>181</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBoxCcaa">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>420</y>
-     <width>181</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBoxProvince">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>460</y>
-     <width>181</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBoxAssembly">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>500</y>
-     <width>181</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelCcaa">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>420</y>
-     <width>111</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Comunidad Autónoma</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelProvince">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>460</y>
-     <width>111</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Provincia</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelAssembly">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>500</y>
-     <width>111</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Asamblea</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelCarnet">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>300</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Carnet B</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonCarnetYes">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>300</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sí</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonCarnetNo">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>300</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>No</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelExp4x4">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>340</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Exp. 4x4</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButton4x4No">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>340</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>No</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButton4x4Yes">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>340</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sí</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBoxPosition">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>260</y>
-     <width>181</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelPosition">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>260</y>
-     <width>91</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Puesto solicitado</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelAsambleaProcedencia">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>380</y>
-     <width>151</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>9</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Asamblea de Procedencia:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelMedication">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>540</y>
-     <width>151</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Medicación / Patologías:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelContactPerson">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>700</y>
-     <width>151</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Persona de contacto:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelAllergies">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>620</y>
-     <width>151</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Alergias:</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="plainTextEditMedication">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>570</y>
-     <width>301</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="placeholderText">
-    <string>Describe la información que se deba tener en cuenta</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="plainTextEditAllergies">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>650</y>
-     <width>301</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="placeholderText">
-    <string>Describe la información que se deba tener en cuenta</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="plainTextEditContactPerson">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>730</y>
-     <width>301</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="placeholderText">
-    <string>Mercedes - Madre - 666 66 66 66</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonMedicationYes">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>540</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sí</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonMedicationNo">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>540</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>No</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonAllergyYes">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>620</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sí</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButtonAllergyNo">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>620</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>No</string>
-   </property>
-  </widget>
-  <widget class="QTableWidget" name="tableWidgetIndividualAvailability">
-   <property name="geometry">
-    <rect>
-     <x>840</x>
-     <y>440</y>
-     <width>451</width>
-     <height>331</height>
-    </rect>
-   </property>
-   <column>
-    <property name="text">
-     <string>Fecha inicio</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Fecha fin</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Confirmado</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Observaciones</string>
-    </property>
-   </column>
-  </widget>
-  <widget class="QCalendarWidget" name="calendarWidgetIndividual">
-   <property name="geometry">
-    <rect>
-     <x>840</x>
-     <y>50</y>
-     <width>451</width>
-     <height>291</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnAddVolunteer">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>790</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Nuevo Voluntario</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnDeleteVolunteer">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>790</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Borrar Voluntario</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnAddAvailability">
-   <property name="geometry">
-    <rect>
-     <x>1160</x>
-     <y>790</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Nueva Disponibilidad</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnDeleteAvailability">
-   <property name="geometry">
-    <rect>
-     <x>850</x>
-     <y>790</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Borrar Disponibilidad</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnEditVolunteer">
-   <property name="geometry">
-    <rect>
-     <x>630</x>
-     <y>790</y>
-     <width>121</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Editar Voluntario</string>
-   </property>
-  </widget>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1316</width>
+        <height>871</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QWidget" name="widgetLeft" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QTableWidget" name="allVolunteerTableWidget">
+            <column>
+             <property name="text">
+              <string>Nombre</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Apellido</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Apellido</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetLBtn" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_18">
+             <item>
+              <widget class="QPushButton" name="btnDeleteVolunteer">
+               <property name="text">
+                <string>Borrar Voluntario</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAddVolunteer">
+               <property name="text">
+                <string>Nuevo Voluntario</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widgetCenter" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QLabel" name="labelNameVolunteer">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Calibri</family>
+              <pointsize>24</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+              <underline>false</underline>
+             </font>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetDNI" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_20">
+             <item>
+              <widget class="QLabel" name="labelID">
+               <property name="text">
+                <string>NIF/NIE/Pasaporte</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditDNI">
+               <property name="placeholderText">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetEmail" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_21">
+             <item>
+              <widget class="QLabel" name="labelEmail">
+               <property name="text">
+                <string>Email</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditEmail"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetPhone" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_22">
+             <item>
+              <widget class="QLabel" name="labelTlf">
+               <property name="text">
+                <string>Teléfono</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEditPhone"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetBirthDate" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_23">
+             <item>
+              <widget class="QLabel" name="labelBirthdate">
+               <property name="text">
+                <string>Fecha de nacimiento</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="dateEditBirth"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetPosition" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_24">
+             <item>
+              <widget class="QLabel" name="labelPosition">
+               <property name="text">
+                <string>Puesto solicitado</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBoxPosition"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetCarnet" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_25">
+             <item>
+              <widget class="QLabel" name="labelCarnet">
+               <property name="text">
+                <string>Carnet B</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonCarnetYes">
+               <property name="text">
+                <string>Sí</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonCarnetNo">
+               <property name="text">
+                <string>No</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget4x4" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_26">
+             <item>
+              <widget class="QLabel" name="labelExp4x4">
+               <property name="text">
+                <string>Exp. 4x4</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButton4x4Yes">
+               <property name="text">
+                <string>Sí</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButton4x4No">
+               <property name="text">
+                <string>No</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="gBAssembly">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>Asamblea de Procedencia:</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="QWidget" name="widgetCcaa" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_27">
+                <item>
+                 <widget class="QLabel" name="labelCcaa">
+                  <property name="text">
+                   <string>Comunidad Autónoma</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBoxCcaa"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widgetProvince" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_28">
+                <item>
+                 <widget class="QLabel" name="labelProvince">
+                  <property name="text">
+                   <string>Provincia</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBoxProvince"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widgetAssembly" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_29">
+                <item>
+                 <widget class="QLabel" name="labelAssembly">
+                  <property name="text">
+                   <string>Asamblea</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBoxAssembly"/>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetMedYesNo" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_30">
+             <item>
+              <widget class="QLabel" name="labelMedication">
+               <property name="text">
+                <string>Medicación / Patologías:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonMedicationYes">
+               <property name="text">
+                <string>Sí</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonMedicationNo">
+               <property name="text">
+                <string>No</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="plainTextEditMedication">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>Describe la información que se deba tener en cuenta</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetAllergyYesNo" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_31">
+             <item>
+              <widget class="QLabel" name="labelAllergies">
+               <property name="text">
+                <string>Alergias:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonAllergyNo">
+               <property name="text">
+                <string>No</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButtonAllergyYes">
+               <property name="text">
+                <string>Sí</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="plainTextEditAllergies">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>Describe la información que se deba tener en cuenta</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetLabelContact" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_32">
+             <item>
+              <widget class="QLabel" name="labelContactPerson">
+               <property name="text">
+                <string>Persona de contacto:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="plainTextEditContactPerson">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>Mercedes - Madre - 666 66 66 66</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetCBtn" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_33">
+             <item>
+              <widget class="QPushButton" name="btnEditVolunteer">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Editar Voluntario</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widgetRight" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QCalendarWidget" name="calendarWidgetIndividual">
+            <property name="verticalHeaderFormat">
+             <enum>QCalendarWidget::NoVerticalHeader</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidgetIndividualAvailability">
+            <column>
+             <property name="text">
+              <string>Fecha inicio</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Fecha fin</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Confirmado</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Observaciones</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widgetRBtn" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_19">
+             <item>
+              <widget class="QPushButton" name="btnAddAvailability">
+               <property name="text">
+                <string>Nueva Disponibilidad</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnDeleteAvailability">
+               <property name="text">
+                <string>Borrar Disponibilidad</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
