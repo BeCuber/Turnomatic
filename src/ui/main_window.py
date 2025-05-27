@@ -26,6 +26,10 @@ class MainWindow(QMainWindow):
         ICON_PATH = get_resource_path("assets/images/300_trans.ico")
         self.setWindowIcon(QIcon(ICON_PATH))
 
+        # Load stylesheet
+        # self.apply_stylesheet("light")
+        self.apply_stylesheet("dark")
+
         # Connect to database
         self.db = DatabaseConnector()
 
@@ -45,6 +49,14 @@ class MainWindow(QMainWindow):
         
         # Show the app
         self.show()
+
+
+    def apply_stylesheet(self, theme="light"):
+        theme_file = f"assets/styles/{theme}.qss"
+        QSS_PATH = get_resource_path(theme_file)
+        with open(QSS_PATH, "r") as f:
+            self.setStyleSheet(f.read())
+
 
     def closeEvent(self, event):
         """Se ejecuta cuando se cierra la ventana"""

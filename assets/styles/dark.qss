@@ -1,0 +1,67 @@
+QWidget {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 10pt;
+    background-color: #2e2e2e;
+    color: #f0f0f0;
+}
+
+/* Botones */
+QPushButton {
+    background-color: #3fbf83;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    color: black;
+}
+QPushButton:hover {
+    background-color: #62cfa0;
+}
+QPushButton:pressed {
+    background-color: #2a9e6c;
+    color: white;
+}
+
+/* Entradas de texto */
+QLineEdit, QComboBox, QTextEdit {
+    background-color: #444;
+    border: 1px solid #666;
+    border-radius: 5px;
+    padding: 4px;
+    color: #f0f0f0;
+}
+
+/* Tablas */
+QTableWidget {
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    color: #f0f0f0;
+    gridline-color: #444;
+}
+QHeaderView::section {
+    background-color: #444;
+    border: 1px solid #555;
+    font-weight: bold;
+}
+QTableWidget::item:selected {
+    background-color: #3fbf83;
+    color: black;
+}
+
+/* Calendario */
+QCalendarWidget QWidget {
+    background-color: #3a3a3a;
+}
+QCalendarWidget QAbstractItemView:enabled {
+    selection-background-color: #3fbf83;
+    selection-color: black;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: #333;
+    width: 10px;
+}
+QScrollBar::handle:vertical {
+    background: #3fbf83;
+    border-radius: 4px;
+}

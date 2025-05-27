@@ -76,29 +76,13 @@ class CalendarManager:
 
             fmt = QTextCharFormat()
             # fmt.setBackground(QColor(self._get_color_for_count(count)))
-            fmt.setBackground(QColor(self._get_color_for_count_interpolated(count)))
+            fmt.setBackground(QColor(self._get_color(count)))
 
             calendar.setDateTextFormat(current, fmt)
             current = current.addDays(1)
 
 
-    def _get_color_for_count(self, count):
-        if count == 0:
-            return QColor("#FFFFFF")
-        elif 1<= count <= 3:
-            return QColor("#E2FFF1")
-        elif 4<= count <= 6:
-            return QColor("#C2F8DE")
-        elif 7<= count <= 8:
-            return QColor("#8DF3C3")
-        elif 9<= count <= 10:
-            return QColor("#3FBF83")
-        else:
-            return QColor("#1D8152")
-
-    # from PyQt5.QtGui import QColor
-
-    def _get_color_for_count_interpolated(self, count):
+    def _get_color(self, count):
         if count == 0:
             return QColor("#FFFFFF")  # Blanco para 0 personas
 
