@@ -3,6 +3,8 @@ import os
 from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
+
+from src.ui.pages.meals_and_beds_page import MealsBedsPage
 from src.utils.path_helper import get_resource_path
 from src.logic.availability_manager import AvailabilityManager
 from src.logic.volunteer_manager import VolunteerManager
@@ -39,13 +41,15 @@ class MainWindow(QMainWindow):
         # Initialize pages
         self.calendar_page = CalendarPage(self, self.db)
         self.volunteer_page = VolunteerPage(self, self.db)
+        self.meals_and_beds_page = MealsBedsPage(self, self.db)
 
         # Add pages to stack
         self.stacked_widget.addWidget(self.calendar_page)
         self.stacked_widget.addWidget(self.volunteer_page)
+        self.stacked_widget.addWidget(self.meals_and_beds_page)
  
         # Config menu manager
-        self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page)
+        self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page, self.meals_and_beds_page)
         
         # Show the app
         self.show()

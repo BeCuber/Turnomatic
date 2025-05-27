@@ -1,8 +1,6 @@
 from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy
 from PyQt5 import uic
-import os
-from PyQt5.QtGui import QIcon
 
 from src.ui.widgets.calendar import CalendarManager
 from src.ui.widgets.combo_boxes import ComboBoxManager
