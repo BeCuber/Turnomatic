@@ -67,6 +67,8 @@ class VolunteerPage(QWidget):
 
         # Select day on calendar
         self.calendar.clicked[QDate].connect(lambda date: self.calendar_manager.on_calendar_availability_clicked(date, self.availability_table))
+        # Selecto row on availability_table
+        self.availability_table.itemSelectionChanged.connect(lambda : self.table_manager.on_availability_clicked(self.availability_table, self.calendar))
 
         # Radiobtn connect with plaintext
         self.radio_btn_manager.connect_toggle_with_plaintext(

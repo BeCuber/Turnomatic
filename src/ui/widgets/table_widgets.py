@@ -212,6 +212,22 @@ class TableWidgetManager:
             QMessageBox.critical(None, "Error inesperado", f"Ocurrió un error: {str(e)}")
 
 
+    def on_availability_clicked(self, availability_table: QTableWidget, calendar: QCalendarWidget):
+        """"""
+        selected_item = availability_table.selectedItems()
+        if not selected_item:
+            return
+
+        row = selected_item[0].row()
+        date_init_item = availability_table.item(row, 1)
+
+        if date_init_item:
+            date_init = QDate.fromString(date_init_item.text(), "yyyy-MM-dd")
+            if date_init.isValid():
+                calendar.setSelectedDate(date_init)
+                calendar.showSelectedDate()
+
+
 
     # TABLES FOR calendar_page #
 

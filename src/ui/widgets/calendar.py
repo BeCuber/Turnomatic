@@ -22,7 +22,7 @@ class CalendarManager:
         """"""
         calendar.setFocus()
         fmt = QTextCharFormat()
-        fmt.setBackground(QColor("lightgreen") if confirmed else QColor("yellow"))
+        fmt.setBackground(QColor("lightgreen") if confirmed else QColor("#E5E4B8"))
 
         start = datetime.strptime(date_init, "%Y-%m-%d").date()
         end = datetime.strptime(date_end, "%Y-%m-%d").date()
