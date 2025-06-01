@@ -1,9 +1,10 @@
 QWidget {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 8pt;
     background-color: #2e2e2e;
     color: #f0f0f0;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 8pt;
 }
+
 
 /* Botones */
 QPushButton {
@@ -21,40 +22,239 @@ QPushButton:pressed {
     color: white;
 }
 
-/* Entradas de texto */
-QLineEdit, QComboBox, QTextEdit {
-    background-color: #444;
-    border: 1px solid #666;
-    border-radius: 5px;
-    padding: 4px;
+
+/* === QLineEdit, QPlainTextEdit, QTextEdit === */
+QLineEdit, QPlainTextEdit, QTextEdit {
+    background-color: #3a3a3a;
     color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 3px;
+}
+QLineEdit:disabled, QPlainTextEdit:disabled, QTextEdit:disabled, QLineEdit:read-only, QPlainTextEdit:read-only, QTextEdit:read-only {
+    background-color: #444;
+    color: #aaa;
+}
+/*QLabel nombre voluntario*/
+QLabel#labelNameVolunteer {
+    font-size: 18pt;
 }
 
-/* Tablas */
+
+/* === QComboBox === */
+QComboBox {
+    background-color: #3a3a3a; /*TODO 444*/
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 3px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+    selection-background-color: #3fbf83;
+    selection-color: #2e2e2e; /*TODO #444*/
+}
+
+QComboBox:disabled {
+    background-color: #444;
+    color: #aaa; /*TODO #888888*/
+}
+
+
+/* === QTableWidget === */
+QHeaderView::section {
+    background-color: #444;
+    border: 1px solid #555;
+    color: #f0f0f0;
+    font-weight: bold;
+    padding: 4px;
+}
+
 QTableWidget {
+    alternate-background-color: #333;
     background-color: #3a3a3a;
     border: 1px solid #555;
     color: #f0f0f0;
     gridline-color: #444;
 }
-QHeaderView::section {
-    background-color: #444;
-    border: 1px solid #555;
-    font-weight: bold;
-}
+
 QTableWidget::item:selected {
     background-color: #3fbf83;
     color: black;
 }
 
-/* Calendario */
-QCalendarWidget QWidget {
+QTableView::indicator:unchecked {
+    border: 2px solid #888;
+    background-color: transparent;
+}
+
+QTableView::indicator:checked {
+    border: 2px solid #3fbf83;
+    background-color: #3fbf83;
+}
+
+/* Estilo para el botón de la esquina (Corner Button) de QTableWidget */
+QTableCornerButton::section {
+    background-color: #444; /* Usa el mismo color que QHeaderView::section */
+    border: 1px solid #555; /* O el borde que quieras, similar al de las cabeceras */
+}
+
+/* === QRadioButton === */
+QRadioButton {
+    spacing: 6px;
+    color: #f0f0f0;
+}
+
+QRadioButton::indicator:checked {
+    background-color: #3fbf83;
+    border: 2px solid #3fbf83;
+    border-radius: 6px;
+}
+
+QRadioButton::indicator:unchecked {
+    background-color: transparent;
+    border: 2px solid #888;
+    border-radius: 6px;
+}
+
+QRadioButton::indicator {
+    width: 12px;
+    height: 12px;
+}
+
+QRadioButton:disabled {
+    color: #aaa;
+}
+
+
+/* === QCheckBox === */
+QCheckBox {
+    spacing: 6px;
+}
+
+QCheckBox::indicator {
+    width: 12px;
+    height: 12px;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #3fbf83;
+    border: 1px solid #3fbf83;
+}
+
+QCheckBox::indicator:unchecked {
+    background-color: transparent;
+    border: 1px solid #aaa;
+}
+
+QCheckBox:disabled {
+    color: #aaa;
+}
+
+
+/* === QDateEdit === */
+QDateEdit {
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 3px;
+}
+
+QDateEdit:disabled {
+    background-color: #444;
+    color: #aaa;
+}
+
+
+/* === QCalendarWidget === */
+QCalendarWidget {
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    border: 1px solid #444;
+}
+
+QCalendarWidget QToolButton {
+    color: #f0f0f0;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    background-color: #2b2b2b; /* Fondo de los botones de navegación */
+}
+
+QCalendarWidget QToolButton:hover {
+    background-color: #444;
+}
+
+QCalendarWidget QToolButton:pressed {
+    background-color: #555;
+}
+
+QCalendarWidget QWidget#qt_calendar_navigationbar {
     background-color: #3a3a3a;
 }
-QCalendarWidget QAbstractItemView:enabled {
-    selection-background-color: #3fbf83;
-    selection-color: black;
+
+QCalendarWidget QTableView QHeaderView::section {
+    background-color: #444;
+    color: #f0f0f0;
+    font-weight: bold;
+    border: none;
+    padding: 4px;
 }
+
+QCalendarWidget QTableView {
+    background-color: #3a3a3a;
+    gridline-color: #555;
+}
+
+QCalendarWidget QAbstractItemView:enabled {
+    selection-background-color: #1e88e5; /* Color de selección */
+    selection-color: #f0f0f0;              /* Texto negro sobre la selección */
+}
+
+QCalendarWidget QAbstractItemView::item:!selected {
+    background-color: #3a3a3a;
+    color: #f0f0f0 !important; /* ¡Forzado con !important! */
+}
+
+QCalendarWidget QAbstractItemView::item:!selected:!active {
+    background-color: #303030;
+    color: #b0b0b0 !important; /* ¡Forzado con !important! */
+}
+
+QCalendarWidget QAbstractItemView::item:weekend {
+    background-color: #3a3a3a;
+    color: #ff9900 !important; /* Naranja para fines de semana, forzado */
+}
+
+QCalendarWidget QAbstractItemView::item:weekend:!active {
+    background-color: #303030;
+    color: #cc7700 !important; /* Naranja más oscuro, forzado */
+}
+
+QCalendarWidget QAbstractItemView::item:today {
+    border: 2px solid #3fbf83;
+    border-radius: 4px;
+    background-color: #3a3a3a; /* Mantener el fondo del día actual */
+}
+
+QCalendarWidget QMenu {
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+}
+
+QCalendarWidget QWidget {
+    alternate-background-color: #333;
+}
+
+
+
+
+
+
+
 
 /* Scrollbars */
 QScrollBar:vertical {
@@ -65,3 +265,4 @@ QScrollBar::handle:vertical {
     background: #3fbf83;
     border-radius: 4px;
 }
+

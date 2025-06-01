@@ -135,20 +135,20 @@ class ComboBoxManager:
 
     def set_editable(self, editable: bool):
         """"""
-        readonly_style = "QComboBox { background-color: #f5f5f5; border: 1px solid #ccc; }"
-        editable_style = ""
+        # readonly_style = "QComboBox { background-color: #f5f5f5; border: 1px solid #ccc; }"
+        # editable_style = ""
 
         self.combobox_ccaa.setEnabled(editable)
         self.combobox_provinces.setEnabled(editable)
         self.combobox_assemblies.setEnabled(editable)
         self.combobox_positions.setEnabled(editable)
 
-        style = editable_style if editable else readonly_style
-
-        self.combobox_ccaa.setStyleSheet(style)
-        self.combobox_provinces.setStyleSheet(style)
-        self.combobox_assemblies.setStyleSheet(style)
-        self.combobox_positions.setStyleSheet(style)
+        # style = editable_style if editable else readonly_style
+        #
+        # self.combobox_ccaa.setStyleSheet(style)
+        # self.combobox_provinces.setStyleSheet(style)
+        # self.combobox_assemblies.setStyleSheet(style)
+        # self.combobox_positions.setStyleSheet(style)
 
     def update_volunteer_combobox(self, id_volunteer):
         self.vm.update_volunteer_combobox_data(

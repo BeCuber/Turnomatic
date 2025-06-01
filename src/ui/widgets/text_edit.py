@@ -17,9 +17,15 @@ class TextEditManager:
         self.input_dni = self.parent.findChild(QLineEdit, "lineEditDNI")
         self.input_email = self.parent.findChild(QLineEdit, "lineEditEmail")
         self.input_phone = self.parent.findChild(QLineEdit, "lineEditPhone")
-        self.input_medication = self.parent.findChild(QPlainTextEdit, "plainTextEditMedication")
-        self.input_allergies = self.parent.findChild(QPlainTextEdit, "plainTextEditAllergies")
-        self.input_contact_person = self.parent.findChild(QPlainTextEdit, "plainTextEditContactPerson")
+        # self.input_medication = self.parent.findChild(QPlainTextEdit, "plainTextEditMedication")
+        self.input_medication = self.parent.findChild(QLineEdit, "lineEditMedication")
+        self.input_medication.setPlaceholderText("Describe la información que se deba tener en cuenta")
+        # self.input_allergies = self.parent.findChild(QPlainTextEdit, "plainTextEditAllergies")
+        self.input_allergies = self.parent.findChild(QLineEdit, "lineEditAllergies")
+        self.input_allergies.setPlaceholderText("Describe la información que se deba tener en cuenta")
+        self.input_contact_person = self.parent.findChild(QLineEdit, "lineEditContactPerson")
+        self.input_contact_person.setPlaceholderText("Mercedes - Madre - 666 66 66 66")
+        # self.input_contact_person = self.parent.findChild(QPlainTextEdit, "plainTextEditContactPerson")
         self.date_edit_birth = self.parent.findChild(QDateEdit, "dateEditBirth")
         self.date_edit_birth.setCalendarPopup(True)
 
@@ -32,11 +38,12 @@ class TextEditManager:
             self.input_dni.setText(volunteer_data['id_card'] or '')
             self.input_email.setText(volunteer_data['email'] or '')
             self.input_phone.setText(volunteer_data['phone'] or '')
-            self.input_medication.setPlaceholderText("Describe la información que se deba tener en cuenta")
-            self.input_medication.setPlainText(volunteer_data['medication_description'] or '')
-            self.input_allergies.setPlaceholderText("Describe la información que se deba tener en cuenta")
-            self.input_allergies.setPlainText(volunteer_data['allergy_description'] or '')
-            self.input_contact_person.setPlainText(volunteer_data['contact_person'] or '')
+            # self.input_medication.setPlainText(volunteer_data['medication_description'] or '')
+            self.input_medication.setText(volunteer_data['medication_description'] or '')
+            # self.input_allergies.setPlainText(volunteer_data['allergy_description'] or '')
+            self.input_allergies.setText(volunteer_data['allergy_description'] or '')
+            # self.input_contact_person.setPlainText(volunteer_data['contact_person'] or '')
+            self.input_contact_person.setText(volunteer_data['contact_person'] or '')
 
             birthdate = QDate.fromString(volunteer_data["birthdate"], "yyyy-MM-dd")
             self.date_edit_birth.setDate(birthdate)
@@ -44,8 +51,6 @@ class TextEditManager:
     
     def set_editable(self, editable: bool):
         """"""
-        readonly_style = "QLineEdit, QPlainTextEdit { background-color: #f5f5f5; border: 1px solid #ccc; }"
-        editable_style = ""
 
         self.input_dni.setReadOnly(not editable)
         self.input_email.setReadOnly(not editable)
@@ -54,14 +59,6 @@ class TextEditManager:
         self.input_allergies.setReadOnly(not editable)
         self.input_contact_person.setReadOnly(not editable)
         self.date_edit_birth.setEnabled(editable) # it doesnt have ReadOnly method
-
-        style = editable_style if editable else readonly_style
-        self.input_dni.setStyleSheet(style)
-        self.input_email.setStyleSheet(style)
-        self.input_phone.setStyleSheet(style)
-        self.input_medication.setStyleSheet(style)
-        self.input_allergies.setStyleSheet(style)
-        self.input_contact_person.setStyleSheet(style)
 
 
     def update_volunteer_text(self, id_volunteer):
@@ -72,9 +69,12 @@ class TextEditManager:
             email=self.input_email.text(),
             phone=self.input_phone.text(),
             birthdate=self.date_edit_birth.date().toString("yyyy-MM-dd"),
-            medication_description=self.input_medication.toPlainText(),
-            allergy_description=self.input_allergies.toPlainText(),
-            contact_person=self.input_contact_person.toPlainText()
+            # medication_description=self.input_medication.toPlainText(),
+            medication_description=self.input_medication.text(),
+            # allergy_description=self.input_allergies.toPlainText(),
+            allergy_description=self.input_allergies.text(),
+            # contact_person=self.input_contact_person.toPlainText()
+            contact_person=self.input_contact_person.text()
         )
 
 

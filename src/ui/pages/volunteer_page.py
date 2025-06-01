@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy, \
+    QApplication
 from PyQt5 import uic
 
 from src.ui.widgets.calendar import CalendarManager
@@ -19,8 +20,6 @@ class VolunteerPage(QWidget):
         super().__init__()
 
         # Load UI
-        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        # UI_PATH = os.path.join(BASE_DIR, "./volunteer_page.ui")  # specific UI for this page
         UI_PATH = get_resource_path("src/ui/pages/volunteer_page.ui")
         uic.loadUi(UI_PATH, self)
 
@@ -54,11 +53,14 @@ class VolunteerPage(QWidget):
         self.radio_btn_manager.define_form_radio_buttons()
 
         self.calendar_manager = CalendarManager(self, self.db)
+        self.calendar_manager.apply_calendar_text_formats(self.calendar)
 
         # Default view
         self.volunteer_table.selectRow(0)
+        # self.set_form_fields_editable(False)
         self.display_volunteer_data()
-        self.set_form_fields_editable(False)
+        # self.set_form_fields_editable(False)
+
 
         # Select volunteer
         self.volunteer_table.itemSelectionChanged.connect(lambda: self.display_volunteer_data())
@@ -87,6 +89,7 @@ class VolunteerPage(QWidget):
 
 
         self.define_dynamic_btns()
+
 
 
     def display_volunteer_data(self):

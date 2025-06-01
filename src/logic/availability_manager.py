@@ -246,6 +246,7 @@ class AvailabilityManager:
         result = self.db.fetch_query_one(query)
         return result[0] # 2025-09-03 <= format str
 
+
     def get_all_confirmed_availabilities(self):
         """"""
         raw_data = self.db.fetch_query_all("SELECT * FROM availability WHERE confirmed = 1")

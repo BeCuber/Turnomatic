@@ -1,7 +1,11 @@
+# from itertools import count
+
 from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy, \
+    QLabel
 from PyQt5 import uic
 
+from src.logic.bed_manager import BedManager
 from src.ui.widgets.calendar import CalendarManager
 from src.ui.widgets.combo_boxes import ComboBoxManager
 from src.ui.widgets.table_widgets import TableWidgetManager
@@ -24,3 +28,20 @@ class MealsBedsPage(QWidget):
         self.db = db
         self.vm = VolunteerManager(db)
         self.am = AvailabilityManager(db)
+        # self.bm = BedManager(db)
+
+        # Define widgets
+        self.labelDate = self.findChild(QLabel, "labelDate")
+        self.labelCount = self.findChild(QLabel, "labelCount")
+        self.labelRealVolunteers = self.findChild(QLabel, "labelRealVolunteers")
+
+        today = QDate.currentDate()
+        self.labelDate.setText(today.toString("yyyy-MM-dd"))
+
+        date_str = self.labelDate.text()
+        # count = self.bm.count_beds_assinged_per_day(date_str)
+        # self.labelCount.setText(str(count))
+
+        # real_count = self.bm.count_confirmed_volunteers_per_day(date_str)
+        # self.labelRealVolunteers.setText(str(real_count))
+

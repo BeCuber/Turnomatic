@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QButtonGroup, QRadioButton,QMessageBox, QPlainTextEdit, QPushButton
+from PyQt5.QtWidgets import QWidget, QButtonGroup, QRadioButton, QMessageBox, QPlainTextEdit, QPushButton, QLineEdit
 from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 
@@ -118,10 +118,6 @@ class RadioButtonsManager():
         for group in [self.driver_group, self.exp4x4_group, self.medication_group, self.allergy_group]:
             for btn in group.buttons():
                 btn.setEnabled(editable)
-                if not editable:
-                    btn.setStyleSheet("color: black;")
-                else:
-                    btn.setStyleSheet("")
 
 
     def connect_toggle_with_plaintext(self, group: QButtonGroup, field: QPlainTextEdit):
@@ -138,7 +134,7 @@ class RadioButtonsManager():
         )
 
 
-    def on_radio_changed(self, group: QButtonGroup, field: QPlainTextEdit):
+    def on_radio_changed(self, group: QButtonGroup, field: QLineEdit):
         """
             Updates the enabled state of the field based on radio button selection.
 
@@ -148,7 +144,7 @@ class RadioButtonsManager():
         """
 
         if group.checkedId() == 0: # 'No' selected
-            text_content = field.toPlainText().strip()
+            text_content = field.text().strip()
             if text_content:
                 msg = QMessageBox(self.parent)
                 msg.setWindowTitle("Confirmar acción")
@@ -167,9 +163,12 @@ class RadioButtonsManager():
                     return
             field.clear()
             field.setPlaceholderText("")
-            field.setEnabled(False)
+            # field.setEnabled(False)
+            field.setReadOnly(True)
         else: # 'Sí' selected
             field.setPlaceholderText("Describe la información que se deba tener en cuenta")
-            field.setEnabled(True)
+            # field.setEnabled(True)
+            field.setReadOnly(False)
+
 
 

@@ -42,6 +42,7 @@ class DatabaseConnector:
         self._create_table_provinces()
         self._create_table_assemblies()
         self._create_table_positions()
+        # self._create_table_bed_assignment()
         self.conn.commit()
 
 
@@ -142,6 +143,28 @@ class DatabaseConnector:
         finally:
             cursor.close()
 
+    def _create_table_bed_assignment(self): #TODO two tables: room and room_asignment
+        """
+            Create the bed assignment table.
+            Each row represents the occupancy of a bed on a specific date
+            by a volunteer (based on their availability).
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS bed_assignment (
+                    id_bed INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_availability INTEGER NOT NULL,
+                    id_volunteer INTEGER NOT NULL,
+                    date TEXT NOT NULL,
+                    FOREIGN KEY (id_availability) REFERENCES availability(id_availability) ON DELETE CASCADE,
+                    FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
+                )
+            ''')
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bed_assignment ON bed_assignment (date);")
+        finally:
+            cursor.close()
+
 
     def execute_query(self, query, params=()):
         """
@@ -231,57 +254,57 @@ class DatabaseConnector:
 
 if __name__ == "__main__":
     db = DatabaseConnector()
-    """
-    db.execute_query("DROP TABLE IF EXISTS availability")
-    db.c.execute('''
-        CREATE TABLE IF NOT EXISTS availability (
-            id_availability INTEGER PRIMARY KEY AUTOINCREMENT,
-            id_volunteer INTEGER NOT NULL,
-            date_init DATE NOT NULL,
-            date_end DATE NOT NULL,
-            comments TEXT,
-            confirmed BOOLEAN DEFAULT 0,
-            FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
-        )
-    ''')
-    db.c.execute("CREATE INDEX IF NOT EXISTS idx_availability_date ON availability (date_init, date_end);")
-    
-    sample_availability = [
-        (1, "2025-03-10", "2025-03-12", "Available for transport", 0),
-        (1, "2025-03-14", "2025-03-16", "Morning shifts", 1),
-        (1, "2025-03-20", "2025-03-22", "", 0),
-        (1, "2025-03-25", "2025-03-30", "", 1),
-        (1, "2025-04-02", "2025-04-07", "Evening shifts", 1),
-        (1, "2025-04-10", "2025-04-15", "", 0),
-        (1, "2025-04-18", "2025-04-25", "Weekends only", 1),
+    # """
+    # db.execute_query("DROP TABLE IF EXISTS availability")
+    # db.c.execute('''
+    #     CREATE TABLE IF NOT EXISTS availability (
+    #         id_availability INTEGER PRIMARY KEY AUTOINCREMENT,
+    #         id_volunteer INTEGER NOT NULL,
+    #         date_init DATE NOT NULL,
+    #         date_end DATE NOT NULL,
+    #         comments TEXT,
+    #         confirmed BOOLEAN DEFAULT 0,
+    #         FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
+    #     )
+    # ''')
+    # db.c.execute("CREATE INDEX IF NOT EXISTS idx_availability_date ON availability (date_init, date_end);")
+    #
+    # sample_availability = [
+    #     (1, "2025-03-10", "2025-03-12", "Available for transport", 0),
+    #     (1, "2025-03-14", "2025-03-16", "Morning shifts", 1),
+    #     (1, "2025-03-20", "2025-03-22", "", 0),
+    #     (1, "2025-03-25", "2025-03-30", "", 1),
+    #     (1, "2025-04-02", "2025-04-07", "Evening shifts", 1),
+    #     (1, "2025-04-10", "2025-04-15", "", 0),
+    #     (1, "2025-04-18", "2025-04-25", "Weekends only", 1),
+    #
+    #     (2, "2025-03-15", "2025-03-17", "Only afternoons", 0),
+    #     (2, "2025-03-18", "2025-03-19", "Only afternoons", 1),
+    #     (2, "2025-03-20", "2025-03-30", "Only afternoons", 0),
+    #     (2, "2025-04-02", "2025-04-10", "Only afternoons", 1),
+    #     (2, "2025-04-11", "2025-04-20", "Only afternoons", 0),
+    #     (2, "2025-04-22", "2025-04-30", "Only afternoons", 1),
+    #
+    #     (3, "2025-03-05", "2025-03-12", "", 0),
+    #     (3, "2025-03-14", "2025-03-18", "Transport help", 1),
+    #     (3, "2025-03-20", "2025-03-25", "", 0),
+    #     (3, "2025-04-05", "2025-04-10", "", 1),
+    #     (3, "2025-04-11", "2025-04-15", "", 0),
+    #     (3, "2025-04-17", "2025-04-20", "", 1),
+    #     (3, "2025-04-21", "2025-04-23", "", 0),
+    # ]
+    #
+    #
+    # db.c.executemany(
+    #     "INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed) VALUES (?, ?, ?, ?, ?)",
+    #     sample_availability
+    # )
+    # """
 
-        (2, "2025-03-15", "2025-03-17", "Only afternoons", 0),
-        (2, "2025-03-18", "2025-03-19", "Only afternoons", 1),
-        (2, "2025-03-20", "2025-03-30", "Only afternoons", 0),
-        (2, "2025-04-02", "2025-04-10", "Only afternoons", 1),
-        (2, "2025-04-11", "2025-04-20", "Only afternoons", 0),
-        (2, "2025-04-22", "2025-04-30", "Only afternoons", 1),
+    # db.execute_query("DROP TABLE IF EXISTS bed_assignment")
 
-        (3, "2025-03-05", "2025-03-12", "", 0),
-        (3, "2025-03-14", "2025-03-18", "Transport help", 1),
-        (3, "2025-03-20", "2025-03-25", "", 0),
-        (3, "2025-04-05", "2025-04-10", "", 1),
-        (3, "2025-04-11", "2025-04-15", "", 0),
-        (3, "2025-04-17", "2025-04-20", "", 1),
-        (3, "2025-04-21", "2025-04-23", "", 0),
-    ]
-
-
-    db.c.executemany(
-        "INSERT INTO availability (id_volunteer, date_init, date_end, comments, confirmed) VALUES (?, ?, ?, ?, ?)", 
-        sample_availability
-    )
-    """
-
-    
-
+    query_1 = "SELECT *, name FROM bed_assignment"
     # query_1 = "SELECT id_volunteer, name FROM volunteer"
-    query_1 = "SELECT id_volunteer, name FROM volunteer"
     results = db.fetch_query_all(query_1)
     print(results)
 

@@ -1,11 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QPushButton
 from PyQt5 import uic
-import os
 from datetime import datetime, timedelta # para merge
 
 from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.calendar import CalendarManager
-#from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.logic.availability_manager import AvailabilityManager
 from src.data.db_connector import DatabaseConnector
@@ -18,8 +16,6 @@ class CalendarPage(QWidget):
         self.am = AvailabilityManager(db)
 
         # Load UI
-        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        # UI_PATH = os.path.join(BASE_DIR, "./calendar_page.ui")  # specific UI for this page
         UI_PATH = get_resource_path("src/ui/pages/calendar_page.ui")  # specific UI for this page
         uic.loadUi(UI_PATH, self)
 
@@ -140,6 +136,7 @@ class CalendarPage(QWidget):
     def refresh(self):
         """Updates the heatmap"""
         self.calendar_manager.set_heatmap(self.calendar)
+
 
 
 # from bash: $ python -m src.ui.pages.calendar_page (-m points "src" a module)

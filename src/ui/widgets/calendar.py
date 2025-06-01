@@ -1,6 +1,6 @@
-from PyQt5.QtGui import QTextCharFormat, QColor
-from PyQt5.QtCore import QDate
-from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QAbstractItemView
+from PyQt5.QtGui import QTextCharFormat, QColor, QPalette
+from PyQt5.QtCore import QDate, Qt
+from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QAbstractItemView, QTableView
 
 from src.data.db_connector import DatabaseConnector
 from src.logic.availability_manager import AvailabilityManager
@@ -59,7 +59,6 @@ class CalendarManager:
         date_max = QDate.fromString(self.am.get_date_max(), "yyyy-MM-dd")
 
         # Get all availabilities
-        # availabilites = self.am.read_all_availabilities()
         availabilites = self.am.get_all_confirmed_availabilities()
 
         #Count volunteer per day
@@ -75,12 +74,10 @@ class CalendarManager:
             count = counts.get(date_str, 0)
 
             fmt = QTextCharFormat()
-            # fmt.setBackground(QColor(self._get_color_for_count(count)))
             fmt.setBackground(QColor(self._get_color(count)))
 
             calendar.setDateTextFormat(current, fmt)
             current = current.addDays(1)
-
 
     def _get_color(self, count):
         if count == 0:
@@ -164,3 +161,25 @@ class CalendarManager:
                 current = current.addDays(1)
 
         return counts
+
+
+    def apply_calendar_text_formats(self, calendar: QCalendarWidget):
+        """
+            Apply custom text formats to the days in the QCalendarWidget,
+            especially for weekends.
+        """
+        if not self.calendar: # Comprobación de seguridad
+            return
+
+        # Formato para Sábados y Domingos
+        weekend_format = QTextCharFormat()
+        weekend_color = QColor("#ff9900") # Tu color naranja para fines de semana
+        weekend_format.setForeground(weekend_color)
+
+        self.calendar.setWeekdayTextFormat(Qt.Saturday, weekend_format)
+        self.calendar.setWeekdayTextFormat(Qt.Sunday, weekend_format)
+
+        # Forzar un repintado del calendario para que los cambios se visualicen
+        self.calendar.update()
+
+        calendar.update()

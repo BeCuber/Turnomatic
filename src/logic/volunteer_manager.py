@@ -134,7 +134,7 @@ class VolunteerManager:
 
 
     def check_volunteers_in_date(self, date, confirmed):
-        """Check how many volunteers are available on a given day"""
+        """Check which volunteers are available on a given day"""
         query = '''SELECT v.id_volunteer ,v.name, v.lastname_1, v.lastname_2, v.driver, a.date_init, a.date_end, a.comments
                 FROM volunteer v
                 JOIN availability a ON v.id_volunteer = a.id_volunteer

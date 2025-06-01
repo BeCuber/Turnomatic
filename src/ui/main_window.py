@@ -29,8 +29,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(ICON_PATH))
 
         # Load stylesheet
-        self.apply_stylesheet("light")
-        # self.apply_stylesheet("dark")
+        # self.apply_stylesheet("light")
+        self.apply_stylesheet("dark")
 
         # Connect to database
         self.db = DatabaseConnector()
