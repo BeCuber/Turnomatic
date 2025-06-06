@@ -63,10 +63,6 @@ class MainWindow(QMainWindow):
 
 
 
-    def get_current_theme(self):
-        """"""
-        return self.current_theme
-
     def apply_stylesheet(self, theme):
         """"""
         self.current_theme = theme

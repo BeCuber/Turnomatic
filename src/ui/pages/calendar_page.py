@@ -30,11 +30,14 @@ class CalendarPage(QWidget):
         
         self.btn_add = self.findChild(QPushButton, "btnAddConfirmed")
         self.btn_substract = self.findChild(QPushButton, "btnSubstractConfirmed")
+
+        # Connect signal theme_changed from mainwindow
+        self.parent.theme_changed.connect(self.on_theme_changed)
         
 
         #Initialize
-        self.table_manager = TableWidgetManager(self, self.db)
         self.calendar_manager = CalendarManager(self, self.db)
+        self.table_manager = TableWidgetManager(self, self.db, self.calendar_manager)
 
         self.table_manager.define_available_volunteer_list(self.confirmed_volunteer_table)
         self.table_manager.define_available_volunteer_list(self.not_confirmed_volunteer_table)
@@ -50,6 +53,13 @@ class CalendarPage(QWidget):
 
         self.btn_add.clicked.connect(lambda: self.change_confirmed(self.not_confirmed_volunteer_table))
         self.btn_substract.clicked.connect(lambda: self.change_confirmed(self.confirmed_volunteer_table))
+
+
+    def on_theme_changed(self, theme: str):
+        """"""
+        print(f"CalendarPage signal recieved: {theme}")
+        self.calendar_manager.update_heatmap_style(self.calendar, theme)
+        # self.display_volunteer_data()
 
 
     def display_volunteer_lists(self):

@@ -250,19 +250,52 @@ QCalendarWidget QWidget {
 }
 
 
-
-
-
-
-
-
 /* Scrollbars */
+/* Vertical Scrollbar */
 QScrollBar:vertical {
-    background: #333;
-    width: 10px;
+    background: #333333; /* Fondo de la pista del scrollbar (gris oscuro) */
+    width: 10px;        /* Ancho de la barra vertical */
+    margin: 0px;        /* Sin margen extra */
 }
+
 QScrollBar::handle:vertical {
-    background: #3fbf83;
-    border-radius: 4px;
+    background: #3fbf83; /* Color del "pulgar" (el asa) del scrollbar (tu verde) */
+    border-radius: 4px; /* Bordes redondeados para el asa */
+    min-height: 20px;   /* Asegura que el asa sea visible incluso con poco contenido */
+}
+
+/* Botones de flecha (arriba/abajo) para el scrollbar vertical */
+/* Si no quieres flechas, puedes poner height: 0px; pero es mejor ocultar completamente si no los usas */
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none; /* Sin fondo */
+    height: 0px;      /* Oculta los botones de flecha completamente */
+    subcontrol-origin: margin;
+    subcontrol-position: top; /* Oculta ambos */
+}
+
+/* Horizontal Scrollbar */
+QScrollBar:horizontal {
+    background: #333333; /* Fondo de la pista del scrollbar (gris oscuro) */
+    height: 10px;       /* Alto de la barra horizontal */
+    margin: 0px;        /* Sin margen extra */
+}
+
+QScrollBar::handle:horizontal {
+    background: #3fbf83; /* Color del "pulgar" (el asa) del scrollbar (tu verde) */
+    border-radius: 4px; /* Bordes redondeados para el asa */
+    min-width: 20px;    /* Asegura que el asa sea visible incluso con poco contenido */
+}
+
+/* Botones de flecha (izquierda/derecha) para el scrollbar horizontal */
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    background: none; /* Sin fondo */
+    width: 0px;       /* Oculta los botones de flecha completamente */
+    subcontrol-origin: margin;
+    subcontrol-position: left; /* Oculta ambos */
+}
+
+/* Esquinas de los scrollbars (donde se encuentran si ambos son visibles) */
+QScrollBar::corner {
+    background: #333333; /* Fondo de la esquina */
 }
 

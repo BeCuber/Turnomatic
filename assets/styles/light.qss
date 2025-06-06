@@ -178,18 +178,51 @@ QCalendarWidget QWidget {
 }
 
 
-
-
 /* Scrollbars */
+/* Vertical Scrollbar */
 QScrollBar:vertical {
-    background: #f0f0f0;
-    width: 10px;
+    background: #f0f0f0; /* Fondo de la pista del scrollbar (gris claro) */
+    width: 10px;        /* Ancho de la barra vertical */
+    margin: 0px;        /* Sin margen extra */
 }
+
 QScrollBar::handle:vertical {
-    background: #3fbf83;
-    border-radius: 4px;
+    background: #3fbf83; /* Color del "pulgar" (el asa) del scrollbar (tu verde) */
+    border-radius: 4px; /* Bordes redondeados para el asa */
+    min-height: 20px;   /* Asegura que el asa sea visible */
 }
+
+/* Botones de flecha (arriba/abajo) para el scrollbar vertical */
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-    height: 0px;
+    background: none; /* Sin fondo */
+    height: 0px;      /* Oculta los botones de flecha completamente */
+    subcontrol-origin: margin;
+    subcontrol-position: top;
+}
+
+/* Horizontal Scrollbar */
+QScrollBar:horizontal {
+    background: #f0f0f0; /* Fondo de la pista del scrollbar (gris claro) */
+    height: 10px;       /* Alto de la barra horizontal */
+    margin: 0px;        /* Sin margen extra */
+}
+
+QScrollBar::handle:horizontal {
+    background: #3fbf83; /* Color del "pulgar" (el asa) del scrollbar (tu verde) */
+    border-radius: 4px; /* Bordes redondeados para el asa */
+    min-width: 20px;    /* Asegura que el asa sea visible */
+}
+
+/* Botones de flecha (izquierda/derecha) para el scrollbar horizontal */
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    background: none; /* Sin fondo */
+    width: 0px;       /* Oculta los botones de flecha completamente */
+    subcontrol-origin: margin;
+    subcontrol-position: left;
+}
+
+/* Esquinas de los scrollbars (donde se encuentran si ambos son visibles) */
+QScrollBar::corner {
+    background: #f0f0f0; /* Fondo de la esquina */
 }
 

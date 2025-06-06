@@ -11,7 +11,7 @@ class TextEditManager:
         """Initialize text fields manager."""
         self.parent = parent
         self.vm = VolunteerManager(db)
-        self.twm = TableWidgetManager(self.parent, self.vm.db)
+        # self.twm = TableWidgetManager(self.parent, self.vm.db)
 
         self.label_volunteer = self.parent.findChild(QLabel, "labelNameVolunteer")
         self.input_dni = self.parent.findChild(QLineEdit, "lineEditDNI")

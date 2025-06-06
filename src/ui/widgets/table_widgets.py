@@ -10,13 +10,13 @@ from src.ui.widgets.calendar import CalendarManager
 
 class TableWidgetManager:
 
-    def __init__(self, parent: QWidget, db: DatabaseConnector):
+    def __init__(self, parent: QWidget, db: DatabaseConnector, calendar_manager: CalendarManager):
         """Initialize tables manager."""
 
         self.parent = parent
         self.vm = VolunteerManager(db)
         self.am = AvailabilityManager(db)
-        self.calendar_manager = CalendarManager(parent, db)
+        self.calendar_manager = calendar_manager
 
     def add_empty_row(self, table:QTableWidget):
         """Add an empty row to create new registers"""

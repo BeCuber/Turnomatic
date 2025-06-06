@@ -44,7 +44,11 @@ class VolunteerPage(QWidget):
         self.parent.theme_changed.connect(self.on_theme_changed)
 
         # Inicialize
-        self.table_manager = TableWidgetManager(self, self.db)
+
+        self.calendar_manager = CalendarManager(self, self.db)
+        self.calendar_manager.display_calendar(self.calendar, self.parent.current_theme)
+
+        self.table_manager = TableWidgetManager(self, self.db, self.calendar_manager)
         self.table_manager.define_all_volunteers_table(self.volunteer_table)
         self.table_manager.define_availability_table(self.availability_table, self.calendar)
 
@@ -55,9 +59,6 @@ class VolunteerPage(QWidget):
 
         self.radio_btn_manager = RadioButtonsManager(self, self.db)
         self.radio_btn_manager.define_form_radio_buttons()
-
-        self.calendar_manager = CalendarManager(self, self.db)
-        self.calendar_manager.display_calendar(self.calendar,self.parent.current_theme)
 
         # Default view
         self.volunteer_table.selectRow(0)
@@ -100,7 +101,8 @@ class VolunteerPage(QWidget):
     def on_theme_changed(self, theme: str):
         """"""
         print(f"VolunteerPage signal recieved: {theme}")
-        self.calendar_manager.update_calendar_style(self.calendar, theme)
+        self.calendar_manager.update_individual_calendar_style(self.calendar, theme)
+        self.display_volunteer_data()
 
 
     def display_volunteer_data(self):
