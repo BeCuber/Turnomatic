@@ -1,5 +1,6 @@
 import os
 
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
@@ -15,9 +16,12 @@ from src.ui.pages.volunteer_page import VolunteerPage
 
 
 class MainWindow(QMainWindow):
+    theme_changed = pyqtSignal(str)  # signal on value for update theme
 
     def __init__(self):
         super().__init__()
+
+
 
         # Load the ui file - dinamic route
         UI_PATH = get_resource_path("src/ui/main_window.ui")
@@ -28,12 +32,11 @@ class MainWindow(QMainWindow):
         ICON_PATH = get_resource_path("assets/images/300_trans.ico")
         self.setWindowIcon(QIcon(ICON_PATH))
 
-        # Load stylesheet
-        # self.apply_stylesheet("light")
-        self.apply_stylesheet("dark")
-
         # Connect to database
         self.db = DatabaseConnector()
+
+        # Set initial style theme
+        self.current_theme = "light"
 
         # Define widgets
         self.stacked_widget = self.findChild(QStackedWidget, "stackedWidget")
@@ -50,16 +53,35 @@ class MainWindow(QMainWindow):
  
         # Config menu manager
         self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page, self.meals_and_beds_page)
+
+        # Load stylesheet
+        # self.current_theme = "light"
+        self.apply_stylesheet(self.current_theme)
         
         # Show the app
         self.show()
 
 
-    def apply_stylesheet(self, theme="light"):
+
+    def get_current_theme(self):
+        """"""
+        return self.current_theme
+
+    def apply_stylesheet(self, theme):
+        """"""
+        self.current_theme = theme
         theme_file = f"assets/styles/{theme}.qss"
         QSS_PATH = get_resource_path(theme_file)
-        with open(QSS_PATH, "r") as f:
-            self.setStyleSheet(f.read())
+        try:
+            with open(QSS_PATH, "r", encoding="utf-8") as f:
+                self.setStyleSheet(f.read())
+                print(f"MainWindow def apply_stylesheet() : {theme}")
+                self.theme_changed.emit(theme)
+
+        except Exception as e:
+            print(f"Error applying stylesheet {QSS_PATH}: {e}")
+            return
+
 
 
     def closeEvent(self, event):

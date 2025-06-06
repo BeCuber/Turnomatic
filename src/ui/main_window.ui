@@ -65,7 +65,21 @@
     </property>
     <addaction name="actionDocumentaci_n"/>
    </widget>
+   <widget class="QMenu" name="menuConfiguraci_n">
+    <property name="title">
+     <string>Configuración</string>
+    </property>
+    <widget class="QMenu" name="menuTema">
+     <property name="title">
+      <string>Tema</string>
+     </property>
+     <addaction name="actionClaro"/>
+     <addaction name="actionOscuro"/>
+    </widget>
+    <addaction name="menuTema"/>
+   </widget>
    <addaction name="menuVer"/>
+   <addaction name="menuConfiguraci_n"/>
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -87,6 +101,16 @@
   <action name="actionComidas_y_camas">
    <property name="text">
     <string>Comidas y camas</string>
+   </property>
+  </action>
+  <action name="actionClaro">
+   <property name="text">
+    <string>Claro</string>
+   </property>
+  </action>
+  <action name="actionOscuro">
+   <property name="text">
+    <string>Oscuro</string>
    </property>
   </action>
  </widget>

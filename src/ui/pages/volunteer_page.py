@@ -19,6 +19,7 @@ class VolunteerPage(QWidget):
     def __init__(self, parent, db:DatabaseConnector):
         super().__init__()
 
+
         # Load UI
         UI_PATH = get_resource_path("src/ui/pages/volunteer_page.ui")
         uic.loadUi(UI_PATH, self)
@@ -27,6 +28,7 @@ class VolunteerPage(QWidget):
         self.db = db
         self.vm = VolunteerManager(db)
         self.am = AvailabilityManager(db)
+
 
         # Define widgets
         self.volunteer_table = self.findChild(QTableWidget, "allVolunteerTableWidget")
@@ -38,6 +40,8 @@ class VolunteerPage(QWidget):
         self.btn_edit_volunteer = self.findChild(QPushButton, "btnEditVolunteer")
         self.calendar = self.findChild(QCalendarWidget, "calendarWidgetIndividual")
 
+        # Connect signal theme_changed from mainwindow
+        self.parent.theme_changed.connect(self.on_theme_changed)
 
         # Inicialize
         self.table_manager = TableWidgetManager(self, self.db)
@@ -53,13 +57,11 @@ class VolunteerPage(QWidget):
         self.radio_btn_manager.define_form_radio_buttons()
 
         self.calendar_manager = CalendarManager(self, self.db)
-        self.calendar_manager.apply_calendar_text_formats(self.calendar)
+        self.calendar_manager.display_calendar(self.calendar,self.parent.current_theme)
 
         # Default view
         self.volunteer_table.selectRow(0)
-        # self.set_form_fields_editable(False)
         self.display_volunteer_data()
-        # self.set_form_fields_editable(False)
 
 
         # Select volunteer
@@ -67,7 +69,7 @@ class VolunteerPage(QWidget):
 
         # Select day on calendar
         self.calendar.clicked[QDate].connect(lambda date: self.calendar_manager.on_calendar_availability_clicked(date, self.availability_table))
-        # Selecto row on availability_table
+        # Select row on availability_table
         self.availability_table.itemSelectionChanged.connect(lambda : self.table_manager.on_availability_clicked(self.availability_table, self.calendar))
 
         # Radiobtn connect with plaintext
@@ -90,6 +92,15 @@ class VolunteerPage(QWidget):
 
         self.define_dynamic_btns()
 
+        # print(self.parent.get_current_theme())
+        # self.current_theme = self.parent.current_theme
+        print(f"VolunteerPage initialize with:{self.parent.current_theme}")
+
+
+    def on_theme_changed(self, theme: str):
+        """"""
+        print(f"VolunteerPage signal recieved: {theme}")
+        self.calendar_manager.update_calendar_style(self.calendar, theme)
 
 
     def display_volunteer_data(self):

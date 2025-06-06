@@ -12,6 +12,18 @@ class CalendarManager:
         self.parent = parent
         self.am = AvailabilityManager(db)
 
+        # self.calendar_widget = None
+
+        # self.main_window = self.parent.parent
+        # self.main_window.theme_changed.connect(lambda: self.display_calendar(self.calendar_widget))
+
+
+    def display_calendar(self, calendar: QCalendarWidget, theme:str):
+        self._apply_weekend_theme(calendar, theme)
+
+    def update_calendar_style(self, calendar: QCalendarWidget, theme:str):
+        self._apply_weekend_theme(calendar, theme)
+
 
     def clear_calendar(self, calendar: QCalendarWidget):
         """"""
@@ -163,23 +175,27 @@ class CalendarManager:
         return counts
 
 
-    def apply_calendar_text_formats(self, calendar: QCalendarWidget):
+    def _apply_weekend_theme(self, calendar: QCalendarWidget, theme):
         """
             Apply custom text formats to the days in the QCalendarWidget,
             especially for weekends.
         """
-        if not self.calendar: # Comprobación de seguridad
+        if not calendar:
             return
 
-        # Formato para Sábados y Domingos
         weekend_format = QTextCharFormat()
-        weekend_color = QColor("#ff9900") # Tu color naranja para fines de semana
+
+        if theme == "dark":
+            weekend_color = QColor("#ff9900") # naranja para fines de semana
+        else:
+            weekend_color = QColor("#EB3945")
+
         weekend_format.setForeground(weekend_color)
 
-        self.calendar.setWeekdayTextFormat(Qt.Saturday, weekend_format)
-        self.calendar.setWeekdayTextFormat(Qt.Sunday, weekend_format)
+        calendar.setWeekdayTextFormat(Qt.Saturday, weekend_format)
+        calendar.setWeekdayTextFormat(Qt.Sunday, weekend_format)
 
-        # Forzar un repintado del calendario para que los cambios se visualicen
-        self.calendar.update()
+
+        print(f"CalendarManager:{theme}")
 
         calendar.update()
