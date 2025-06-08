@@ -96,7 +96,7 @@ class DialogManager(QDialog):
 
         self.date_init.dateChanged.connect(self.update_end_date)
 
-        self.comments_input = QTextEdit()
+        self.comments_input = QLineEdit()
         self.confirmed_checkbox = QCheckBox("¿Confirmado?")
 
         layout.addWidget(QLabel("Fecha inicio:"))
@@ -110,12 +110,20 @@ class DialogManager(QDialog):
 
         layout.addWidget(self.confirmed_checkbox)
 
-        buttons = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
-        buttons.accepted.connect(self.accept)
-        buttons.rejected.connect(self.reject)
-        layout.addWidget(buttons)
+        # Botones
+        buttons_layout = QHBoxLayout()
+        self.btn_cancel = QPushButton("Cancelar")
+        self.btn_save = QPushButton("Guardar")
 
+        buttons_layout.addWidget(self.btn_cancel)
+        buttons_layout.addWidget(self.btn_save)
+
+        layout.addLayout(buttons_layout)
         self.setLayout(layout)
+
+        self.btn_cancel.clicked.connect(self.reject)
+        self.btn_save.clicked.connect(self.accept)
+
         return self
 
     def update_end_date(self, new_date):
@@ -127,6 +135,6 @@ class DialogManager(QDialog):
         return {
             "date_init": self.date_init.date().toString("yyyy-MM-dd"),
             "date_end": self.date_end.date().toString("yyyy-MM-dd"),
-            "comments": self.comments_input.toPlainText(),
+            "comments": self.comments_input.text(),
             "confirmed": self.confirmed_checkbox.isChecked()
         }

@@ -580,16 +580,16 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_19">
              <item>
-              <widget class="QPushButton" name="btnAddAvailability">
+              <widget class="QPushButton" name="btnDeleteAvailability">
                <property name="text">
-                <string>Nueva Disponibilidad</string>
+                <string>Borrar Disponibilidad</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="btnDeleteAvailability">
+              <widget class="QPushButton" name="btnAddAvailability">
                <property name="text">
-                <string>Borrar Disponibilidad</string>
+                <string>Nueva Disponibilidad</string>
                </property>
               </widget>
              </item>

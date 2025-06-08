@@ -59,11 +59,11 @@ The following basic functionalities have already been implemented:
 - Synchronization of calendars with per-volunteer date tables.
 - Heatmap implementation in `calendar_page.py`.
 - Packaged for distribution on Windows.
+- UI is supported to various window sizes and screen resolutions.
 
 ### Next Steps
 
 - Add a security layer for the database (evaluating SQLCipher).
-- Refactor the UI to support adaptability to various window sizes and screen resolutions.
 - Extend the database structure to register meal and bed requirements.
 - Add two new GUI pages to manage meals and beds.
 - Implement internationalization (i18n) support.
