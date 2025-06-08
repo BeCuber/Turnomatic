@@ -17,11 +17,11 @@ from src.ui.widgets.dialog_manager import DialogManager
 from src.logic.availability_manager import AvailabilityManager
 from src.utils.path_helper import get_resource_path
 
-class MealsBedsPage(QWidget):
+class RoomsPage(QWidget):
     def __init__(self, parent, db:DatabaseConnector):
         super().__init__()
 
-        UI_PATH = get_resource_path("src/ui/pages/meals_and_beds_page.ui")
+        UI_PATH = get_resource_path("src/ui/pages/rooms_page.ui")
         uic.loadUi(UI_PATH, self)
 
         self.parent = parent
@@ -39,9 +39,5 @@ class MealsBedsPage(QWidget):
         self.labelDate.setText(today.toString("yyyy-MM-dd"))
 
         date_str = self.labelDate.text()
-        # count = self.bm.count_beds_assinged_per_day(date_str)
-        # self.labelCount.setText(str(count))
 
-        # real_count = self.bm.count_confirmed_volunteers_per_day(date_str)
-        # self.labelRealVolunteers.setText(str(real_count))
 

@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QMainWindow, QAction
 
 from src.ui.pages.calendar_page import CalendarPage
-from src.ui.pages.meals_and_beds_page import MealsBedsPage
+from src.ui.pages.rooms_page import RoomsPage
 from src.ui.pages.volunteer_page import VolunteerPage
 
 
 class MenuBarManager():
     
-    def __init__(self, main_window: QMainWindow, stacked_widget, calendar_page: CalendarPage, volunteer_page: VolunteerPage, meals_and_beds_page: MealsBedsPage):
+    def __init__(self, main_window: QMainWindow, stacked_widget, calendar_page: CalendarPage, volunteer_page: VolunteerPage, meals_and_beds_page: RoomsPage):
         """Inicializa el gestor del menú de la ventana principal."""
         self.main_window = main_window
         self.stacked_widget = stacked_widget

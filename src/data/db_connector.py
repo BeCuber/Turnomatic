@@ -42,7 +42,8 @@ class DatabaseConnector:
         self._create_table_provinces()
         self._create_table_assemblies()
         self._create_table_positions()
-        # self._create_table_bed_assignment()
+        self._create_table_rooms()
+        self._create_table_room_assignment()
         self.conn.commit()
 
 
@@ -143,25 +144,43 @@ class DatabaseConnector:
         finally:
             cursor.close()
 
-    def _create_table_bed_assignment(self): #TODO two tables: room and room_asignment
+    def _create_table_rooms(self):
         """
-            Create the bed assignment table.
-            Each row represents the occupancy of a bed on a specific date
+            Create rooms table.
+            Each row represents a room with its number of beds (capacity).
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS rooms (
+                    id_room INTEGER PRIMARY KEY AUTOINCREMENT,
+                    room_name TEXT UNIQUE NOT NULL,
+                    capacity INT DEFAULT 1
+                )
+            ''')
+        finally:
+            cursor.close()
+
+    def _create_table_room_assignment(self):
+        """
+            Create the room assignment table.
+            Each row represents the occupancy of a room on a specific date
             by a volunteer (based on their availability).
         """
         cursor = self.conn.cursor()
         try:
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS bed_assignment (
-                    id_bed INTEGER PRIMARY KEY AUTOINCREMENT,
-                    id_availability INTEGER NOT NULL,
+                CREATE TABLE IF NOT EXISTS room_assignment (
+                    id_assignment INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_room INTEGER NOT NULL,
                     id_volunteer INTEGER NOT NULL,
-                    date TEXT NOT NULL,
-                    FOREIGN KEY (id_availability) REFERENCES availability(id_availability) ON DELETE CASCADE,
+                    check_in TEXT NOT NULL,
+                    check_out TEXT NOT NULL,
+                    FOREIGN KEY (id_room) REFERENCES rooms(id_room) ON DELETE CASCADE,
                     FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
                 )
             ''')
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bed_assignment ON bed_assignment (date);")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_room_assignment ON room_assignment (check_in, check_out);")
         finally:
             cursor.close()
 
@@ -188,6 +207,30 @@ class DatabaseConnector:
         finally:
             cursor.close()
 
+
+    def execute_many_query(self, query, params=()):
+        """
+            Executes a write query for multiple sets of parameters (INSERT, UPDATE, DELETE).
+
+            Args:
+                query (str): SQL query string.
+                params (list of tuple): List of parameter tuples for the query.
+                                         Defaults to an empty tuple if no parameters are provided.
+
+            Raises:
+                sqlite3.Error: If an error occurs during execution.
+            """
+
+        cursor = self.conn.cursor()
+        try:
+            cursor.executemany(query, params)
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print("Error al ejecutar executemany:", e)
+            self.conn.rollback()
+            raise
+        finally:
+            cursor.close()
     
     def fetch_query_all(self, query, params=()):
         """
@@ -303,9 +346,9 @@ if __name__ == "__main__":
 
     # db.execute_query("DROP TABLE IF EXISTS bed_assignment")
 
-    query_1 = "SELECT *, name FROM bed_assignment"
-    # query_1 = "SELECT id_volunteer, name FROM volunteer"
-    results = db.fetch_query_all(query_1)
-    print(results)
+
+    query = "SELECT name FROM sqlite_master WHERE type='table';"
+
+    print(db.fetch_query_all(query))
 
     db.close_connection()

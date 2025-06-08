@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QStackedWidget
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 
-from src.ui.pages.meals_and_beds_page import MealsBedsPage
+from src.ui.pages.rooms_page import RoomsPage
 from src.utils.path_helper import get_resource_path
 from src.logic.availability_manager import AvailabilityManager
 from src.logic.volunteer_manager import VolunteerManager
@@ -20,8 +20,6 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-
-
 
         # Load the ui file - dinamic route
         UI_PATH = get_resource_path("src/ui/main_window.ui")
@@ -44,7 +42,7 @@ class MainWindow(QMainWindow):
         # Initialize pages
         self.calendar_page = CalendarPage(self, self.db)
         self.volunteer_page = VolunteerPage(self, self.db)
-        self.meals_and_beds_page = MealsBedsPage(self, self.db)
+        self.meals_and_beds_page = RoomsPage(self, self.db)
 
         # Add pages to stack
         self.stacked_widget.addWidget(self.calendar_page)
@@ -71,7 +69,6 @@ class MainWindow(QMainWindow):
         try:
             with open(QSS_PATH, "r", encoding="utf-8") as f:
                 self.setStyleSheet(f.read())
-                print(f"MainWindow def apply_stylesheet() : {theme}")
                 self.theme_changed.emit(theme)
 
         except Exception as e:

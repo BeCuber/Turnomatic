@@ -100,7 +100,7 @@
   </action>
   <action name="actionComidas_y_camas">
    <property name="text">
-    <string>Comidas y camas</string>
+    <string>Habitaciones</string>
    </property>
   </action>
   <action name="actionClaro">

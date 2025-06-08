@@ -93,10 +93,6 @@ class VolunteerPage(QWidget):
 
         self.define_dynamic_btns()
 
-        # print(self.parent.get_current_theme())
-        # self.current_theme = self.parent.current_theme
-        print(f"VolunteerPage initialize with:{self.parent.current_theme}")
-
 
     def on_theme_changed(self, theme: str):
         """"""

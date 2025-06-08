@@ -57,7 +57,6 @@ class CalendarPage(QWidget):
 
     def on_theme_changed(self, theme: str):
         """"""
-        print(f"CalendarPage signal recieved: {theme}")
         self.calendar_manager.update_heatmap_style(self.calendar, theme)
         # self.display_volunteer_data()
 
