@@ -33,18 +33,18 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+     <widget class="QWidget" name="scrollAreaRoomsContents">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-104</y>
         <width>367</width>
-        <height>542</height>
+        <height>552</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QFrame" name="frameRoom_3">
+        <widget class="QFrame" name="frameRoom1">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -53,34 +53,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QPushButton" name="btnAddBed_3">
+           <widget class="QPushButton" name="btnAddBed1">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_3">
+           <widget class="QLabel" name="labelRoomName1">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_3">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom1">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_3" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu1" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_3">
+               <widget class="QLabel" name="labelNameVol1">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_3">
+               <widget class="QPushButton" name="btnMenu1">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -92,7 +100,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_9">
+        <widget class="QFrame" name="frameRoom2">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -101,34 +109,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_10">
           <item>
-           <widget class="QPushButton" name="btnAddBed_9">
+           <widget class="QPushButton" name="btnAddBed2">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_9">
+           <widget class="QLabel" name="labelRoomName2">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_9">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom2">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_9" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu2" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_9">
+               <widget class="QLabel" name="labelNameVol2">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_9">
+               <widget class="QPushButton" name="btnMenu2">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -140,7 +156,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_2">
+        <widget class="QFrame" name="frameRoom3">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -149,34 +165,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="QPushButton" name="btnAddBed_2">
+           <widget class="QPushButton" name="btnAddBed3">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_2">
+           <widget class="QLabel" name="labelRoomName3">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_2">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom3">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_2" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu3" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_2">
+               <widget class="QLabel" name="labelNameVol3">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_2">
+               <widget class="QPushButton" name="btnMenu3">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -188,7 +212,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_4">
+        <widget class="QFrame" name="frameRoom4">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -197,34 +221,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QPushButton" name="btnAddBed_4">
+           <widget class="QPushButton" name="btnAddBed4">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_4">
+           <widget class="QLabel" name="labelRoomName4">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_4">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom4">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_4" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu4" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_4">
+               <widget class="QLabel" name="labelNameVol4">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_4">
+               <widget class="QPushButton" name="btnMenu4">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -236,7 +268,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_5">
+        <widget class="QFrame" name="frameRoom5">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -245,34 +277,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QPushButton" name="btnAddBed_5">
+           <widget class="QPushButton" name="btnAddBed5">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_5">
+           <widget class="QLabel" name="labelRoomName5">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_5">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom5">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_5" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu5" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_5">
+               <widget class="QLabel" name="labelNameVol5">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_5">
+               <widget class="QPushButton" name="btnMenu5">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -284,7 +324,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_6">
+        <widget class="QFrame" name="frameRoom6">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -293,34 +333,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QPushButton" name="btnAddBed_6">
+           <widget class="QPushButton" name="btnAddBed6">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_6">
+           <widget class="QLabel" name="labelRoomName6">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_6">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom6">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_6" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu6" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_6">
+               <widget class="QLabel" name="labelNameVol6">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_6">
+               <widget class="QPushButton" name="btnMenu6">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -332,7 +380,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_7">
+        <widget class="QFrame" name="frameRoom7">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -341,34 +389,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <widget class="QPushButton" name="btnAddBed_7">
+           <widget class="QPushButton" name="btnAddBed7">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_7">
+           <widget class="QLabel" name="labelRoomName7">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_7">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom7">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_7" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu7" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_7">
+               <widget class="QLabel" name="labelNameVol7">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_7">
+               <widget class="QPushButton" name="btnMenu7">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -380,7 +436,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_8">
+        <widget class="QFrame" name="frameRoom8">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -389,34 +445,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
-           <widget class="QPushButton" name="btnAddBed_8">
+           <widget class="QPushButton" name="btnAddBed8">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_8">
+           <widget class="QLabel" name="labelRoomName8">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_8">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom8">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_8" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu8" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_8">
+               <widget class="QLabel" name="labelNameVol8">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_8">
+               <widget class="QPushButton" name="btnMenu8">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -428,7 +492,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom">
+        <widget class="QFrame" name="frameRoom9">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -437,34 +501,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QPushButton" name="btnAddBed">
+           <widget class="QPushButton" name="btnAddBed9">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName">
+           <widget class="QLabel" name="labelRoomName9">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom9">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu9" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol">
+               <widget class="QLabel" name="labelNameVol9">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu">
+               <widget class="QPushButton" name="btnMenu9">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -476,7 +548,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frameRoom_10">
+        <widget class="QFrame" name="frameRoom10">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
          </property>
@@ -485,34 +557,42 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_11">
           <item>
-           <widget class="QPushButton" name="btnAddBed_10">
+           <widget class="QPushButton" name="btnAddBed10">
             <property name="text">
-             <string>+</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../assets/images/add_bed.ico</normaloff>../../../assets/images/add_bed.ico</iconset>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName_10">
+           <widget class="QLabel" name="labelRoomName10">
             <property name="text">
              <string>TextLabel</string>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom_10">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom10">
             <item>
-             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu_11" stretch="1,0">
+             <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu10" stretch="1,0">
               <item>
-               <widget class="QLabel" name="labelNameVol_11">
+               <widget class="QLabel" name="labelNameVol10">
                 <property name="text">
                  <string>TextLabel</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btnMenu_11">
+               <widget class="QPushButton" name="btnMenu10">
                 <property name="text">
-                 <string>...</string>
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
                 </property>
                </widget>
               </item>
@@ -538,7 +618,17 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>+</string>
+        <string>Añadir habitación</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../assets/images/library_add_24dp_2E2E2E_FILL0_wght400_GRAD0_opsz24.ico</normaloff>../../../assets/images/library_add_24dp_2E2E2E_FILL0_wght400_GRAD0_opsz24.ico</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -549,7 +639,7 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
+     <widget class="QWidget" name="scrollAreaNoRoomContents">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -562,18 +652,25 @@
        <item>
         <layout class="QVBoxLayout" name="vBoxWithoutRoomList">
          <item>
-          <layout class="QHBoxLayout" name="hBoxWithoutRoom">
+          <layout class="QHBoxLayout" name="hBoxWithoutRoom" stretch="1,0">
+           <property name="spacing">
+            <number>6</number>
+           </property>
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="labelVolNameNoRoom">
              <property name="text">
               <string>TextLabel</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="btnMenuVolNoRoom">
              <property name="text">
-              <string>...</string>
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../../../assets/images/menu.ico</normaloff>../../../assets/images/menu.ico</iconset>
              </property>
             </widget>
            </item>

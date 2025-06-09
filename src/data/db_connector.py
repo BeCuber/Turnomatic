@@ -173,11 +173,11 @@ class DatabaseConnector:
                 CREATE TABLE IF NOT EXISTS room_assignment (
                     id_assignment INTEGER PRIMARY KEY AUTOINCREMENT,
                     id_room INTEGER NOT NULL,
-                    id_volunteer INTEGER NOT NULL,
+                    id_availability INTEGER NOT NULL,
                     check_in TEXT NOT NULL,
                     check_out TEXT NOT NULL,
                     FOREIGN KEY (id_room) REFERENCES rooms(id_room) ON DELETE CASCADE,
-                    FOREIGN KEY (id_volunteer) REFERENCES volunteer(id_volunteer) ON DELETE CASCADE
+                    FOREIGN KEY (id_availability) REFERENCES availability(id_availability) ON DELETE CASCADE
                 )
             ''')
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_room_assignment ON room_assignment (check_in, check_out);")
@@ -298,7 +298,7 @@ class DatabaseConnector:
 if __name__ == "__main__":
     db = DatabaseConnector()
     # """
-    # db.execute_query("DROP TABLE IF EXISTS availability")
+    # db.execute_query("DROP TABLE IF EXISTS room_assignment")
     # db.c.execute('''
     #     CREATE TABLE IF NOT EXISTS availability (
     #         id_availability INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -346,7 +346,7 @@ if __name__ == "__main__":
 
     # db.execute_query("DROP TABLE IF EXISTS bed_assignment")
 
-
+    # db.execute_query("DROP TABLE IF EXISTS room_assignment")
     query = "SELECT name FROM sqlite_master WHERE type='table';"
 
     print(db.fetch_query_all(query))
