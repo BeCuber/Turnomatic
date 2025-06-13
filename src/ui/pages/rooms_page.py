@@ -8,6 +8,7 @@ from PyQt5 import uic
 from src.logic.bed_manager import BedManager
 from src.ui.widgets.calendar import CalendarManager
 from src.ui.widgets.combo_boxes import ComboBoxManager
+from src.ui.widgets.rooms_card import RoomsCardWidget
 from src.ui.widgets.table_widgets import TableWidgetManager
 from src.ui.widgets.text_edit import TextEditManager
 from src.ui.widgets.radio_buttons import RadioButtonsManager
@@ -26,18 +27,16 @@ class RoomsPage(QWidget):
 
         self.parent = parent
         self.db = db
-        self.vm = VolunteerManager(db)
-        self.am = AvailabilityManager(db)
+        # self.vm = VolunteerManager(db)
+        # self.am = AvailabilityManager(db)
         # self.bm = BedManager(db)
 
         # Define widgets
-        self.labelDate = self.findChild(QLabel, "labelDate")
-        self.labelCount = self.findChild(QLabel, "labelCount")
-        self.labelRealVolunteers = self.findChild(QLabel, "labelRealVolunteers")
+        rooms_container = self.findChild(QWidget, "widgetCard")
+        self.rooms_layout = rooms_container.layout()
 
-        today = QDate.currentDate()
-        self.labelDate.setText(today.toString("yyyy-MM-dd"))
 
-        date_str = self.labelDate.text()
+        room_card = RoomsCardWidget(self)
+        self.rooms_layout.addWidget(room_card)
 
 

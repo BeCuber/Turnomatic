@@ -42,15 +42,15 @@ class MainWindow(QMainWindow):
         # Initialize pages
         self.calendar_page = CalendarPage(self, self.db)
         self.volunteer_page = VolunteerPage(self, self.db)
-        self.meals_and_beds_page = RoomsPage(self, self.db)
+        self.rooms_page = RoomsPage(self, self.db)
 
         # Add pages to stack
         self.stacked_widget.addWidget(self.calendar_page)
         self.stacked_widget.addWidget(self.volunteer_page)
-        self.stacked_widget.addWidget(self.meals_and_beds_page)
+        self.stacked_widget.addWidget(self.rooms_page)
  
         # Config menu manager
-        self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page, self.meals_and_beds_page)
+        self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page, self.rooms_page)
 
         # Load stylesheet
         # self.current_theme = "light"
