@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QDate
+from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy, \
     QApplication
 from PyQt5 import uic
@@ -96,7 +96,7 @@ class VolunteerPage(QWidget):
 
     def on_theme_changed(self, theme: str):
         """"""
-        print(f"VolunteerPage signal recieved: {theme}")
+        # print(f"VolunteerPage signal recieved: {theme}")
         self.calendar_manager.update_individual_calendar_style(self.calendar, theme)
         self.display_volunteer_data()
 
@@ -324,6 +324,9 @@ class VolunteerPage(QWidget):
 
         self.btn_cancel_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.btn_save_volunteer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+        self.btn_cancel_edit.setCursor(Qt.PointingHandCursor)
+        self.btn_save_volunteer.setCursor(Qt.PointingHandCursor)
 
 
         self.btn_cancel_edit.clicked.connect(self.cancel_editing)

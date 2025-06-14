@@ -1,5 +1,5 @@
 # from itertools import count
-
+from datetime import date, timedelta
 from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy, \
     QLabel
@@ -27,16 +27,71 @@ class RoomsPage(QWidget):
 
         self.parent = parent
         self.db = db
-        # self.vm = VolunteerManager(db)
-        # self.am = AvailabilityManager(db)
-        # self.bm = BedManager(db)
+        self.theme = "light"
+        # Connect signal theme_changed from mainwindow
+        self.parent.theme_changed.connect(self.on_theme_changed)
 
         # Define widgets
-        rooms_container = self.findChild(QWidget, "widgetCard")
+        rooms_container = self.findChild(QWidget, "widgetCards")
         self.rooms_layout = rooms_container.layout()
 
-
-        room_card = RoomsCardWidget(self)
-        self.rooms_layout.addWidget(room_card)
+        self.display_room_cards(self.theme)
 
 
+    def on_theme_changed(self, new_theme: str):
+        """"""
+        self.theme = new_theme
+        self.display_room_cards(new_theme)
+
+
+    def get_week_days(self):
+        """Returns a list of 8 days from sunday to next sunday"""
+        today = date.today()
+        # Calculate how many days to substract to reach last sunday
+        days_since_sunday = (today.weekday() + 1) % 7 # .weekday() devuelve 0 a 6 cada dia de la semana
+        start_of_week = today - timedelta(days=days_since_sunday)
+
+        week = []
+        for i in range(8):
+            week.append(start_of_week + timedelta(days=i))
+        return week
+
+
+    def set_day(self, room_card, day):
+        """"""
+        DAYS_ES = {
+            'Monday': 'Lunes',
+            'Tuesday': 'Martes',
+            'Wednesday': 'Miércoles',
+            'Thursday': 'Jueves',
+            'Friday': 'Viernes',
+            'Saturday': 'Sábado',
+            'Sunday': 'Domingo'
+        }
+        title = room_card.findChild(QLabel, "labelTitleCard")
+        # title.setText(day.strftime('%A %d/%m'))
+
+        day_name_en = day.strftime('%A')  # Ej: 'Monday'
+        day_name_es = DAYS_ES[day_name_en]
+        title.setText(f"{day_name_es} {day.strftime('%d/%m')}")
+
+
+    def display_room_cards(self, theme:str):
+        """"""
+        # Limpiar el layout
+        while self.rooms_layout.count():
+            child = self.rooms_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        week_dates = self.get_week_days()
+        for day in week_dates:
+            room_card = RoomsCardWidget(self)
+            self.set_day(room_card, day)
+            if date.today() == day:
+                title = room_card.findChild(QLabel, "labelTitleCard")
+                if theme == "light":
+                    title.setStyleSheet("background-color:#90EE90")
+                else:
+                    title.setStyleSheet("background-color:#4CB093")
+            self.rooms_layout.addWidget(room_card)

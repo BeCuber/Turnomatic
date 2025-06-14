@@ -71,6 +71,9 @@
             <layout class="QHBoxLayout" name="horizontalLayout_18">
              <item>
               <widget class="QPushButton" name="btnDeleteVolunteer">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Borrar Voluntario</string>
                </property>
@@ -78,6 +81,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="btnAddVolunteer">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Nuevo Voluntario</string>
                </property>
@@ -242,6 +248,9 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="cursor">
+             <cursorShape>ArrowCursor</cursorShape>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_25">
              <item>
               <widget class="QLabel" name="labelCarnet">
@@ -252,6 +261,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="radioButtonCarnetYes">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Sí</string>
                </property>
@@ -259,6 +271,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="radioButtonCarnetNo">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>No</string>
                </property>
@@ -285,6 +300,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="radioButton4x4Yes">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Sí</string>
                </property>
@@ -292,6 +310,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="radioButton4x4No">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>No</string>
                </property>
@@ -402,6 +423,9 @@
                 </item>
                 <item>
                  <widget class="QRadioButton" name="radioButtonAllergyYes">
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string>Sí</string>
                   </property>
@@ -409,6 +433,9 @@
                 </item>
                 <item>
                  <widget class="QRadioButton" name="radioButtonAllergyNo">
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string>No</string>
                   </property>
@@ -451,6 +478,9 @@
                 </item>
                 <item>
                  <widget class="QRadioButton" name="radioButtonMedicationYes">
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string>Sí</string>
                   </property>
@@ -458,6 +488,9 @@
                 </item>
                 <item>
                  <widget class="QRadioButton" name="radioButtonMedicationNo">
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string>No</string>
                   </property>
@@ -518,6 +551,9 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="text">
                 <string>Editar Voluntario</string>
@@ -581,6 +617,9 @@
             <layout class="QHBoxLayout" name="horizontalLayout_19">
              <item>
               <widget class="QPushButton" name="btnDeleteAvailability">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Borrar Disponibilidad</string>
                </property>
@@ -588,6 +627,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="btnAddAvailability">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="text">
                 <string>Nueva Disponibilidad</string>
                </property>

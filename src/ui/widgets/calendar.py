@@ -14,27 +14,16 @@ class CalendarManager:
 
         self.theme = "light"
 
-        # self.calendar_widget = None
-
-        # self.main_window = self.parent.parent
-        # self.main_window.theme_changed.connect(lambda: self.display_calendar(self.calendar_widget))
 
 
     def display_calendar(self, calendar: QCalendarWidget, theme:str):
         self.theme = theme
         self._apply_weekend_theme(calendar)
 
-    # def display_calendar(self, calendar: QCalendarWidget):
-    #     self._apply_weekend_theme(calendar)
-
-    # def update_calendar_style(self, calendar: QCalendarWidget, theme:str):
-    #     self._apply_weekend_theme(calendar, theme)
 
     def update_individual_calendar_style(self, calendar: QCalendarWidget, new_theme:str):
         self.theme = new_theme
         self._apply_weekend_theme(calendar)
-
-
 
 
     def update_heatmap_style(self, calendar: QCalendarWidget, new_theme:str):
@@ -50,7 +39,6 @@ class CalendarManager:
 
     def update_calendar_with_availability(self, calendar: QCalendarWidget, date_init: str, date_end: str, confirmed):
         """"""
-        # self.theme
         calendar.setFocus()
         fmt = QTextCharFormat()
 
@@ -234,9 +222,7 @@ class CalendarManager:
         weekend_format = QTextCharFormat()
 
         if self.theme == "dark":
-            # weekend_color = QColor("#ff9900") # naranja para fines de semana
-            # weekend_color = QColor("#A34CB0") # morado oscuro para fines de semana
-            weekend_color = QColor("#AD72B3") # naranja para fines de semana
+            weekend_color = QColor("#AD72B3")
         else:
             weekend_color = QColor("#EB3945")
 

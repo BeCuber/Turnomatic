@@ -231,7 +231,8 @@ class DatabaseConnector:
             raise
         finally:
             cursor.close()
-    
+
+
     def fetch_query_all(self, query, params=()):
         """
             Executes a SELECT query and returns all results.

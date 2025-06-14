@@ -40,6 +40,14 @@ QLabel#labelNameVolunteer {
     font-size: 18pt;
 }
 
+QLabel#labelTitleCard {
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #90EE90;
+    padding: 3px;
+    border-radius: 6px;
+}
+
 /* === QComboBox === */
 QComboBox {
     border: 1px solid #ccc;
@@ -187,7 +195,7 @@ QScrollBar:vertical {
 }
 
 QScrollBar::handle:vertical {
-    background: #3fbf83; /* Color del "pulgar" (el asa) del scrollbar (tu verde) */
+    background: #3fbf83; /* (verde) */
     border-radius: 4px; /* Bordes redondeados para el asa */
     min-height: 20px;   /* Asegura que el asa sea visible */
 }
