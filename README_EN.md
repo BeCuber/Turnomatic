@@ -60,12 +60,13 @@ The following basic functionalities have already been implemented:
 - Heatmap implementation in `calendar_page.py`.
 - Packaged for distribution on Windows.
 - UI is supported to various window sizes and screen resolutions.
+- Page to manage beds added. Still in progress.
 
 ### Next Steps
 
 - Add a security layer for the database (evaluating SQLCipher).
 - Extend the database structure to register meal and bed requirements.
-- Add two new GUI pages to manage meals and beds.
+- Add new GUI page to manage meals.
 - Implement internationalization (i18n) support.
 - Add detailed internal documentation of the codebase.
 - Package the application for cross-platform distribution (add Linux support).

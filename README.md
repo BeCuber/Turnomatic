@@ -61,6 +61,7 @@ Ya se han implementado las siguientes funcionalidades básicas:
 - Implementación de heatmap en `calendar_page.py`.
 - Empaquetado para distribución en Windows.
 - Interfaz adaptable a distintos tamaños de ventana y pantalla.
+- Añadida página de gestión de camas. En proceso.
 
 
 
@@ -68,7 +69,7 @@ Ya se han implementado las siguientes funcionalidades básicas:
 
 - Añadir capa de seguridad para la base de datos (evaluando el uso de SQLCipher).
 - Ampliar la base de datos con estructuras para registrar necesidades de comidas/cenas y camas.
-- Añadir dos nuevas páginas en la GUI para gestionar comidas y camas.
+- Añadir nueva página en la GUI para gestionar comidas.
 - Implementar soporte de internacionalización (i18n).
 - Añadir documentación interna detallada del código.
 - Empaquetado multiplataforma (añadir soporte para Linux).

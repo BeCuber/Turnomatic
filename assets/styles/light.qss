@@ -47,6 +47,13 @@ QLabel#labelTitleCard {
     padding: 3px;
     border-radius: 6px;
 }
+QLabel#labelTitleNoRoom {
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #90EE90;
+    padding: 3px;
+    border-radius: 6px;
+}
 
 /* === QComboBox === */
 QComboBox {
@@ -193,12 +200,18 @@ QScrollBar:vertical {
     width: 10px;        /* Ancho de la barra vertical */
     margin: 0px;        /* Sin margen extra */
 }
+#scrollAreaRooms QScrollBar:vertical, #scrollAreaNoRoom QScrollBar:vertical{
+    background: #f0f0f0; /* Fondo de la pista del scrollbar (gris claro) */
+    width: 5px;        /* Ancho de la barra vertical */
+    margin: 0px;        /* Sin margen extra */
+}
 
 QScrollBar::handle:vertical {
     background: #3fbf83; /* (verde) */
     border-radius: 4px; /* Bordes redondeados para el asa */
     min-height: 20px;   /* Asegura que el asa sea visible */
 }
+
 
 /* Botones de flecha (arriba/abajo) para el scrollbar vertical */
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
@@ -214,6 +227,7 @@ QScrollBar:horizontal {
     height: 10px;       /* Alto de la barra horizontal */
     margin: 0px;        /* Sin margen extra */
 }
+
 
 QScrollBar::handle:horizontal {
     background: #3fbf83; /* Color del "pulgar" (el asa) del scrollbar (tu verde) */
