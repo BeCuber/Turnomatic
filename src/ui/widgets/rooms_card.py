@@ -5,6 +5,7 @@ from PyQt5 import uic
 from datetime import date
 
 from src.data.db_connector import DatabaseConnector
+from src.logic.availability_manager import AvailabilityManager
 from src.logic.room_assignment_manager import RoomManager
 from src.utils.path_helper import get_resource_path
 
@@ -20,6 +21,7 @@ class RoomsCardWidget(QWidget):
         self.theme = theme
         self.db = db
         self.room_manager = RoomManager(db)
+        self.am = AvailabilityManager(db)
 
         # resource paths
         icon_add_room_path = get_resource_path("assets/images/add_room.ico")
@@ -189,8 +191,7 @@ class RoomsCardWidget(QWidget):
             btn.setCursor(Qt.PointingHandCursor)
             btn.setIconSize(btn.maximumSize())
             btn.setObjectName(f"btnVolMenu_{id_volunteer}")
-            btn.setStyleSheet("border:none")
-            btn.setStyleSheet("QPushButton::menu-indicator { image: none; }")
+            btn.setProperty("menu", True)
             btn.setIcon(QIcon(self.icon_menu_path))
 
             # Crear menú contextual para el botón
@@ -200,7 +201,7 @@ class RoomsCardWidget(QWidget):
 
             # Asociar funciones a las acciones
             action_assign.triggered.connect(lambda _, a=id_availability: self.assign_room(a))
-            action_delete.triggered.connect(lambda _, a=id_availability: self.delete_availability(a))
+            action_delete.triggered.connect(lambda _, v=id_volunteer, a=id_availability: self.unconfirm_availability(v, a))
 
             menu.addAction(action_assign)
             menu.addAction(action_delete)
@@ -217,8 +218,12 @@ class RoomsCardWidget(QWidget):
         print(f"Asignar habitación a disponibilidad {id_availability}")
 
 
-    def delete_availability(self, id_availability: int):
-        print(f"Eliminar disponibilidad {id_availability}")
+    def unconfirm_availability(self, id_volunteer: int, id_availability: int):
+        """"""
+        self.am.switch_confirmed(id_availability)
+        self.am.merge_periods(id_volunteer, 0, id_availability)
+        self.parent.display_room_cards()
+        print(f"Desconfirmar disponibilidad {id_availability}")
 
 
 

@@ -7,13 +7,13 @@ from src.ui.pages.volunteer_page import VolunteerPage
 
 class MenuBarManager():
     
-    def __init__(self, main_window: QMainWindow, stacked_widget, calendar_page: CalendarPage, volunteer_page: VolunteerPage, meals_and_beds_page: RoomsPage):
+    def __init__(self, main_window: QMainWindow, stacked_widget, calendar_page: CalendarPage, volunteer_page: VolunteerPage, rooms_page: RoomsPage):
         """Inicializa el gestor del menú de la ventana principal."""
         self.main_window = main_window
         self.stacked_widget = stacked_widget
         self.calendar_page = calendar_page
         self.volunteer_page = volunteer_page
-        self.meals_and_beds_page = meals_and_beds_page
+        self.rooms_page = rooms_page
         self.setup_menu_actions()
 
     def setup_menu_actions(self):
@@ -24,8 +24,9 @@ class MenuBarManager():
         self.menu_volunteers = self.main_window.findChild(QAction, "actionLista_voluntarios")
         self.menu_volunteers.triggered.connect(self.show_volunteer_list)
 
-        self.menu_meal_bed = self.main_window.findChild(QAction, "actionComidas_y_camas")
-        self.menu_meal_bed.triggered.connect(self.show_meal_bed)
+        self.menu_rooms = self.main_window.findChild(QAction, "actionCamas")
+        # self.menu_rooms = self.main_window.findChild(QAction, "actionComidas_y_camas")
+        self.menu_rooms.triggered.connect(self.show_rooms)
 
         self.light_theme = self.main_window.findChild(QAction, "actionClaro")
         self.light_theme.triggered.connect(lambda: self.main_window.apply_stylesheet("light"))
@@ -43,6 +44,7 @@ class MenuBarManager():
         self.volunteer_page.display_volunteer_data()
         self.stacked_widget.setCurrentIndex(1)
 
-    def show_meal_bed(self):
-        # self.menu_meal_bed
+    def show_rooms(self):
+        """"""
+        self.rooms_page.refresh()
         self.stacked_widget.setCurrentIndex(2)

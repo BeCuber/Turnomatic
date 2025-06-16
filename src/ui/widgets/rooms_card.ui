@@ -1073,17 +1073,10 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <layout class="QVBoxLayout" name="vBoxWithoutRoomList" stretch="0">
+        <layout class="QVBoxLayout" name="vBoxWithoutRoomList" stretch="">
          <property name="spacing">
           <number>3</number>
          </property>
-         <item>
-          <layout class="QHBoxLayout" name="hBoxWithoutRoom" stretch="">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-          </layout>
-         </item>
         </layout>
        </item>
       </layout>

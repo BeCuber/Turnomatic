@@ -57,7 +57,7 @@
     </property>
     <addaction name="actionCalendario"/>
     <addaction name="actionLista_voluntarios"/>
-    <addaction name="actionComidas_y_camas"/>
+    <addaction name="actionCamas"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -98,7 +98,7 @@
     <string>Calendario</string>
    </property>
   </action>
-  <action name="actionComidas_y_camas">
+  <action name="actionCamas">
    <property name="text">
     <string>Habitaciones</string>
    </property>

@@ -110,15 +110,6 @@ class RoomsPage(QWidget):
     def get_week_days(self):
         """Returns a list of 8 days from sunday to next sunday"""
         return [self.current_week_start + timedelta(days=i) for i in range(8)]  # domingo → domingo
-        # today = date.today()
-        # # Calculate how many days to substract to reach last sunday
-        # days_since_sunday = (today.weekday() + 1) % 7 # .weekday() devuelve 0 a 6 cada dia de la semana
-        # start_of_week = today - timedelta(days=days_since_sunday)
-        #
-        # week = []
-        # for i in range(8):
-        #     week.append(start_of_week + timedelta(days=i))
-        # return week
 
 
     def display_room_cards(self):
@@ -132,3 +123,6 @@ class RoomsPage(QWidget):
         for day in self.get_week_days():
             room_card = RoomsCardWidget(self, day, self.theme, self.db)
             self.rooms_layout.addWidget(room_card)
+
+    def refresh(self):
+        self.display_room_cards()
