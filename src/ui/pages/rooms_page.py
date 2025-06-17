@@ -4,7 +4,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QCalendarWidget
 from PyQt5 import uic
 
-
+from src.logic.room_assignment_manager import RoomManager
 from src.ui.widgets.rooms_card import RoomsCardWidget
 from src.data.db_connector import DatabaseConnector
 from src.utils.path_helper import get_resource_path
@@ -18,7 +18,9 @@ class RoomsPage(QWidget):
 
         self.parent = parent
         self.db = db
+        self.room_manager = RoomManager(db)
         self.theme = "light"
+        self.rooms_map = self.room_manager.get_all_rooms()
 
         # Connect signal theme_changed from mainwindow
         self.parent.theme_changed.connect(self.on_theme_changed)
@@ -121,8 +123,14 @@ class RoomsPage(QWidget):
                 child.widget().deleteLater()
 
         for day in self.get_week_days():
-            room_card = RoomsCardWidget(self, day, self.theme, self.db)
+            room_card = RoomsCardWidget(self, day, self.theme, self.db, self.rooms_map)
             self.rooms_layout.addWidget(room_card)
 
     def refresh(self):
         self.display_room_cards()
+
+
+    def update_room_name(self, id_room: int, new_name:str):
+        self.room_manager.update_room_name(id_room, new_name)
+        self.rooms_map = self.room_manager.get_all_rooms()
+        self.refresh()

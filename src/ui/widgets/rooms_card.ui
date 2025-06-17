@@ -86,8 +86,14 @@
         <x>0</x>
         <y>0</y>
         <width>376</width>
-        <height>442</height>
+        <height>472</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -98,9 +104,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -134,16 +140,37 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName1">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>IBeamCursor</cursorShape>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="vBoxVolSameRoom1">
+           <layout class="QVBoxLayout" name="vBoxVolSameRoom1" stretch="0">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu1" stretch="1,0">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol1">
                 <property name="text">
@@ -188,9 +215,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -224,16 +251,34 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName2">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QVBoxLayout" name="vBoxVolSameRoom2">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu2" stretch="1,0">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol2">
                 <property name="text">
@@ -278,9 +323,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -314,9 +359,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName3">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -324,6 +381,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom3">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu3" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol3">
                 <property name="text">
@@ -368,9 +431,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -404,9 +467,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName4">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -414,6 +489,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom4">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu4" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol4">
                 <property name="text">
@@ -458,9 +539,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -494,9 +575,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName5">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -504,6 +597,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom5">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu5" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol5">
                 <property name="text">
@@ -548,9 +647,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -584,9 +683,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName6">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -594,6 +705,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom6">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu6" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol6">
                 <property name="text">
@@ -638,9 +755,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -674,16 +791,34 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName7">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item>
            <layout class="QVBoxLayout" name="vBoxVolSameRoom7">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu7" stretch="1,0">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol7">
                 <property name="text">
@@ -728,9 +863,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -764,9 +899,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName8">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -774,6 +921,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom8">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu8" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol8">
                 <property name="text">
@@ -818,9 +971,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -854,9 +1007,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName9">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -864,6 +1029,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom9">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu9" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol9">
                 <property name="text">
@@ -908,9 +1079,9 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,1,5">
           <property name="spacing">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
            <number>1</number>
@@ -938,9 +1109,21 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelRoomName10">
-            <property name="text">
-             <string>TextLabel</string>
+           <widget class="QLineEdit" name="labelRoomName10">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -948,6 +1131,12 @@
            <layout class="QVBoxLayout" name="vBoxVolSameRoom10">
             <item>
              <layout class="QHBoxLayout" name="hBoxNameVolBtnMenu10" stretch="1,0">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelNameVol10">
                 <property name="text">

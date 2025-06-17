@@ -59,12 +59,11 @@ class DialogManager(QDialog):
 
         # Conexiones
         self.btn_cancel.clicked.connect(self.reject)
-        self.btn_save.clicked.connect(self.validate_volunteer_and_accept)
+        self.btn_save.clicked.connect(self._validate_volunteer_and_accept)
 
         return self
 
-
-    def validate_volunteer_and_accept(self):
+    def _validate_volunteer_and_accept(self):
         if not self.name_input.text() or not self.lastname1_input.text() or not self.id_card_input.text():
             QMessageBox.warning(self, "Error", "Nombre, primer apellido y documento de identidad son obligatorios.")
             return
@@ -94,7 +93,7 @@ class DialogManager(QDialog):
         self.date_end.setDate(QDate.currentDate())
         self.date_end.setMinimumDate(self.date_init.date())
 
-        self.date_init.dateChanged.connect(self.update_end_date)
+        self.date_init.dateChanged.connect(self._update_end_date)
 
         self.comments_input = QLineEdit()
         self.confirmed_checkbox = QCheckBox("¿Confirmado?")
@@ -126,10 +125,11 @@ class DialogManager(QDialog):
 
         return self
 
-    def update_end_date(self, new_date):
+    def _update_end_date(self, new_date):
         self.date_end.setMinimumDate(new_date)
         if self.date_end.date() < new_date:
             self.date_end.setDate(new_date)
+
 
     def get_new_availability_data(self):
         return {

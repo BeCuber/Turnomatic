@@ -32,7 +32,7 @@ class CalendarPage(QWidget):
         self.btn_substract = self.findChild(QPushButton, "btnSubstractConfirmed")
 
         # Connect signal theme_changed from mainwindow
-        self.parent.theme_changed.connect(self.on_theme_changed)
+        # self.parent.theme_changed.connect(self.on_theme_changed)
         
 
         #Initialize
@@ -48,17 +48,17 @@ class CalendarPage(QWidget):
 
         self.display_volunteer_lists()
 
-        self.calendar_manager.set_heatmap(self.calendar)
-
+        initial_theme = self.parent.current_theme if hasattr(self.parent, 'current_theme') else "light"
+        # self.calendar_manager.set_heatmap(self.calendar)
+        self.calendar_manager.update_heatmap_style(self.calendar, initial_theme)
 
         self.btn_add.clicked.connect(lambda: self.change_confirmed(self.not_confirmed_volunteer_table))
         self.btn_substract.clicked.connect(lambda: self.change_confirmed(self.confirmed_volunteer_table))
 
 
-    def on_theme_changed(self, theme: str):
+    def update_page_theme_styles(self, theme: str):
         """"""
         self.calendar_manager.update_heatmap_style(self.calendar, theme)
-        # self.display_volunteer_data()
 
 
     def display_volunteer_lists(self):
@@ -142,10 +142,13 @@ class CalendarPage(QWidget):
 
         return None
 
+
     def refresh(self):
         """Updates the heatmap"""
-        self.calendar_manager.set_heatmap(self.calendar)
+        # self.calendar_manager.set_heatmap(self.calendar)
 
+        current_theme = self.parent.current_theme if hasattr(self.parent, 'current_theme') else "light"
+        self.calendar_manager.update_heatmap_style(self.calendar, current_theme)
 
 
 # from bash: $ python -m src.ui.pages.calendar_page (-m points "src" a module)

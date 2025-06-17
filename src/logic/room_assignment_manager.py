@@ -9,6 +9,20 @@ class RoomManager:
         self.db = db
 
 
+    def get_all_rooms(self):
+        """Returns a list of tuples with (id_room, room_name, capacity)"""
+        query = "SELECT * FROM rooms ORDER BY id_room ASC;"
+        result = self.db.fetch_query_all(query)
+        return {row[0]: (row[1], row[2]) for row in result}
+
+
+    def update_room_name(self, id_room: int, new_name:str):
+        """"""
+        query = "UPDATE rooms SET room_name = ? WHERE id_room = ?;"
+        params = (new_name, id_room)
+        self.db.execute_query(query, params)
+
+
     def get_volunteers_without_room(self, day: date):
         query = """
         SELECT

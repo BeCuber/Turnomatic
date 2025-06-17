@@ -1,7 +1,7 @@
 import os
 
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QStackedWidget
+from PyQt5.QtCore import pyqtSignal, QSettings
+from PyQt5.QtWidgets import QMainWindow, QStackedWidget, QApplication
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 
@@ -21,6 +21,13 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        QApplication.setOrganizationName("Ordesa")
+        QApplication.setApplicationName("Turnomatic")
+
+        self.settings = QSettings()
+
+        self.current_theme = self.settings.value("theme/current", "light")
+
         # Load the ui file - dinamic route
         UI_PATH = get_resource_path("src/ui/main_window.ui")
         uic.loadUi(UI_PATH, self)
@@ -32,9 +39,6 @@ class MainWindow(QMainWindow):
 
         # Connect to database
         self.db = DatabaseConnector()
-
-        # Set initial style theme
-        self.current_theme = "light"
 
         # Define widgets
         self.stacked_widget = self.findChild(QStackedWidget, "stackedWidget")
@@ -48,33 +52,78 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.calendar_page)
         self.stacked_widget.addWidget(self.volunteer_page)
         self.stacked_widget.addWidget(self.rooms_page)
- 
+
+        # Set initial style theme
+
+        self._apply_full_theme(self.current_theme)
+        self.set_initial_window_size_and_position()
+
         # Config menu manager
         self.menu_manager = MenuBarManager(self, self.stacked_widget, self.calendar_page, self.volunteer_page, self.rooms_page)
 
-        # Load stylesheet
-        # self.current_theme = "light"
-        self.apply_stylesheet(self.current_theme)
-        
         # Show the app
         self.show()
 
-
-
-    def apply_stylesheet(self, theme):
+    def _apply_full_theme(self, theme_name: str):
         """"""
-        self.current_theme = theme
+        # Paso 1: Aplicar la hoja de estilo QSS global
+        self._apply_stylesheet_to_app(theme_name)
+
+        self.calendar_page.update_page_theme_styles(theme_name)
+        # rooms_page se hará en la siguiente parte, volunteer_page si tiene estilos python
+        # self.rooms_page.update_page_theme_styles(theme_name)
+        # self.volunteer_page.update_page_theme_styles(theme_name)
+
+    def _apply_stylesheet_to_app(self, theme):
+        """"""
+        # self.current_theme = theme
         theme_file = f"assets/styles/{theme}.qss"
         QSS_PATH = get_resource_path(theme_file)
         try:
             with open(QSS_PATH, "r", encoding="utf-8") as f:
-                self.setStyleSheet(f.read())
-                self.theme_changed.emit(theme)
+                stylesheet = f.read()
+
+            QApplication.instance().setStyleSheet(stylesheet)
+            self.theme_changed.emit(theme)
 
         except Exception as e:
             print(f"Error applying stylesheet {QSS_PATH}: {e}")
             return
 
+        # self.calendar_page.refresh()
+
+    def set_theme(self, theme_name: str):
+        """
+        Change the app's theme and save the preference.
+        """
+        if self.current_theme != theme_name:  # Solo cambiar si es un tema diferente
+            self.current_theme = theme_name
+            self._apply_full_theme(theme_name)
+
+            self.settings.setValue("theme/current", theme_name)
+        else:
+            print(f"El tema ya es '{theme_name}'. No se requiere cambio.")
+
+
+    def set_initial_window_size_and_position(self, percentage_width=0.8, percentage_height=0.8):
+        """
+        Calculates the window's initial size and position
+        based on a percentage of the screen size (80% default) and centers it.
+        """
+        screen = QApplication.desktop().screenGeometry()  # O .availableGeometry() si quieres excluir la barra de tareas
+
+        # Calcular el tamaño de la ventana
+        window_width = int(screen.width() * percentage_width)
+        window_height = int(screen.height() * percentage_height)
+
+        # Calcular la posición para centrar la ventana
+        x = (screen.width() - window_width) // 2
+        y = (screen.height() - window_height) // 2
+
+        # Establecer la geometría de la ventana
+        self.setGeometry(x, y, window_width, window_height)
+        # print(f"Ventana ajustada a: {window_width}x{window_height} en posición ({x},{y})")
+        # print(f"Resolución de pantalla: {screen.width()}x{screen.height()}")
 
 
     def closeEvent(self, event):
@@ -82,23 +131,3 @@ class MainWindow(QMainWindow):
         print("Cerrando conexión con la base de datos...")
         self.db.close_connection()  # Close the connection
         event.accept()  # Let close the window
-
-
-if __name__ == "__main__":
-    db = DatabaseConnector()
-    am = AvailabilityManager(db)
-    vm = VolunteerManager(db)
-    mw = MainWindow()
-    cp = CalendarPage(mw, db)
-
-    periods = am.get_confirmed_availability_by_id_volunteer(1, True)
-    # periods = am.get_availability_by_id_volunteer(1)
-
-    print(periods)  # debug
-    print(len(periods))
-
-
-    # print(cp._get_availability_index(periods, 55)) # 1
-
-
-    am.db.close_connection()

@@ -15,7 +15,6 @@ class CalendarManager:
         self.theme = "light"
 
 
-
     def display_calendar(self, calendar: QCalendarWidget, theme:str):
         self.theme = theme
         self._apply_weekend_theme(calendar)

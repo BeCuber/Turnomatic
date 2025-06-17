@@ -25,13 +25,12 @@ class MenuBarManager():
         self.menu_volunteers.triggered.connect(self.show_volunteer_list)
 
         self.menu_rooms = self.main_window.findChild(QAction, "actionCamas")
-        # self.menu_rooms = self.main_window.findChild(QAction, "actionComidas_y_camas")
         self.menu_rooms.triggered.connect(self.show_rooms)
 
         self.light_theme = self.main_window.findChild(QAction, "actionClaro")
-        self.light_theme.triggered.connect(lambda: self.main_window.apply_stylesheet("light"))
+        self.light_theme.triggered.connect(lambda: self.main_window.set_theme("light"))
         self.dark_theme = self.main_window.findChild(QAction, "actionOscuro")
-        self.dark_theme.triggered.connect(lambda: self.main_window.apply_stylesheet("dark"))
+        self.dark_theme.triggered.connect(lambda: self.main_window.set_theme("dark"))
 
     def show_calendar(self):
         """Cambia a la página del calendario."""

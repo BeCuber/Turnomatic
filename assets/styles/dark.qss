@@ -54,6 +54,16 @@ QLabel#labelTitleCard {
     padding: 3px;
     border-radius: 6px;
 }
+QLineEdit[roomLabel="true"] {
+    background: transparent;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    font-weight: bold;
+}
+QLineEdit[roomLabel="true"]:focus{
+    border: 1px solid #90EE90;
+}
 QLabel#labelTitleNoRoom {
     font-size: 12px;
     font-weight: bold;
@@ -303,7 +313,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
 /* Horizontal Scrollbar */
 QScrollBar:horizontal {
     background: #333333; /* Fondo de la pista del scrollbar (gris oscuro) */
-    height: 10px;       /* Alto de la barra horizontal */
+    height: 5px;       /* Alto de la barra horizontal */
     margin: 0px;        /* Sin margen extra */
 }
 

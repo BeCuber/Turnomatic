@@ -1,5 +1,6 @@
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QFrame, QMenu, QAction
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QFrame, QMenu, QAction, QLineEdit, \
+    QSizePolicy
 from PyQt5.QtCore import Qt, QDate
 from PyQt5 import uic
 from datetime import date
@@ -11,7 +12,7 @@ from src.utils.path_helper import get_resource_path
 
 
 class RoomsCardWidget(QWidget):
-    def __init__(self, parent, day: date, theme: str, db:DatabaseConnector):
+    def __init__(self, parent, day: date, theme: str, db:DatabaseConnector, rooms_map: dict):
         super().__init__()
         UI_PATH = get_resource_path("src/ui/widgets/rooms_card.ui")
         uic.loadUi(UI_PATH, self)
@@ -22,6 +23,7 @@ class RoomsCardWidget(QWidget):
         self.db = db
         self.room_manager = RoomManager(db)
         self.am = AvailabilityManager(db)
+        self.rooms_map = rooms_map
 
         # resource paths
         icon_add_room_path = get_resource_path("assets/images/add_room.ico")
@@ -36,33 +38,36 @@ class RoomsCardWidget(QWidget):
 
         # Fixed buttons
         self.btn_add_room = self.findChild(QPushButton, "btnAddRoom")
-        # self.btn_menu_no_room = self.findChild(QPushButton, "btnMenuVolNoRoom")
-        # self.btn_menu_no_room.setStyleSheet("border:none")
         self.btn_add_room.setIcon(QIcon(icon_add_room_path))
-        # self.btn_menu_no_room.setIcon(QIcon(icon_menu_path))
         self.btn_add_room.clicked.connect(self.on_add_room_clicked)
-        # self.btn_menu_no_room.clicked.connect(self.on_menu_no_room_clicked)
 
         # Dynamic buttons
         self.add_bed_buttons = []
         self.menu_buttons = []
+        self.init_room_name()
         self.init_add_bed_btns(icon_add_bed_path)
         self.init_menu_btns(self.icon_menu_path)
 
         #labels
-        self.display_count_beds(icon_bed_path)
         self.display_no_room_title(icon_arrow_down_path)
 
         # containers
         self.vBoxWithoutRoomList = self.findChild(QVBoxLayout, "vBoxWithoutRoomList")
 
         # day title
-        self.set_day_title()
-        self.apply_style()
+        self.display_header_room_card(icon_bed_path)
+
         self.load_volunteers_without_room()
 
+    # ==== Header Section - containerTitleCard, containerCurrentOccupied - =====
 
-    def set_day_title(self):
+    def display_header_room_card(self, path):
+        """"""
+        self._set_day_title()
+        self._display_count_beds(path)
+
+
+    def _set_day_title(self):
         DAYS_ES = {
             'Monday': 'Lunes',
             'Tuesday': 'Martes',
@@ -77,9 +82,9 @@ class RoomsCardWidget(QWidget):
         day_name_en = self.day.strftime('%A')  # Ej: 'Monday'
         day_name_es = DAYS_ES[day_name_en]
         title.setText(f"{day_name_es} {self.day.strftime('%d/%m')}")
+        self._apply_today_style()
 
-
-    def apply_style(self):
+    def _apply_today_style(self):
         if date.today() == self.day:
             title = self.findChild(QLabel, "labelTitleCard")
             if self.theme == "light":
@@ -88,6 +93,108 @@ class RoomsCardWidget(QWidget):
                 title.setStyleSheet("background-color:#4CB093")
 
 
+    def _display_count_beds(self, path):
+        """"""
+        self.room_icon = self.findChild(QLabel, "labelRoomIcon")
+        bed_icon = QPixmap(path)
+        self.room_icon.setPixmap(bed_icon.scaled(16, 16, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+
+        label_occupied = self.findChild(QLabel, "labelCurrentOccupiedRooms")
+        self._get_current_occupied(label_occupied)
+
+    def _get_current_occupied(self, label:QLabel):
+        """"""
+        text = f"{self._get_count_occupied_rooms()}/{self._get_total_rooms()}"
+        label.setText(text)
+
+    def _get_total_rooms(self):
+        """"""
+        return "10"
+
+    def _get_count_occupied_rooms(self):
+        """"""
+        return "5"
+
+
+
+    # ==== ScrollArea Rooms Section =====
+    def init_room_name(self):
+        """"""
+        for i in range (1, 11):
+            label = self.findChild(QLineEdit, f"labelRoomName{i}")
+            if label:
+                room_id = i
+                if room_id in self.rooms_map:
+                    name, capacity = self.rooms_map[room_id]
+                    label.setText(name)
+                    label.setProperty("roomLabel", True)
+                    label.setReadOnly(True)
+                    label.room_id = room_id
+
+                    label.mouseDoubleClickEvent = lambda e, l=label: self.enable_edit(l)
+                    label.editingFinished.connect(lambda l=label: self.finish_edit(l))
+                else:
+                    label.setText("N/D")
+            else:
+                print(f"Error: labelRoomName{i} no se ha encontrado en UI")
+
+
+    def init_add_bed_btns(self, path):
+        """"""
+        for i in range (1, 11):
+            btn = self.findChild(QPushButton, f"btnAddBed{i}")
+            if btn:
+                btn.setIcon(QIcon(path))
+                btn.setProperty("menu", True)
+
+                btn.clicked.connect(lambda _, r=i: self.add_bed(r))
+
+                self.add_bed_buttons.append(btn)
+            else:
+                print(f"Error: btnAddBed{i} no se ha encontrado en UI")
+
+
+    def init_menu_btns(self, path):
+        """"""
+        for i in range (1, 11):
+            btn = self.findChild(QPushButton, f"btnMenu{i}")
+            if btn:
+                btn.setIcon(QIcon(path))
+                btn.setProperty("menu", True)
+                btn.clicked.connect(lambda _, n=i: self.on_menu_clicked(n))
+                self.menu_buttons.append(btn)
+            else:
+                print(f"Error: btnAddBed{i} no se ha encontrado en UI")
+
+
+    def on_add_room_clicked(self):
+        print("Add room clicked")
+
+
+    def add_bed(self, room):
+        print(f"Add bed clicked on room {room}")
+
+
+    def on_menu_clicked(self, volunteer):
+        print(f"Menu clicked on {volunteer}")
+
+
+    def change_room_name(self, id_room: int, new_name: str):
+        """"""
+        self.parent.update_room_name(id_room, new_name)
+        print("Nombre cambiado!")
+
+    def enable_edit(self, lineedit: QLineEdit):
+        lineedit.setReadOnly(False)
+        lineedit.setFocus()
+
+    def finish_edit(self, lineedit: QLineEdit):
+        lineedit.setReadOnly(True)
+        new_name = lineedit.text()
+        id_room = lineedit.room_id
+        self.change_room_name(id_room, new_name)
+
+    # ==== ScrollArea No Room -and title no room- Section =====
     def display_no_room_title(self, path):
         """"""
         self.title_no_room = self.findChild(QLabel, "labelTitleNoRoom")
@@ -100,74 +207,6 @@ class RoomsCardWidget(QWidget):
         self.title_no_room.setText(html)
 
 
-    def display_count_beds(self, path):
-        """"""
-        self.room_icon = self.findChild(QLabel, "labelRoomIcon")
-        bed_icon = QPixmap(path)
-        self.room_icon.setPixmap(bed_icon.scaled(16, 16, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-
-        label_occupied = self.findChild(QLabel, "labelCurrentOccupiedRooms")
-        self.get_current_occupied(label_occupied)
-
-
-    def get_current_occupied(self, label:QLabel):
-        """"""
-        text = f"{self.get_count_occupied_rooms()}/{self.get_total_rooms()}"
-        label.setText(text)
-
-
-    def get_total_rooms(self):
-        """"""
-        return "10"
-
-
-    def get_count_occupied_rooms(self):
-        """"""
-        return "5"
-
-
-    def init_add_bed_btns(self, path):
-        """"""
-        for i in range (1, 11):
-            btn = self.findChild(QPushButton, f"btnAddBed{i}")
-            if btn:
-                btn.setIcon(QIcon(path))
-                btn.setStyleSheet("border:none")
-                btn.clicked.connect(lambda _, n=i: self.on_add_bed_clicked(n))
-                self.add_bed_buttons.append(btn)
-            else:
-                print(f"Error: btnAddBed{i} no se ha encontrado en UI")
-
-
-    def init_menu_btns(self, path):
-        """"""
-        for i in range (1, 11):
-            btn = self.findChild(QPushButton, f"btnMenu{i}")
-            if btn:
-                btn.setIcon(QIcon(path))
-                btn.setStyleSheet("border:none")
-                btn.clicked.connect(lambda _, n=i: self.on_menu_clicked(n))
-                self.menu_buttons.append(btn)
-            else:
-                print(f"Error: btnAddBed{i} no se ha encontrado en UI")
-
-
-    def on_add_room_clicked(self):
-        print("Add room clicked")
-
-
-    def on_add_bed_clicked(self, room):
-        print(f"Add bed clicked on room {room}")
-
-
-    def on_menu_clicked(self, volunteer):
-        print(f"Menu clicked on {volunteer}")
-
-
-    def on_menu_no_room_clicked(self):
-        print("Menu no-room clicked")
-
-
     def load_volunteers_without_room(self):
         """"""
         volunteers = self.room_manager.get_volunteers_without_room(self.day)
@@ -178,9 +217,22 @@ class RoomsCardWidget(QWidget):
             if child.widget():
                 child.widget().deleteLater()
 
+        FIXED_ROW_HEIGHT = 30
         for id_availability, id_volunteer, name in volunteers:
-            # Crear layout horizontal para cada voluntario
-            h_layout = QHBoxLayout()
+            # --- 1. Crear un QWidget contenedor para cada fila ---
+            row_container_widget = QWidget()
+            # Establecer la política de tamaño y la altura mínima/fija
+            row_container_widget.setSizePolicy(
+                QSizePolicy.Preferred,  # Horizontal: prefiere su tamaño, puede expandirse si hay espacio
+                QSizePolicy.Fixed  # Vertical: ¡Altura fija! No se estirará
+            )
+            row_container_widget.setMinimumHeight(FIXED_ROW_HEIGHT)
+            row_container_widget.setMaximumHeight(FIXED_ROW_HEIGHT)  # Para asegurar que no exceda
+
+            # --- 2. Crear el layout horizontal dentro de este contenedor ---
+            h_layout = QHBoxLayout(row_container_widget)  # Asigna el h_layout al row_container_widget
+            h_layout.setContentsMargins(0, 0, 0, 0)  # Elimina márgenes extra si no los necesitas
+            h_layout.setSpacing(5)  # Espaciado entre elementos
 
             label = QLabel(name)
             label.setObjectName(f"labelVol_{id_volunteer}")
@@ -211,7 +263,9 @@ class RoomsCardWidget(QWidget):
             h_layout.addWidget(label)
             h_layout.addWidget(btn)
 
-            self.vBoxWithoutRoomList.addLayout(h_layout)
+            # self.vBoxWithoutRoomList.addLayout(h_layout)
+            self.vBoxWithoutRoomList.addWidget(row_container_widget)
+            self.vBoxWithoutRoomList.addStretch(0)
 
 
     def assign_room(self, id_availability: int):
