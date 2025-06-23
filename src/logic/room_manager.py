@@ -137,6 +137,12 @@ class RoomManager:
         return result
 
 
+    def get_dates_from_availability(self, id_availability: int):
+        """"""
+        query="SELECT date_init, date_end FROM availability WHERE id_availability=?;"
+        params = (id_availability,)
+        return self.db.fetch_query_one(query, params)
+
 
 if __name__ == "__main__":
     db = DatabaseConnector()

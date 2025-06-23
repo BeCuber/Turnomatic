@@ -73,7 +73,7 @@ QLabel#labelTitleNoRoom {
 
 /* === QComboBox === */
 QComboBox {
-    background-color: #3a3a3a; /*TODO 444*/
+    background-color: #3a3a3a;
     color: #f0f0f0;
     border: 1px solid #555;
     border-radius: 4px;
@@ -84,12 +84,12 @@ QComboBox QAbstractItemView {
     background-color: #2a2a2a;
     color: #f0f0f0;
     selection-background-color: #3fbf83;
-    selection-color: #2e2e2e; /*TODO #444*/
+    selection-color: #2e2e2e;
 }
 
 QComboBox:disabled {
     background-color: #444;
-    color: #aaa; /*TODO #888888*/
+    color: #aaa;
 }
 
 
@@ -335,4 +335,3 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
 QScrollBar::corner {
     background: #333333; /* Fondo de la esquina */
 }
-

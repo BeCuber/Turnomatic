@@ -106,6 +106,16 @@ class IndividualRoomWidget(QWidget):
             # print(f"id_availability vol[1]: {vol[1]}")
             volunteer_name = vol[2]
             # print(f"id_availability vol[2]: {vol[2]}")
+            dates = self.room_manager.get_dates_from_availability(id_availability)
+            # print(dates) # ('2025-06-06', '2025-08-31')
+            vol_data_for_assignment = {
+                'id_availability': id_availability,
+                'id_volunteer': id_volunteer,
+                'name': volunteer_name,
+                'date_init': dates[0],
+                'date_end': dates[1]
+            }
+            # print(vol_data_for_assignment)
             action = QAction(f"{volunteer_name}", btn)
             action.triggered.connect(self.add_vol)
 
@@ -114,7 +124,13 @@ class IndividualRoomWidget(QWidget):
 
         # self.room_content_changed.emit()  # Para que RoomsCardWidget sepa que algo ha cambiado
     def add_vol(self):
+        """"""
         print("Voluntario añadido")
+        # 1 Crear un id_assignment
+        # 2 Insertarlo en la ui propia?
+        # 3 Remove from no-room-list
+        # 4 Avisar a los padres para que recarguen el ui
+
 
 
     def unassign_volunteer(self, vol_id: int, room_assignment_id: int):
@@ -158,6 +174,7 @@ class IndividualRoomWidget(QWidget):
         if volunteer_data:
             volunteer_name = volunteer_data.get("name")
             label_vol_name.setText(volunteer_name)
+            # update room_assignment
         else:
             label_vol_name.setText("- Vacía -")
             label_vol_name.setStyleSheet("color: #a0a0a0; font-style: italic;")
