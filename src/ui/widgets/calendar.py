@@ -2,15 +2,14 @@ from PyQt5.QtGui import QTextCharFormat, QColor, QPalette
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QWidget, QCalendarWidget, QTableWidget, QAbstractItemView, QTableView
 
-from src.data.db_connector import DatabaseConnector
 from src.logic.availability_manager import AvailabilityManager
 from datetime import datetime, timedelta
 
 
 class CalendarManager:
-    def __init__(self, parent: QWidget, db: DatabaseConnector):
+    def __init__(self, parent: QWidget, am: AvailabilityManager):
         self.parent = parent
-        self.am = AvailabilityManager(db)
+        self.am = am
 
         self.theme = "light"
 

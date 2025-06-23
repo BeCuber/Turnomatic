@@ -1,26 +1,31 @@
 from datetime import date, timedelta
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QCalendarWidget
+from PyQt5.QtWidgets import QWidget, QPushButton, QCalendarWidget
 from PyQt5 import uic
 
-from src.logic.room_assignment_manager import RoomManager
+from src.logic.availability_manager import AvailabilityManager
+from src.logic.room_manager import RoomManager
+from src.logic.volunteer_manager import VolunteerManager
 from src.ui.widgets.rooms_card import RoomsCardWidget
 from src.data.db_connector import DatabaseConnector
 from src.utils.path_helper import get_resource_path
 
 class RoomsPage(QWidget):
-    def __init__(self, parent, db:DatabaseConnector):
-        super().__init__()
+    def __init__(self, parent, db:DatabaseConnector, am: AvailabilityManager, vm: VolunteerManager):
+        super().__init__(parent)
 
         UI_PATH = get_resource_path("src/ui/pages/rooms_page.ui")
         uic.loadUi(UI_PATH, self)
 
         self.parent = parent
         self.db = db
+        self.am = am
+        self.vm = vm
         self.room_manager = RoomManager(db)
         self.theme = "light"
-        self.rooms_map = self.room_manager.get_all_rooms()
+        # self.rooms_map = self.room_manager.get_all_rooms()
+
 
         # Connect signal theme_changed from mainwindow
         self.parent.theme_changed.connect(self.on_theme_changed)
@@ -39,6 +44,8 @@ class RoomsPage(QWidget):
         self.rooms_layout = rooms_container.layout()
 
         self.current_week_start = self.get_start_of_week(date.today()) # dia de referencia
+
+        self.rooms_dict_for_week = self.room_manager.get_all_data_for_week(self.current_week_start)
 
         self.update_calendar_theme(self.theme)
         self.display_room_cards()
@@ -65,12 +72,12 @@ class RoomsPage(QWidget):
 
     def on_previous_clicked(self):
         self.current_week_start -= timedelta(days=7)
-        self.display_room_cards()
+        self.refresh()
 
 
     def on_next_clicked(self):
         self.current_week_start += timedelta(days=7)
-        self.display_room_cards()
+        self.refresh()
 
 
     def show_calendar_popup(self):
@@ -83,7 +90,7 @@ class RoomsPage(QWidget):
         py_date = selected_date.toPyDate()  # Convertimos QDate a datetime.date
         self.current_week_start = self.get_start_of_week(py_date)
         self.calendar_popup.hide()
-        self.display_room_cards()
+        self.refresh()
 
 
     def on_theme_changed(self, new_theme: str):
@@ -123,14 +130,11 @@ class RoomsPage(QWidget):
                 child.widget().deleteLater()
 
         for day in self.get_week_days():
-            room_card = RoomsCardWidget(self, day, self.theme, self.db, self.rooms_map)
+            # room_card = RoomsCardWidget(self, day, self.theme, self.am, self.room_manager, self.rooms_map)
+            room_card = RoomsCardWidget(self, day, self.theme, self.am, self.room_manager, self.rooms_dict_for_week[day])
+            room_card.room_name_updated_in_card.connect(self.refresh)
             self.rooms_layout.addWidget(room_card)
 
     def refresh(self):
+        self.rooms_dict_for_week = self.room_manager.get_all_data_for_week(self.current_week_start)
         self.display_room_cards()
-
-
-    def update_room_name(self, id_room: int, new_name:str):
-        self.room_manager.update_room_name(id_room, new_name)
-        self.rooms_map = self.room_manager.get_all_rooms()
-        self.refresh()

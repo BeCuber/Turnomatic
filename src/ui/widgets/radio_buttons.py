@@ -1,20 +1,18 @@
 from PyQt5.QtWidgets import QWidget, QButtonGroup, QRadioButton, QMessageBox, QPlainTextEdit, QPushButton, QLineEdit
-from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 
 
-class RadioButtonsManager():
+class RadioButtonsManager:
 
-    def __init__(self, parent: QWidget, db: DatabaseConnector):
+    def __init__(self, parent: QWidget, vm: VolunteerManager):
         """
         Initializes the radio button manager, groups the buttons and sets up logic.
 
         Args:
             parent (QWidget): The parent widget containing the radio buttons.
-            db (DatabaseConnector): The database connector.
         """
         self.parent = parent
-        self.vm = VolunteerManager(db)
+        self.vm = vm
 
         # ButtonGroups
         self.driver_group = QButtonGroup(parent)
@@ -163,11 +161,9 @@ class RadioButtonsManager():
                     return
             field.clear()
             field.setPlaceholderText("")
-            # field.setEnabled(False)
             field.setReadOnly(True)
         else: # 'Sí' selected
             field.setPlaceholderText("Describe la información que se deba tener en cuenta")
-            # field.setEnabled(True)
             field.setReadOnly(False)
 
 

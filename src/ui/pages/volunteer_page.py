@@ -1,6 +1,5 @@
 from PyQt5.QtCore import QDate, Qt
-from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy, \
-    QApplication
+from PyQt5.QtWidgets import QWidget, QTableWidget, QPushButton, QDialog, QMessageBox, QCalendarWidget, QSizePolicy
 from PyQt5 import uic
 
 from src.ui.widgets.calendar import CalendarManager
@@ -16,8 +15,8 @@ from src.utils.path_helper import get_resource_path
 
 
 class VolunteerPage(QWidget):
-    def __init__(self, parent, db:DatabaseConnector):
-        super().__init__()
+    def __init__(self, parent, db:DatabaseConnector, am: AvailabilityManager, vm: VolunteerManager):
+        super().__init__(parent)
 
 
         # Load UI
@@ -26,8 +25,8 @@ class VolunteerPage(QWidget):
 
         self.parent = parent
         self.db = db
-        self.vm = VolunteerManager(db)
-        self.am = AvailabilityManager(db)
+        self.am = am
+        self.vm = vm
 
 
         # Define widgets
@@ -45,19 +44,19 @@ class VolunteerPage(QWidget):
 
         # Inicialize
 
-        self.calendar_manager = CalendarManager(self, self.db)
+        self.calendar_manager = CalendarManager(self, self.am)
         self.calendar_manager.display_calendar(self.calendar, self.parent.current_theme)
 
-        self.table_manager = TableWidgetManager(self, self.db, self.calendar_manager)
+        self.table_manager = TableWidgetManager(self, self.calendar_manager, self.am, self.vm)
         self.table_manager.define_all_volunteers_table(self.volunteer_table)
         self.table_manager.define_availability_table(self.availability_table, self.calendar)
 
-        self.combobox_manager = ComboBoxManager(self, self.db)
+        self.combobox_manager = ComboBoxManager(self, self.db, self.vm)
         self.combobox_manager.define_form_combobox()
 
-        self.text_edit_manager = TextEditManager(self, self.db)
+        self.text_edit_manager = TextEditManager(self, self.vm)
 
-        self.radio_btn_manager = RadioButtonsManager(self, self.db)
+        self.radio_btn_manager = RadioButtonsManager(self, self.vm)
         self.radio_btn_manager.define_form_radio_buttons()
 
         # Default view

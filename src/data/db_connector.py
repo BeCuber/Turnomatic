@@ -44,6 +44,7 @@ class DatabaseConnector:
         self._create_table_positions()
         self._create_table_rooms()
         self._create_table_room_assignment()
+        self._create_table_room_schedule()
         self.conn.commit()
 
 
@@ -164,7 +165,7 @@ class DatabaseConnector:
     def _create_table_room_assignment(self):
         """
             Create the room assignment table.
-            Each row represents the occupancy of a room on a specific date
+            Each row represents the occupancy of a room
             by a volunteer (based on their availability).
         """
         cursor = self.conn.cursor()
@@ -181,6 +182,27 @@ class DatabaseConnector:
                 )
             ''')
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_room_assignment ON room_assignment (check_in, check_out);")
+        finally:
+            cursor.close()
+
+    def _create_table_room_schedule(self):
+        """
+            Create the room schedule table.
+            It complements room_assignment giving a room a specific date.
+            This table allows to create temporal rooms.
+        """
+        cursor = self.conn.cursor()
+        try:
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS room_schedule (
+                    id_schedule INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_room INTEGER NOT NULL,
+                    check_in TEXT NOT NULL,
+                    check_out TEXT NOT NULL,
+                    FOREIGN KEY (id_room) REFERENCES rooms(id_room) ON DELETE CASCADE
+                )
+            ''')
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_room_schedule ON room_schedule (check_in, check_out);")
         finally:
             cursor.close()
 
@@ -348,7 +370,8 @@ if __name__ == "__main__":
     # db.execute_query("DROP TABLE IF EXISTS bed_assignment")
 
     # db.execute_query("DROP TABLE IF EXISTS room_assignment")
-    query = "SELECT name FROM sqlite_master WHERE type='table';"
+    # query = "SELECT name FROM sqlite_master WHERE type='table';"
+    query = "SELECT * FROM room_schedule;"
 
     print(db.fetch_query_all(query))
 

@@ -1,5 +1,3 @@
-# src/ui/widgets/dialogs.py
-
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QPushButton, QRadioButton, QButtonGroup, QMessageBox, QDateEdit, QTextEdit, QCheckBox, QDialogButtonBox
 from PyQt5.QtCore import QDate
 

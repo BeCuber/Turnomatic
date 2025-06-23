@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QCalendarWidget, QWidget, QAbstractItemView, QLabel, \
     QMessageBox
-from src.data.db_connector import DatabaseConnector
 from src.logic.volunteer_manager import VolunteerManager
 from src.logic.availability_manager import AvailabilityManager
 from src.ui.widgets.delegates import AvailabilityDelegate
@@ -10,12 +9,12 @@ from src.ui.widgets.calendar import CalendarManager
 
 class TableWidgetManager:
 
-    def __init__(self, parent: QWidget, db: DatabaseConnector, calendar_manager: CalendarManager):
+    def __init__(self, parent: QWidget, calendar_manager: CalendarManager, am: AvailabilityManager, vm: VolunteerManager):
         """Initialize tables manager."""
 
         self.parent = parent
-        self.vm = VolunteerManager(db)
-        self.am = AvailabilityManager(db)
+        self.am = am
+        self.vm = vm
         self.calendar_manager = calendar_manager
 
     def add_empty_row(self, table:QTableWidget):

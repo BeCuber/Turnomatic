@@ -11,16 +11,17 @@ from src.utils.path_helper import get_resource_path
 
 
 class CalendarPage(QWidget):
-    def __init__(self, parent, db: DatabaseConnector):
-        super().__init__()
-        self.am = AvailabilityManager(db)
+    def __init__(self, parent, db: DatabaseConnector, am: AvailabilityManager, vm: VolunteerManager):
+        super().__init__(parent)
 
         # Load UI
-        UI_PATH = get_resource_path("src/ui/pages/calendar_page.ui")  # specific UI for this page
+        UI_PATH = get_resource_path("src/ui/pages/calendar_page.ui")
         uic.loadUi(UI_PATH, self)
 
         self.parent = parent
         self.db = db
+        self.am = am
+        self.vm = vm
 
         # Define widgets
         self.calendar = self.findChild(QCalendarWidget, "calendarWidget")
@@ -36,8 +37,8 @@ class CalendarPage(QWidget):
         
 
         #Initialize
-        self.calendar_manager = CalendarManager(self, self.db)
-        self.table_manager = TableWidgetManager(self, self.db, self.calendar_manager)
+        self.calendar_manager = CalendarManager(self, self.am)
+        self.table_manager = TableWidgetManager(self, self.calendar_manager, self.am, self.vm)
 
         self.table_manager.define_available_volunteer_list(self.confirmed_volunteer_table)
         self.table_manager.define_available_volunteer_list(self.not_confirmed_volunteer_table)
@@ -153,12 +154,13 @@ class CalendarPage(QWidget):
 
 # from bash: $ python -m src.ui.pages.calendar_page (-m points "src" a module)
 if __name__ == "__main__":
-    db = DatabaseConnector()
-    am = AvailabilityManager(db)
-    vm = VolunteerManager(db)
+    # db = DatabaseConnector()
+    # am = AvailabilityManager(db)
+    # vm = VolunteerManager(db)
 
 
 
-    am.db.close_connection()
+    # am.db.close_connection()
+    pass
 
 

@@ -1,31 +1,25 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPlainTextEdit, QTableWidget, QDateEdit
-from src.data.db_connector import DatabaseConnector
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QDateEdit
 from src.logic.volunteer_manager import VolunteerManager
-from src.ui.widgets.table_widgets import TableWidgetManager
 from PyQt5.QtCore import QDate
 
 
 
 class TextEditManager:
-    def __init__(self, parent: QWidget, db: DatabaseConnector):
+    def __init__(self, parent: QWidget, vm: VolunteerManager):
         """Initialize text fields manager."""
         self.parent = parent
-        self.vm = VolunteerManager(db)
-        # self.twm = TableWidgetManager(self.parent, self.vm.db)
+        self.vm = vm
 
         self.label_volunteer = self.parent.findChild(QLabel, "labelNameVolunteer")
         self.input_dni = self.parent.findChild(QLineEdit, "lineEditDNI")
         self.input_email = self.parent.findChild(QLineEdit, "lineEditEmail")
         self.input_phone = self.parent.findChild(QLineEdit, "lineEditPhone")
-        # self.input_medication = self.parent.findChild(QPlainTextEdit, "plainTextEditMedication")
         self.input_medication = self.parent.findChild(QLineEdit, "lineEditMedication")
         self.input_medication.setPlaceholderText("Describe la información que se deba tener en cuenta")
-        # self.input_allergies = self.parent.findChild(QPlainTextEdit, "plainTextEditAllergies")
         self.input_allergies = self.parent.findChild(QLineEdit, "lineEditAllergies")
         self.input_allergies.setPlaceholderText("Describe la información que se deba tener en cuenta")
         self.input_contact_person = self.parent.findChild(QLineEdit, "lineEditContactPerson")
         self.input_contact_person.setPlaceholderText("Mercedes - Madre - 666 66 66 66")
-        # self.input_contact_person = self.parent.findChild(QPlainTextEdit, "plainTextEditContactPerson")
         self.date_edit_birth = self.parent.findChild(QDateEdit, "dateEditBirth")
         self.date_edit_birth.setCalendarPopup(True)
 

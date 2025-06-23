@@ -6,11 +6,12 @@ from src.logic.volunteer_manager import VolunteerManager
 
 class ComboBoxManager:
     
-    def __init__(self, parent: QWidget, db: DatabaseConnector):
+    def __init__(self, parent: QWidget, db: DatabaseConnector, vm: VolunteerManager):
         """Initilize combo boxes manager."""
         self.parent = parent
-        self.vm = VolunteerManager(db)
-        self.cbdm = ComboBoxesDataManager(db)
+        self.db = db
+        self.vm = vm
+        self.cbdm = ComboBoxesDataManager(self.db)
 
 
     def define_form_combobox(self):

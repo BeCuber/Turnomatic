@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 
 from src.data.db_connector import DatabaseConnector
 
@@ -60,6 +61,34 @@ class InitialData:
                 print("Tabla 'rooms' ya contiene datos. No se insertaron habitaciones nuevas.")
         except sqlite3.Error as e:
             print(f"Error en insert_rooms: {e}")
+
+
+    def insert_default_room_schedule(self):
+        """Insert default availability for existing rooms covering all dates."""
+        query_check = "SELECT COUNT(*) FROM room_schedule"
+
+        try:
+            count_result = self.db.fetch_query_one(query_check)
+            count = count_result[0] if count_result else 0
+
+            if count == 0:
+                query_insert = """
+                    INSERT INTO room_schedule (id_room, check_in, check_out)
+                    VALUES (?, ?, ?)
+                """
+
+                check_in = date.min.isoformat()  # '0001-01-01'
+                check_out = date.max.isoformat()  # '9999-12-31'
+
+                # Habitaciones con id del 1 al 10
+                schedules = [(room_id, check_in, check_out) for room_id in range(1, 11)]
+
+                self.db.execute_many_query(query_insert, schedules)
+                print(f"{len(schedules)} rangos insertados en room_schedule.")
+            else:
+                print("Tabla 'room_schedule' ya contiene datos. No se insertaron nuevas filas.")
+        except sqlite3.Error as e:
+            print(f"Error en insert_default_room_schedule: {e}")
 
 
     def insert_communities(self):
@@ -850,6 +879,7 @@ if __name__ == "__main__":
     iniData.insert_assemblies()
     iniData.insert_positions()
     iniData.insert_rooms()
+    iniData.insert_default_room_schedule()
     #iniData.db.execute_query("DELETE FROM positions")
     #iniData.db.execute_query("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'positions'") # Reinicia ID
 
