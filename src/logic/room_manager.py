@@ -144,6 +144,14 @@ class RoomManager:
         return self.db.fetch_query_one(query, params)
 
 
+    def create_room_assignment(self, id_room, id_availability, check_in, check_out):
+        """"""
+        query = """INSERT INTO room_assignment (id_room, id_availability, check_in, check_out) VALUES (?,?,?,?)"""
+        self.db.execute_query(query,(id_room, id_availability, check_in, check_out))
+
+
+
+
 if __name__ == "__main__":
     db = DatabaseConnector()
     rm = RoomManager(db)
@@ -160,14 +168,14 @@ if __name__ == "__main__":
     # print(f"get_all_data_for_week: {dicty}")
     # for i in range(0, 10):
     # print(f"key = today : {dicty[today]}")
-    # dia = date(2025, 6, 15)
+    dia = date(2025, 6, 28)
     print(f"dicty: {dicty}")
     # rooms_dict_for_day = dicty[today]
-    # print(f"key = day dicty[dia] : {dicty[today]}") #TODO necesito esta para room_card
+    print(f"key = day dicty[dia] : {dicty[today]}") #TODO necesito esta para room_card
     # print(rooms_dict_for_day)
     # print(f"rooms_dict_for_day = {rooms_dict_for_day}")
     # print(f"dicty[dia].values() : {dicty[dia].values()}") # solo vale para dicts
-    # print(f"dicty[dia][1] : {dicty[dia][1]}") # solo vale para dicts #TODO necesito esta para individual
+    print(f"dicty[dia][1] : {dicty[dia][1]}") # solo vale para dicts #TODO necesito esta para individual
     # print(f"dicty[dia][1] : {rooms_dict_for_day[1]}")
     # volunteers = rooms_dict_for_day[1]["volunteers"]
     # print(volunteers)
@@ -192,8 +200,8 @@ if __name__ == "__main__":
     # list = rooms_dict_for_day.keys()
     # print(list)
     # print(list[0])
-
-    discty = rm.get_volunteers_without_room(today)
+    day = date(2025, 6, 22)
+    discty = rm.get_volunteers_without_room(day)
     print(discty)
 
     rm.db.close_connection()

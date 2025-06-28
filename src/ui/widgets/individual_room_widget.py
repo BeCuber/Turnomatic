@@ -19,7 +19,7 @@ class IndividualRoomWidget(QWidget):
     def __init__(self, parent: QWidget, id_room: int, room_dict: dict, no_room_list: list, day: date, theme: str, room_manager: RoomManager):
         super().__init__(parent)
 
-        UI_PATH = get_resource_path("src/ui/widgets/individual_room_widget.ui")  # Ruta a tu nuevo .ui
+        UI_PATH = get_resource_path("src/ui/widgets/individual_room_widget.ui")
         uic.loadUi(UI_PATH, self)
 
         self.id_room = id_room
@@ -32,6 +32,17 @@ class IndividualRoomWidget(QWidget):
         # print(no_room_list)
         self.capacity = self.room_dict["capacity"]
         self.volunteers = self.room_dict["volunteers"] # <-- (id_volunteer, name, id_assignment, id_availability)
+        if self.volunteers and isinstance(self.volunteers[0], tuple):
+            self.volunteers = [
+                {
+                    "id_volunteer": vol[0],
+                    "name": vol[1],
+                    "id_assignment": vol[2],
+                    "id_availability": vol[3]
+                }
+                for vol in self.volunteers
+            ]
+        self.count_volunteers = 0
 
         # PICK WIDGETS FROM UI;
             # main container
@@ -42,7 +53,7 @@ class IndividualRoomWidget(QWidget):
         icon_add_vol_path = get_resource_path("assets/images/add_volunteer.ico")
         self.btn_add_volunteer.setIcon(QIcon(icon_add_vol_path))
         self.btn_add_volunteer.setProperty("menu", True)
-        self._setup_menu_on_add_vol_btn(self.btn_add_volunteer, self.no_room_list)
+        self.setup_menu_on_add_vol_btn(self.btn_add_volunteer, self.no_room_list)
 
             #CONFIG label name
         self.label_room_name = self.findChild(QLineEdit, "labelRoomName")
@@ -60,11 +71,15 @@ class IndividualRoomWidget(QWidget):
         #     child = self.vbox_vol_same_room.takeAt(0)
         #     if child.widget():
         #         child.widget().deleteLater()
-        # self.ids_volunteers = self.volunteers["id_volunteer"]
+        #
 
-        if len(self.volunteers) != 0:
-            for volunteer_data in self.ids_volunteers:
-                self.insert_placeholder_for_bed(volunteer_data)
+        # print(self.room_dict) # {'room_name': '10', 'capacity': 1, 'volunteers': []}
+        # print(self.volunteers) # []
+        # if len(self.volunteers) != 0:
+        if self.volunteers:
+            # self.ids_volunteers = self.volunteers["id_volunteer"]
+            for volunteer in self.volunteers:
+                self.insert_placeholder_for_bed(volunteer)
         else:
             self.insert_placeholder_for_bed()
 
@@ -89,48 +104,61 @@ class IndividualRoomWidget(QWidget):
         self.label_room_name.clearFocus()
 
 
-    def _setup_menu_on_add_vol_btn(self, btn: QPushButton, no_room_vol: list):
+    def setup_menu_on_add_vol_btn(self, btn: QPushButton, no_room_vol: list):
         """"""
-        # if volunteers > 1:
-            # self.insert_placeholder_for_bed(fake_bed_index)
-        # Elegir de entre los disponibles: self.no_room_list
-        # En un QMenu
         menu = QMenu(btn)
         # [(id_availability, id_volunteer, name), (id_availability, id_volunteer, name)]
         for vol in no_room_vol:
-            # print(f"Dentro del for la lista es: {no_room_vol}")
-            # print(f"Cada vol es: {vol}")
-            id_availability = vol[0]
-            # print(f"id_availability vol[0]: {vol[0]}")
-            id_volunteer = vol[1]
-            # print(f"id_availability vol[1]: {vol[1]}")
-            volunteer_name = vol[2]
-            # print(f"id_availability vol[2]: {vol[2]}")
-            dates = self.room_manager.get_dates_from_availability(id_availability)
+            id_availability, id_volunteer, volunteer_name = vol
+            date_init, date_end = self.room_manager.get_dates_from_availability(id_availability)
             # print(dates) # ('2025-06-06', '2025-08-31')
             vol_data_for_assignment = {
                 'id_availability': id_availability,
                 'id_volunteer': id_volunteer,
                 'name': volunteer_name,
-                'date_init': dates[0],
-                'date_end': dates[1]
+                'date_init': date_init,
+                'date_end': date_end
             }
-            # print(vol_data_for_assignment)
+
             action = QAction(f"{volunteer_name}", btn)
-            action.triggered.connect(self.add_vol)
+            action.triggered.connect(lambda _, v=vol_data_for_assignment: self.add_volunteer_to_this_room(v))
 
             menu.addAction(action)
         btn.setMenu(menu)
 
         # self.room_content_changed.emit()  # Para que RoomsCardWidget sepa que algo ha cambiado
-    def add_vol(self):
+    def add_volunteer_to_this_room(self, volunteer_data: dict):
         """"""
-        print("Voluntario añadido")
         # 1 Crear un id_assignment
+        # for id_availability, id_volunteer, name, date_init, date_end in volunteer_data:
+        #     self.room_manager.create_room_assignment(id_room=self.id_room, id_availability=id_availability, check_in=date_init, check_out=date_end)
+        try:
+            self.room_manager.create_room_assignment(
+                id_room=self.id_room,
+                id_availability=volunteer_data["id_availability"],
+                check_in=volunteer_data["date_init"],
+                check_out=volunteer_data["date_end"]
+            )
+        except Exception as e:
+            print(f"Error al crear la asignación: {e}")
+            return
+
         # 2 Insertarlo en la ui propia?
+        btn_menu_first_vol = self.findChild(QPushButton, "btnMenu1")
+        if self.count_volunteers==1 and not btn_menu_first_vol.isEnabled(): # Si el primer voluntario tiene el btn deshabilitado:
+            label_vol_name = self.findChild(QLabel, "labelNameVol1")
+            label_vol_name.setText(volunteer_data["name"])
+            btn_menu_first_vol.setDisabled(False)
+        else:
+            self.insert_placeholder_for_bed(volunteer_data)
+
         # 3 Remove from no-room-list
+
+
+
         # 4 Avisar a los padres para que recarguen el ui
 
+        print("Voluntario añadido")
 
 
     def unassign_volunteer(self, vol_id: int, room_assignment_id: int):
@@ -146,13 +174,13 @@ class IndividualRoomWidget(QWidget):
 
 
     def insert_placeholder_for_bed(self, volunteer_data: dict = None):
-
+        self.count_volunteers += 1
         h_box_bed_container = QtWidgets.QHBoxLayout()
         h_box_bed_container.setContentsMargins(0, 0, 0, 0)
-        h_box_bed_container.setObjectName(f"hBoxNameVolBtnMenu")
+        h_box_bed_container.setObjectName(f"hBoxNameVolBtnMenu{str(self.count_volunteers)}")
 
         label_vol_name = QtWidgets.QLabel(self.frame_room)
-        label_vol_name.setObjectName("labelNameVol")
+        label_vol_name.setObjectName(f"labelNameVol{str(self.count_volunteers)}")
 
         h_box_bed_container.addWidget(label_vol_name)
 
@@ -161,19 +189,20 @@ class IndividualRoomWidget(QWidget):
         btn_menu_vol.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         btn_menu_vol.setText("")
         btn_menu_vol.setIconSize(QtCore.QSize(12, 12))
-        btn_menu_vol.setObjectName("btnMenu")
+        btn_menu_vol.setObjectName(f"btnMenu{str(self.count_volunteers)}")
         icon_menu_path = get_resource_path("assets/images/menu.ico")
         btn_menu_vol.setIcon(QIcon(icon_menu_path))
         btn_menu_vol.setProperty("menu", True)
-        self._setup_menu_on_volunteer_btn(btn_menu_vol)
+        self.setup_menu_on_volunteer_btn(btn_menu_vol)
 
         h_box_bed_container.addWidget(btn_menu_vol)
 
         h_box_bed_container.setStretch(0, 1)
 
         if volunteer_data:
-            volunteer_name = volunteer_data.get("name")
-            label_vol_name.setText(volunteer_name)
+            label_vol_name.setText(volunteer_data["name"])
+            # volunteer_name = volunteer_data.get("name")
+            # label_vol_name.setText(volunteer_name)
             # update room_assignment
         else:
             label_vol_name.setText("- Vacía -")
@@ -183,7 +212,8 @@ class IndividualRoomWidget(QWidget):
         self.vbox_vol_same_room.addLayout(h_box_bed_container)
 
 
-    def _setup_menu_on_volunteer_btn(self, btn: QPushButton):
+
+    def setup_menu_on_volunteer_btn(self, btn: QPushButton):
         """"""
 
         menu = QMenu(btn)
