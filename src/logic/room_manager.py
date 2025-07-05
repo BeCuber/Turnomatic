@@ -148,6 +148,7 @@ class RoomManager:
         """"""
         query = """INSERT INTO room_assignment (id_room, id_availability, check_in, check_out) VALUES (?,?,?,?)"""
         self.db.execute_query(query,(id_room, id_availability, check_in, check_out))
+        return self.db.get_last_inserted_id()
 
 
 

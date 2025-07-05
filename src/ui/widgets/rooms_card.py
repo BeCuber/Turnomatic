@@ -12,8 +12,9 @@ from src.utils.path_helper import get_resource_path
 
 
 class RoomsCardWidget(QWidget):
-    room_name_updated_in_card = pyqtSignal(int, str)
-
+    # room_name_updated_in_card = pyqtSignal(int, str)
+    # room_data_changed = pyqtSignal(int, dict, date)
+    refresh_required = pyqtSignal()
     def __init__(self, parent, day: date, theme: str, am: AvailabilityManager, rm: RoomManager, room_dict: dict):
         super().__init__()
         UI_PATH = get_resource_path("src/ui/widgets/rooms_card.ui")
@@ -169,6 +170,7 @@ class RoomsCardWidget(QWidget):
 
             room_widget.setFixedHeight(58)
             room_widget.room_name_updated.connect(self._handle_room_name_update)
+            room_widget.assignment_created_in_room.connect(self._handle_assignment_created)
             # Añade el widget al layout de la RoomsCardWidget
             self.rooms_layout.addWidget(room_widget)
 
@@ -181,46 +183,26 @@ class RoomsCardWidget(QWidget):
 
     def _handle_room_name_update(self, id_room: int, new_name: str):
         """"""
-        self.room_name_updated_in_card.emit(id_room, new_name)
-
-    # def _populate_room_widgets(self):
-    #     rooms_layout = self.rooms_layout
-    #     if not rooms_layout:
-    #         print("Error: no se encontró scrollAreaContents.layout()")
-    #         return
-    #
-    #     while rooms_layout.count():
-    #         child = rooms_layout.takeAt(0)
-    #         if child.widget():
-    #             child.widget().deleteLater()
-    #
-    #     # Ejemplo si rooms_map ya tiene solo las habilitadas:
-    #     sorted_room_ids = sorted(self.rooms_map.keys())
-    #
-    #     for id_room in sorted_room_ids:
-    #         room_name, room_capacity = self.rooms_map[id_room]
-    #
-    #         room_widget = IndividualRoomWidget(
-    #             parent=self,
-    #             id_room=id_room,
-    #             room_name=room_name,
-    #             capacity=room_capacity,
-    #             day=self.day,
-    #             theme=self.theme,
-    #             room_manager=self.room_manager,
-    #             am=self.am
-    #         )
-    #
-    #         rooms_layout.addWidget(room_widget)
-    #
-    #     rooms_layout.addStretch(1)
-    #     self._get_current_occupied(self.labelCurrentOcupiedRooms) # TODO Debe ser un atributo
-    #
+        # self.room_name_updated_in_card.emit(id_room, new_name)
+        self.refresh_required.emit()
 
 
+    def _handle_assignment_created(self, id_room: int, assignment_details: dict):
+        """"""
+        # room_volunteers = self.rooms_data[id_room]['volunteers']
+        # room_volunteers.append(assignment_details)
+        #
+        # vol_id_to_remove = assignment_details['id_volunteer'] #from no-room vols
+        #
+        # updated_no_room_list = []
+        # for vol_tuple in self.no_room_list_for_day:
+        #     if vol_tuple[1] != vol_id_to_remove:
+        #         updated_no_room_list.append(vol_tuple)
+        #
+        # self.no_room_volunteers = updated_no_room_list
 
-
-
+        # self.room_data_changed.emit(id_room, self.rooms_data[id_room], self.day)
+        self.refresh_required.emit()
 
 
     def on_add_room_clicked(self):
@@ -303,7 +285,8 @@ class RoomsCardWidget(QWidget):
         """"""
         self.am.switch_confirmed(id_availability)
         self.am.merge_periods(id_volunteer, 0, id_availability)
-        self.parent.display_room_cards()
+        # self.parent.display_room_cards() # probando con pyqtSignal
+        self.refresh_required.emit()
         print(f"Desconfirmar disponibilidad {id_availability}")
 
 

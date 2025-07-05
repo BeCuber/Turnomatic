@@ -130,9 +130,10 @@ class RoomsPage(QWidget):
                 child.widget().deleteLater()
 
         for day in self.get_week_days():
-            # room_card = RoomsCardWidget(self, day, self.theme, self.am, self.room_manager, self.rooms_map)
             room_card = RoomsCardWidget(self, day, self.theme, self.am, self.room_manager, self.rooms_dict_for_week[day])
-            room_card.room_name_updated_in_card.connect(self.refresh)
+            # room_card.room_name_updated_in_card.connect(self.refresh)
+            # room_card.room_data_changed.connect(self.refresh)
+            room_card.refresh_required.connect(self.refresh)
             self.rooms_layout.addWidget(room_card)
 
     def refresh(self):

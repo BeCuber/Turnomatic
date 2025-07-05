@@ -71,6 +71,15 @@ QLabel#labelTitleNoRoom {
     border-radius: 6px;
 }
 
+QLabel[is_empty="True"]{
+    color: #a0a0a0;
+    font-style: italic;
+}
+QLabel[is_empty="False"]{
+    color: #f0f0f0;
+    font-style: normal;
+}
+
 /* === QComboBox === */
 QComboBox {
     background-color: #3a3a3a;

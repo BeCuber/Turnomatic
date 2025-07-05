@@ -10,10 +10,9 @@ from src.utils.path_helper import get_resource_path
 
 
 class IndividualRoomWidget(QWidget):
-    # Define señales personalizadas para comunicar eventos hacia arriba (a RoomsCardWidget)
-    # room_name_changed = pyqtSignal(int, str)  # Emite id_room y nuevo_nombre
-    # room_content_changed = pyqtSignal()  # Emite cuando se añade/elimina un voluntario
     room_name_updated = pyqtSignal(int, str)  # id_room, new_name para el cambio de nombre de hab
+    assignment_created_in_room = pyqtSignal(int, dict)
+
 
     # def __init__(self, parent: QWidget, id_room: int, room_name: str, capacity: int, day: date, theme: str, room_manager: RoomManager, availability_manager: AvailabilityManager):
     def __init__(self, parent: QWidget, id_room: int, room_dict: dict, no_room_list: list, day: date, theme: str, room_manager: RoomManager):
@@ -130,10 +129,9 @@ class IndividualRoomWidget(QWidget):
     def add_volunteer_to_this_room(self, volunteer_data: dict):
         """"""
         # 1 Crear un id_assignment
-        # for id_availability, id_volunteer, name, date_init, date_end in volunteer_data:
-        #     self.room_manager.create_room_assignment(id_room=self.id_room, id_availability=id_availability, check_in=date_init, check_out=date_end)
+
         try:
-            self.room_manager.create_room_assignment(
+            id_assignment = self.room_manager.create_room_assignment(
                 id_room=self.id_room,
                 id_availability=volunteer_data["id_availability"],
                 check_in=volunteer_data["date_init"],
@@ -148,18 +146,24 @@ class IndividualRoomWidget(QWidget):
         if self.count_volunteers==1 and not btn_menu_first_vol.isEnabled(): # Si el primer voluntario tiene el btn deshabilitado:
             label_vol_name = self.findChild(QLabel, "labelNameVol1")
             label_vol_name.setText(volunteer_data["name"])
+            label_vol_name.setProperty("is_empty", "True")
+            # label_vol_name.style().unpolish(label_vol_name)
+            # label_vol_name.style().polish(label_vol_name)
             btn_menu_first_vol.setDisabled(False)
         else:
             self.insert_placeholder_for_bed(volunteer_data)
 
-        # 3 Remove from no-room-list
+        # 3 Avisar a los padres para que recarguen el ui
 
-
-
-        # 4 Avisar a los padres para que recarguen el ui
-
-        print("Voluntario añadido")
-
+        new_assignment_details = {
+            "id_volunteer": volunteer_data["id_volunteer"],
+            "name": volunteer_data["name"],
+            "id_assignment": id_assignment,
+            "id_availability": volunteer_data["id_availability"],
+            "check_in": volunteer_data["date_init"],
+            "check_out": volunteer_data["date_end"]  # TODO cambiar cuando sea != de date_init/end
+        }
+        self.assignment_created_in_room.emit(self.id_room, new_assignment_details)
 
     def unassign_volunteer(self, vol_id: int, room_assignment_id: int):
         print(f"Desasignar voluntario {vol_id} de asignación {room_assignment_id}")
@@ -201,12 +205,17 @@ class IndividualRoomWidget(QWidget):
 
         if volunteer_data:
             label_vol_name.setText(volunteer_data["name"])
+            label_vol_name.setProperty("is_empty", "False")
+            # label_vol_name.style().unpolish(label_vol_name)
+            # label_vol_name.style().polish(label_vol_name)
             # volunteer_name = volunteer_data.get("name")
             # label_vol_name.setText(volunteer_name)
             # update room_assignment
         else:
             label_vol_name.setText("- Vacía -")
-            label_vol_name.setStyleSheet("color: #a0a0a0; font-style: italic;")
+            label_vol_name.setProperty("is_empty", "True")
+            # label_vol_name.style().unpolish(label_vol_name)
+            # label_vol_name.style().polish(label_vol_name)
             btn_menu_vol.setDisabled(True)
 
         self.vbox_vol_same_room.addLayout(h_box_bed_container)
